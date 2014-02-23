@@ -4,10 +4,10 @@
 #include <iostream>
 #include <vector>
 class Entity;
-
+class Window;
 class Logic{
 	public:
-		Logic();
+		Logic(Window *window);
 		~Logic();
 
 		int getEntityCount();
@@ -15,6 +15,10 @@ class Logic{
 	private:
 		std::vector<Entity*> entityVector; 
 		int createEntity(Entity *newEntity);
+	public:
+
+	private:
+		Window *window;
 };
 
 #endif

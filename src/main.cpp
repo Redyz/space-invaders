@@ -14,13 +14,13 @@ using namespace std;
 int main(int argc, char* argv[]) {
 	int currentTick = 0;
 	cout << (SFML ? "Starting in graphical mode" : "Starting in curses mode") << endl;
-	Logic logic;
 	Window window;
+	Logic logic(&window);
 	bool running = true;
 	while(running){	
 		logic.step();
-		//window.draw();
-		cout << "Hello" << currentTick << endl;
+		window.draw();
+		window.display("Howdy folks");
 		currentTick++;
 		usleep(1000 * 1000); //1000 milliseconds => 1 sec
 	}

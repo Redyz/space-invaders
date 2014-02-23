@@ -4,6 +4,7 @@
 Window::Window(){
 	initscr();
 	printw("Howdy ncurses");
+	getmaxyx(stdscr, width, height); //store the screen size
 	refresh();
 }
 
@@ -12,7 +13,16 @@ Window::~Window(){
 }
 
 void Window::draw(){
+	clear();
 	printw("More curses");
 	refresh();
-	getch();
 }
+
+void Window::display(std::string text){
+	printw(text.c_str());
+}
+
+void Window::display(std::string text, int x, int y){
+	mvprintw(x, y, text.c_str());
+}
+

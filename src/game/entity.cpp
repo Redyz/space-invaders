@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <sstream>
 Entity::Entity(){
-	std::cout << "Creating a new entity" << std::endl;
+	//std::cout << "Creating a new entity" << std::endl;
 }
 
 Entity::~Entity(){

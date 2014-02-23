@@ -78,9 +78,11 @@ message("Beginning build of ${PROJECT_NAME}, version ${VERSION_MAJOR}.${VERSION_
 
 add_executable(${PROJECT_NAME} ${PROJECT_SRC})
 
-# detect and add SFML
+# detect and add SFML + ncurses
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 find_package(SFML 2.1 REQUIRED system window graphics network audio)
+set(CURSES_NEED_NCURSES TRUE)
+find_package(Curses)
 target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
-
+target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARY})
 set(CMAKE_LIBRARY_PATH "/usr/lib/x86_64-linux-gnu/libncurses.so")
