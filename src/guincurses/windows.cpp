@@ -4,30 +4,41 @@
 #include "utility.h"
 #include <ncurses.h>
 #include <vector>
-
+#define SCORE_HEIGHT 2
 Window::Window(){
 	initscr();
   //raw() -> add quitting functionality first
   noecho(); //disable user getches
   keypad(stdscr, TRUE); //enable F1-F12 + arrow keys
+  start_color();
+  initColors();
 	getmaxyx(stdscr, height, width); //store the screen size
-  scoreWindow = newwin(2, width, 0, 0); //create the score window
-  gameWindow = newwin(height-2, width, 2, 0); //height, width, sy, sx
+  scoreWindow = newwin(SCORE_HEIGHT, width, 0, 0); //create the score 
+  gameWindow = newwin(height-SCORE_HEIGHT, width, SCORE_HEIGHT, 0); //height, width, sy, sx
 }
 
 Window::~Window(){
 	endwin();
 }
 
+void Window::setup(Logic* logic){
+  logic->setGameWidth(width);
+  logic->setGameHeight(height - SCORE_HEIGHT);
+  this->logic = logic;
+}
+void Window::initColors(){
+  init_pair(PAIR_ENTITY, COLOR_GREEN, COLOR_BLACK);
+  init_pair(PAIR_GHOST, COLOR_YELLOW, COLOR_BLACK);
+}
 void Window::clearWindow(){
   wclear(gameWindow);
   wclear(scoreWindow);
 };
 
-void Window::draw(Logic* logic){
-  this->logic = logic; //this is not efficient, might have to do a setup function instead
+void Window::draw(){
   drawScores();
   drawGame();
+  wmove(gameWindow, logic->getGameWidth(), logic->getGameHeight());
 }
 
 void Window::display(std::string text){
@@ -57,7 +68,6 @@ void Window::drawScores(){
 }
 
 void Window::drawGame(){
-  display("Tits", 0, 0, gameWindow);
   std::vector<Entity*> entityVector = logic->getEntityVector();
   try{
     for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
@@ -65,11 +75,17 @@ void Window::drawGame(){
       switch(currentEntity->getType()){
         case ENTITY:
           display("@", currentEntity->getX(), currentEntity->getY(), gameWindow);
+          //display(SSTR("X:" << currentEntity->getX()));
+          break;
       }
+
     }
 
   }catch(...){
 
   }
+  attron(COLOR_PAIR(PAIR_ENTITY));
+  display("U", logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);
+  attroff(COLOR_PAIR(PAIR_ENTITY));
   wrefresh(gameWindow);
 }

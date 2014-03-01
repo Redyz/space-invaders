@@ -18,15 +18,22 @@ class Logic{
 
 		int getEntityCount();
 		void step();
+    void init();
     void notify(int messageType, Entity* concernedEntity);
     int getScore(){ return score; }
     Entity* getPlayer(){ return this->player; }
     std::vector<Entity*> getEntityVector(){ return entityVector; }
+    int getGameHeight(){ return gameHeight;}
+    int getGameWidth(){ return gameWidth;}
+    void setGameHeight(int height){ gameHeight = height; }
+    void setGameWidth(int width){ gameWidth = width; }
 	private:
 		int createEntity(Entity *newEntity);
 	public:
 		Window *window;
 	private:
+    int gameHeight;
+    int gameWidth;
 		std::vector<Entity*> entityVector; //container for all entities
     std::vector<Entity*> backgroundEntityVector; //such as walls, bullets, etc
     Entity *player;

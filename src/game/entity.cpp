@@ -19,9 +19,16 @@ std::string Entity::toString(){
 	return convertingStream.str();
 }
 
-void Entity::move(int modX, int modY){
+int Entity::move(int modX, int modY){
+  if(x + modX < 0 || x + modX > logic->getGameWidth()){
+    return 1;
+  }
+  if(y + modY < 0 || y + modY > logic->getGameHeight()){
+    return 1;
+  }
   x += modX;
   y += modY;
+  return 0;
 }
 
 void Entity::modLife(int mod){

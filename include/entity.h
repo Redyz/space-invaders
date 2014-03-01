@@ -19,7 +19,7 @@ class Entity{
 		int getY(){ return y; }
 		void setX(int x) { this->x = x; } 
 		void setY(int y) { this->y = y; }
-    void move(int modX, int modY);
+    int move(int modX, int modY);
     void modLife(int mod);
     int getLife();
     int getType(){ return type; }
@@ -36,6 +36,9 @@ class Entity{
 		int y;
     int life;
 		int type;
+    int lastMoved;
+    int lastAction; //ticks
+    int speed;
     Logic* logic;
 };
 #endif
