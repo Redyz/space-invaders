@@ -29,7 +29,7 @@ void Entity::modLife(int mod){
   life += mod;
   if(life <= 0){
     life = 0;
-    die();
+    die(0);
   }
 }
 
@@ -38,5 +38,5 @@ void Entity::die(){
 }
 
 void Entity::die(Entity* killer){
-  logic->notify(DEATH, this);
+  logic->notify(PLAYER_KILL, this);
 }

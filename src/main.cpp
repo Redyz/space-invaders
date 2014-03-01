@@ -3,6 +3,7 @@
 #include <SFML/Window.hpp>
 #include <unistd.h>
 #include "logic.h"
+#include "utility.h"
 
 #if SFML
 	#include "gui/windows.h"
@@ -20,10 +21,10 @@ int main(int argc, char* argv[]) {
 	while(running){	
     window.clearWindow();
 		logic.step();
-		window.draw();
+		window.draw(&logic);
 		window.display("Howdy folks");
 		currentTick++;
-		usleep(1000 * 1000); //1000 milliseconds => 1 sec
+		usleep(1000 * TICK_LENGTH); //1000 milliseconds => 1 sec
 	}
 }
 
