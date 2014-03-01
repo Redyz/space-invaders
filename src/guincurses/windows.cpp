@@ -12,12 +12,11 @@ Window::~Window(){
 	endwin();
 }
 
-void Window::clear(){
+void Window::clearWindow(){
   clear();
 };
 
 void Window::draw(){
-	printw("More curses");
 	refresh();
 }
 

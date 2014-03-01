@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
 	Logic logic(&window);
 	bool running = true;
 	while(running){	
+    window.clearWindow();
 		logic.step();
 		window.draw();
 		window.display("Howdy folks");
