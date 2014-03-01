@@ -9,6 +9,7 @@ class Window{
 		void draw();
 		void display(std::string text);
 		void display(std::string text, int x, int y);
+		void clear();
 	private:
 		int width;
 		int height;

@@ -1,4 +1,5 @@
 #include "utility.h"
+#include "config.h"
 #include <string>
 
 Utility::Utility(Window *window){
