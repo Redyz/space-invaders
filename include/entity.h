@@ -2,6 +2,13 @@
 #define ENTITY_H
 #include <string>
 #include <cstdlib>
+enum entityType{
+  ENTITY,
+  WALL,
+  BULLET,
+  TANK,
+  GHOST
+};
 class Logic;
 class Entity{
 	public:
@@ -14,6 +21,8 @@ class Entity{
 		void setY(int y) { this->y = y; }
     void move(int modX, int modY);
     void modLife(int mod);
+    int getLife();
+    int getType(){ return type; }
     void die();
     void die(Entity* killer);
 		std::string toString();
@@ -26,7 +35,7 @@ class Entity{
 		int x;
 		int y;
     int life;
-		std::string type;
+		int type;
     Logic* logic;
 };
 #endif

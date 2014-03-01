@@ -12,6 +12,8 @@ class Window{
 		void display(std::string text, int x, int y);
     void display(std::string text, int x, int y, WINDOW* window);
 		void clearWindow();
+    int getWidth(){ return width; }
+    int getHeight(){ return height; }
   private:
     void drawScores();
     void drawGame();

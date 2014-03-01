@@ -13,6 +13,11 @@ Logic::Logic(Window *window) : score(0){
 		entityVector.push_back(new Entity(this));
 	}
   player = entityVector.at(0); //arbitrary for now
+	for(int i=0;i<entityVector.size();i++){
+		entityVector.at(i)->setX(floor(std::rand() % window->getWidth()));
+		entityVector.at(i)->setY(floor(std::rand() % window->getHeight()));
+		//window->display(entityVector.at(i)->toString(), 0, 0);
+	}
 }
 
 Logic::~Logic(){
@@ -21,13 +26,14 @@ Logic::~Logic(){
 }
 
 void Logic::step(){
-	for(int i=0;i<entityVector.size();i++){
-		entityVector.at(i)->setX(floor(std::rand() % 100));
-		entityVector.at(i)->setY(floor(std::rand() % 100));
-		//window->display(entityVector.at(i)->toString(), 0, 0);
-	}
-  if(rand() % 100 > 30){
+  if(rand() % 100 > 99){
     entityVector.at(0)->modLife(-1);
+  }
+  if(rand() % 100 > 20){
+    entityVector.at(static_cast<int>(rand()%entityVector.size()))->move(
+      static_cast<int>(-1 + rand() % 2),
+      static_cast<int>(-1 + rand() % 2)
+    );
   }
 }
 void Logic::notify(int messageType, Entity* concernedEntity){

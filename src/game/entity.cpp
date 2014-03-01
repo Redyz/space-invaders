@@ -5,7 +5,7 @@
 #include <string>
 #include <cstdlib>
 #include <sstream>
-Entity::Entity(Logic* logic) : x(0), y(0), type("Entity"), life(3){
+Entity::Entity(Logic* logic) : x(0), y(0), type(ENTITY), life(3){
   this->logic = logic;
 }
 
@@ -33,6 +33,9 @@ void Entity::modLife(int mod){
   }
 }
 
+int Entity::getLife(){
+  return life;
+}
 void Entity::die(){
   logic->notify(DEATH, this);
 }

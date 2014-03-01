@@ -1,7 +1,9 @@
 #include "guincurses/windows.h"
 #include "logic.h"
+#include "entity.h"
 #include "utility.h"
 #include <ncurses.h>
+#include <vector>
 
 Window::Window(){
 	initscr();
@@ -18,7 +20,8 @@ Window::~Window(){
 }
 
 void Window::clearWindow(){
-  clear();
+  wclear(gameWindow);
+  wclear(scoreWindow);
 };
 
 void Window::draw(Logic* logic){
@@ -43,6 +46,8 @@ void Window::drawScores(){
   int score = logic->getScore(); 
   std::string stringScore = SSTR("Score: " << score);
   display(stringScore, 0, 0, scoreWindow);
+  int lives = logic->getPlayer()->getLife();
+  display(SSTR("Lives: " << lives), width - 9, 0, scoreWindow);
   std::string bottomBorder = "";
   for(int i = 0; i < width; i++){
     bottomBorder += "_";
@@ -53,5 +58,18 @@ void Window::drawScores(){
 
 void Window::drawGame(){
   display("Tits", 0, 0, gameWindow);
+  std::vector<Entity*> entityVector = logic->getEntityVector();
+  try{
+    for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
+      Entity* currentEntity = *it;
+      switch(currentEntity->getType()){
+        case ENTITY:
+          display("@", currentEntity->getX(), currentEntity->getY(), gameWindow);
+      }
+    }
+
+  }catch(...){
+
+  }
   wrefresh(gameWindow);
 }

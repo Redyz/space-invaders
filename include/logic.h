@@ -20,6 +20,8 @@ class Logic{
 		void step();
     void notify(int messageType, Entity* concernedEntity);
     int getScore(){ return score; }
+    Entity* getPlayer(){ return this->player; }
+    std::vector<Entity*> getEntityVector(){ return entityVector; }
 	private:
 		int createEntity(Entity *newEntity);
 	public:
