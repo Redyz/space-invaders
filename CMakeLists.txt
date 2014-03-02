@@ -31,6 +31,7 @@ include(CPack)
 #set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 # END OF WINDOWS CC #
 
+set(BUILD_SFML false CACHE BOOL "Set this to true to build using SFML, or false to use Ncurses")
 # add header location
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}
@@ -49,10 +50,21 @@ set(INC ${PS}/include)
 
 # Source files
 message("Configuring using source dir: ${CMAKE_CURRENT_SOURCE_DIR}")
-file(GLOB_RECURSE PROJECT_SRC
-	"${SRC}/*.h"
-	"${SRC}/*.cpp"
-)
+if(BUILD_SFML)
+  message("Building with SFML")
+  file(GLOB PROJECT_SRC
+      "${SRC}/*.h"
+      "${SRC}/gui/*.h"
+      "${SRC}/*.cpp"
+      )
+else()
+  message("Building with Ncurses")
+  file(GLOB PROJECT_SRC
+      "${SRC}/*.h"
+      "${SRC}/guincurses/*.h"
+      "${SRC}/*.cpp"
+      )
+endif(BUILD_SFML)
 message("Include path: ${CMAKE_INCLUDE_PATH}")
 message("Prefix path: ${CMAKE_PREFIX_PATH}")
 #message("Files: ${PROJECT_SRC}")
