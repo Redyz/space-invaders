@@ -11,31 +11,31 @@ enum entityType{
 };
 class Logic;
 class Entity{
-	public:
-		Entity(Logic* logic);
-		~Entity();
-		
-		int getX(){ return x; }
-		int getY(){ return y; }
-		void setX(int x) { this->x = x; } 
-		void setY(int y) { this->y = y; }
+  public:
+    Entity(Logic* logic);
+    ~Entity();
+
+    int getX(){ return x; }
+    int getY(){ return y; }
+    void setX(int x) { this->x = x; } 
+    void setY(int y) { this->y = y; }
     int move(int modX, int modY);
     void modLife(int mod);
     int getLife();
     int getType(){ return type; }
     void die();
     void die(Entity* killer);
-		std::string toString();
-	private:
+    std::string toString();
+  private:
 
 
-	public:
-		
-	private:
-		int x;
-		int y;
+  public:
+
+  private:
+    int x;
+    int y;
     int life;
-		int type;
+    int type;
     int lastMoved;
     int lastAction; //ticks
     int speed;

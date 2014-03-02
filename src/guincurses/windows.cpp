@@ -1,3 +1,4 @@
+#include "guincurses/input.h"
 #include "guincurses/windows.h"
 #include "logic.h"
 #include "entity.h"
@@ -6,25 +7,27 @@
 #include <vector>
 #define SCORE_HEIGHT 2
 Window::Window(){
-	initscr();
-  //raw() -> add quitting functionality first
+  initscr();
+  raw();// -> add quitting functionality first
   noecho(); //disable user getches
+  nodelay(stdscr, TRUE); //make getch non-blocking
   keypad(stdscr, TRUE); //enable F1-F12 + arrow keys
   start_color();
   initColors();
-	getmaxyx(stdscr, height, width); //store the screen size
+  getmaxyx(stdscr, height, width); //store the screen size
   scoreWindow = newwin(SCORE_HEIGHT, width, 0, 0); //create the score 
   gameWindow = newwin(height-SCORE_HEIGHT, width, SCORE_HEIGHT, 0); //height, width, sy, sx
 }
 
 Window::~Window(){
-	endwin();
+  endwin();
 }
 
 void Window::setup(Logic* logic){
-  logic->setGameWidth(width);
-  logic->setGameHeight(height - SCORE_HEIGHT);
+  logic->setGameWidth(width-1);
+  logic->setGameHeight(height - SCORE_HEIGHT-1);
   this->logic = logic;
+  this->input = new Input(logic);
 }
 void Window::initColors(){
   init_pair(PAIR_ENTITY, COLOR_GREEN, COLOR_BLACK);
@@ -35,6 +38,9 @@ void Window::clearWindow(){
   wclear(scoreWindow);
 };
 
+void Window::inputStep(){
+  input->step();
+}
 void Window::draw(){
   drawScores();
   drawGame();
@@ -42,11 +48,11 @@ void Window::draw(){
 }
 
 void Window::display(std::string text){
-	wprintw(gameWindow, text.c_str());
+  wprintw(gameWindow, text.c_str());
 }
 
 void Window::display(std::string text, int x, int y){
-	mvwprintw(gameWindow, y, x, text.c_str());
+  mvwprintw(gameWindow, y, x, text.c_str());
 }
 
 void Window::display(std::string text, int x, int y, WINDOW* window){
@@ -82,7 +88,7 @@ void Window::drawGame(){
     }
 
   }catch(...){
-
+    display("Exception caught", 0, 1, gameWindow);
   }
   attron(COLOR_PAIR(PAIR_ENTITY));
   display("U", logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);

@@ -14,22 +14,22 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	int currentTick = 0;
-	cout << (SFML ? "Starting in graphical mode" : "Starting in curses mode") << endl;
-	Window window;
+  int currentTick = 0;
+  cout << (SFML ? "Starting in graphical mode" : "Starting in curses mode") << endl;
+  Window window;
   srand(time(NULL)); //new seed
-	Logic logic(&window);
+  Logic logic(&window);
   window.setup(&logic);
-	bool running = true;
   logic.init();
-	while(running){	
+  while(logic.isRunning()){	
     window.clearWindow();
-		logic.step();
-		window.draw();
-		window.display("Howdy folks");
-		currentTick++;
-		usleep(1000 * TICK_LENGTH); //1000 milliseconds => 1 sec
-	}
+    logic.step();
+    window.inputStep();
+    window.draw();
+    currentTick++;
+    usleep(1000 * TICK_LENGTH); //1000 milliseconds => 1 sec
+  }
+  std::cout << "Exiting game, thank you for playing!" << std::endl;
 }
 
 ////cout << "Version " << myproject_VERSION_MAJOR << "." << myproject_VERSION_MINOR << endl;

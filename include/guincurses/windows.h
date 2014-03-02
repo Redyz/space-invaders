@@ -10,29 +10,31 @@ enum colorPairs{
   PAIR_GHOST
 };
 class Logic;
+class Input;
 class Window{
-	public:
-		Window();
-		~Window();
-		void draw();
-		void display(std::string text);
-		void display(std::string text, int x, int y);
+  public:
+    Window();
+    ~Window();
+    void draw();
+    void display(std::string text);
+    void display(std::string text, int x, int y);
     void display(std::string text, int x, int y, WINDOW* window);
     void setup(Logic *logic);
-		void clearWindow();
+    void clearWindow();
     int getWidth(){ return width; }
     int getHeight(){ return height; }
     void initColors();
+    void inputStep();
   private:
     void drawScores();
     void drawGame();
-	private:
+  private:
     WINDOW* gameWindow;
     WINDOW* scoreWindow;
-		int width;
-		int height;
+    int width;
+    int height;
     Logic* logic;
-
+    Input* input;
 };
 
 #endif

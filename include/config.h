@@ -2,10 +2,13 @@
 #define CONFIG_H
 
 #define SFML false
+#define TICK_LENGTH 33 
 #if SFML
-	#include "gui/windows.h"
+  #include "gui/windows.h"
+  #include "gui/input.h"
 #else
-	#include "guincurses/windows.h"
+  #include "guincurses/windows.h"
+  #include "guincurses/input.h"
 #endif
 #endif
 

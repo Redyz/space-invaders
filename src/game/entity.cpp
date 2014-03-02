@@ -10,13 +10,13 @@ Entity::Entity(Logic* logic) : x(0), y(0), type(ENTITY), life(3){
 }
 
 Entity::~Entity(){
-	
+
 }
 
 std::string Entity::toString(){
-	std::ostringstream convertingStream;
-	convertingStream << "E:" << x << ":" << y;
-	return convertingStream.str();
+  std::ostringstream convertingStream;
+  convertingStream << "E:" << x << ":" << y;
+  return convertingStream.str();
 }
 
 int Entity::move(int modX, int modY){

@@ -52,16 +52,14 @@ set(INC ${PS}/include)
 message("Configuring using source dir: ${CMAKE_CURRENT_SOURCE_DIR}")
 if(BUILD_SFML)
   message("Building with SFML")
-  file(GLOB PROJECT_SRC
-      "${SRC}/*.h"
-      "${SRC}/gui/*.h"
+  file(GLOB_RECURSE PROJECT_SRC
+      "${INC}/*.h"
       "${SRC}/*.cpp"
       )
 else()
   message("Building with Ncurses")
-  file(GLOB PROJECT_SRC
-      "${SRC}/*.h"
-      "${SRC}/guincurses/*.h"
+  file(GLOB_RECURSE PROJECT_SRC
+      "${INC}/*.h"
       "${SRC}/*.cpp"
       )
 endif(BUILD_SFML)
