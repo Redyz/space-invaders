@@ -1,6 +1,7 @@
 #include "entity.h"
 #include "logic.h"
 #include "config.h"
+#include "message.h"
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -44,11 +45,11 @@ int Entity::getLife(){
   return life;
 }
 void Entity::die(){
-  logic->notify(DEATH, this);
+  logic->notify(new DeathMessage(this));
 }
 
 void Entity::die(Entity* killer){
-  logic->notify(PLAYER_KILL, this);
+  logic->notify(new DeathMessage(this, killer));
 }
 
 void Entity::fire(int direction){

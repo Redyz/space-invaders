@@ -5,16 +5,12 @@
 #include <vector>
 class Entity;
 class Window;
-
+class Message;
 enum directions{
   UP,
   DOWN,
   LEFT,
   RIGHT
-};
-enum messageType{
-  DEATH,
-  PLAYER_KILL
 };
 
 class Logic{
@@ -25,7 +21,7 @@ class Logic{
     int getEntityCount();
     void step();
     void init();
-    void notify(int messageType, Entity* concernedEntity);
+    void notify(Message *message);
     int getScore(){ return score; }
     Entity* getPlayer(){ return this->player; }
     std::vector<Entity*> getEntityVector(){ return entityVector; }

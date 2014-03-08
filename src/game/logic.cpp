@@ -44,15 +44,7 @@ void Logic::step(){
     currentEntity->step();
   }
 }
-void Logic::notify(int messageType, Entity* concernedEntity){
-  //Message* newMessage = new Message(messageType, <Object>concernedEntity);
-  switch(messageType){
-    case PLAYER_KILL:
-      score += 2;
-    case DEATH:
-      window->display("Some entity just died");
-      std::vector<Entity*>::iterator it = std::find(entityVector.begin(), entityVector.end(), concernedEntity);
-      entityVector.erase(it);
-      break;
-  }
+void Logic::notify(Message *message){
+  message->execute(this);
+  delete message;
 }
