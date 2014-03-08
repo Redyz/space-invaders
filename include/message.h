@@ -20,4 +20,16 @@ class DeathMessage : public Message{
     Entity *killed;
     Entity *killer;
 };
+
+
+class FireMessage : public Message{
+  public:
+    FireMessage(Entity *firer, int startX, int startY, int direction);
+    void execute(Logic *logic);
+  private:
+    int startX;
+    int startY;
+    int direction;
+    Entity *firer;
+}
 #endif

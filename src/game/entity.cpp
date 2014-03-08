@@ -53,9 +53,43 @@ void Entity::die(Entity* killer){
 }
 
 void Entity::fire(int direction){
-  //logic->notify(
+  logic->notify(new FireMessage(this, x, y, direction));
 }
 
 void Entity::step(){
 
+}
+
+bool Entity::outsideMap(){
+  int gameHeight = logic->getGameHeight();
+  int gameWidth = logic->getGameWidth();
+  if(x < 0 || x > gameWidth)
+    return true;
+  if(y < 0 || y > gameHeight)
+    return true;
+  return false;
+}
+/**
+ * Bullet entity class
+ */
+void Bullet::step(){
+  int moveResult;
+  switch(direction){
+    case UP:
+      moveResult = move(0, -1);
+      break;
+    case RIGHT:
+      moveResult = move(-1, 0);
+      break;
+    case DOWN:
+      moveResult = move(0, 1);
+      break;
+    case LEFT:
+      moveResult = move(-1, 0);
+      break;
+  }
+  //unsuccessful move
+  if(moveResult != 0){
+    logic->notify(new DeathMessage(this));
+  }
 }

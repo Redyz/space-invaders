@@ -29,7 +29,7 @@ class Entity{
     std::string toString();
     void step();
   private:
-
+    bool outsideMap();
 
   public:
 
@@ -42,5 +42,14 @@ class Entity{
     int lastAction; //ticks
     int speed;
     Logic* logic;
+};
+
+
+class Bullet : public Entity{
+  public:
+    void step();
+    void setDirection(int direction){ this->direction = direction; }
+  private:
+    int direction;
 };
 #endif

@@ -43,3 +43,20 @@ void DeathMessage::execute(Logic *logic){
   std::vector<Entity*>::iterator it = std::find(entityVector.begin(), entityVector.end(), killed);
   entityVector.erase(it);
 }
+
+/*
+ * FireMessage class
+ */
+FireMessage::FireMessage(Entity *firer, int startX, int startY, int direction){
+  this->startX = startX;
+  this->startY = startY;
+  this->direction = direction;
+  this->firer = firer;
+}
+
+void FireMessage::execute(Logic *logic){
+  Entity *bulletEntity = new Bullet();
+  bulletEntity->setX(startX);
+  bulletEntity->setY(startY);
+  bulletEntity->setDirection(direction);
+}
