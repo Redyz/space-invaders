@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "config.h"
 #include "utility.h"
+#include "message.h"
 #include <algorithm>
 #include <iostream>
 #include <list>
@@ -16,28 +17,35 @@ Logic::~Logic(){
   entityVector.clear();
 }
 void Logic::init(){
-  for(int i=0;i<10;i++){
-    entityVector.push_back(new Entity(this));
+  int numberOfGhosts = 100;
+  Entity *current;
+  int currentX = 0, currentY = 0;
+  for(int i=0;i<numberOfGhosts;i++){
+    current = new Entity(this);
+    current->setX(currentX += 2);
+    if(currentX >= getGameWidth()-3){
+      currentX = 0;
+      currentY += 1;
+    }
+    current->setY(currentY);
+    entityVector.push_back(current);
   }
-  player = entityVector.at(0); //arbitrary for now
-  for(int i=0;i<entityVector.size();i++){
-    entityVector.at(i)->setX(floor(std::rand() % getGameWidth()));
-    entityVector.at(i)->setY(floor(std::rand() % getGameHeight()));
-  }
+  current = new Entity(this);
+  entityVector.push_back(current);
+  player = current; //arbitrary for now
+  player->setY(getGameHeight());
+  player->setX((int)getGameWidth()/2);
 }
 
 void Logic::step(){
   //window->display(SSTR("Width: " << getGameHeight()));
   if(rand() % 100 > 20){
     Entity* currentEntity = entityVector.at(static_cast<int>(rand()%entityVector.size()));
-    if(currentEntity != player)
-      currentEntity->move(
-          static_cast<int>(-1 + rand() % 2),
-          static_cast<int>(-1 + rand() % 2)
-          );
+    currentEntity->step();
   }
 }
 void Logic::notify(int messageType, Entity* concernedEntity){
+  //Message* newMessage = new Message(messageType, <Object>concernedEntity);
   switch(messageType){
     case PLAYER_KILL:
       score += 2;

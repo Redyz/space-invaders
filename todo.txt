@@ -1,0 +1,6 @@
+-Unify logic.notify to use a message system over an entity pointer
+-Add boundaries to the game area so that it doesn't go multiline
+-Fix the weird refreshing bug
+-Add nice equal, multi-line splitting of ghosts + centered
+--Maybe fix the 'exiting game' message that does not display in main.cpp:32
+-Remove cursor display after drawing text (the [] after drawing the main character)

@@ -25,7 +25,9 @@ class Entity{
     int getType(){ return type; }
     void die();
     void die(Entity* killer);
+    void fire(int direction);
     std::string toString();
+    void step();
   private:
 
 

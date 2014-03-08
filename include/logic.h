@@ -6,6 +6,12 @@
 class Entity;
 class Window;
 
+enum directions{
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT
+};
 enum messageType{
   DEATH,
   PLAYER_KILL

@@ -50,3 +50,11 @@ void Entity::die(){
 void Entity::die(Entity* killer){
   logic->notify(PLAYER_KILL, this);
 }
+
+void Entity::fire(int direction){
+  //logic->notify(
+}
+
+void Entity::step(){
+
+}

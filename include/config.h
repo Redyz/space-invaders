@@ -2,7 +2,7 @@
 #define CONFIG_H
 
 #define SFML false
-#define TICK_LENGTH 33 
+#define TICK_LENGTH 40
 #if SFML
   #include "gui/windows.h"
   #include "gui/input.h"
