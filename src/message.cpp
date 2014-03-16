@@ -17,6 +17,9 @@ Message::~Message(){
 
 }
 
+void Message::execute(Logic *logic){
+
+}
 
 /*
  * DeathMessage class

@@ -7,7 +7,7 @@ class Message{
     Message();
     ~Message();
     void init();
-    virtual void execute(Logic *logic);
+    void execute(Logic *logic);
 };
 
 
