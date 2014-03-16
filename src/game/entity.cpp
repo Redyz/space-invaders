@@ -54,8 +54,7 @@ void Entity::die(Entity* killer){
 
 void Entity::fire(int direction){
   logic->window->debug("Firing");
-  //logic->notify(new FireMessage(this, x, y, direction));
-  logic->notify(new DeathMessage(this));
+  logic->notify(new FireMessage(this, x, y, direction));
 }
 
 void Entity::step(){
