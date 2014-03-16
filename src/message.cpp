@@ -19,8 +19,7 @@ Message::~Message(){
 
 void Message::execute(Logic *logic){
 
-}
-
+};
 /*
  * DeathMessage class
  */
@@ -36,7 +35,6 @@ DeathMessage::DeathMessage(Entity *killed, Entity *killer){
 }
 
 void DeathMessage::execute(Logic *logic){
-  logic->window->display("Some entity just died");
   std::vector<Entity*> entityVector = logic->getEntityVector();
   std::vector<Entity*>::iterator it = std::find(entityVector.begin(), entityVector.end(), killed);
   entityVector.erase(it);

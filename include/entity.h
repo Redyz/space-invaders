@@ -27,7 +27,7 @@ class Entity{
     void die(Entity* killer);
     void fire(int direction);
     std::string toString();
-    void step();
+    virtual void step();
   private:
     bool outsideMap();
 
@@ -48,7 +48,7 @@ class Entity{
 class Bullet : public Entity{
   public:
     Bullet(Logic *logic);
-    void step();
+    virtual void step();
     void setDirection(int direction){ this->direction = direction; }
   private:
     int direction;

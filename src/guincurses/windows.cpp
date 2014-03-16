@@ -86,6 +86,8 @@ void Window::drawGame(){
           display("@", currentEntity->getX(), currentEntity->getY(), gameWindow);
           //display(SSTR("X:" << currentEntity->getX()));
           break;
+        case BULLET:
+          display("|", currentEntity->getX(), currentEntity->getY(), gameWindow);
       }
 
     }

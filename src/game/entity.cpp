@@ -74,6 +74,7 @@ bool Entity::outsideMap(){
  * Bullet entity class
  */
 Bullet::Bullet(Logic *logic) : Entity(logic){
+  type = BULLET;
 }
 void Bullet::step(){
   int moveResult;
