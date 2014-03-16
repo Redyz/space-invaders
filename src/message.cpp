@@ -17,21 +17,16 @@ Message::~Message(){
 
 }
 
-void Message::execute(Logic *logic){
-
-}
 
 /*
  * DeathMessage class
  */
-DeathMessage::DeathMessage(Entity *killed){
-  Message();
+DeathMessage::DeathMessage(Entity *killed) : Message(){
   this->killed = killed;
   init();
 }
 
 DeathMessage::DeathMessage(Entity *killed, Entity *killer){
-  Message();
   this->killed = killed;
   this->killer = killer;
   init();
@@ -55,8 +50,10 @@ FireMessage::FireMessage(Entity *firer, int startX, int startY, int direction){
 }
 
 void FireMessage::execute(Logic *logic){
-  Entity *bulletEntity = new Bullet();
+  Bullet *bulletEntity = new Bullet(logic);
   bulletEntity->setX(startX);
   bulletEntity->setY(startY);
   bulletEntity->setDirection(direction);
+  logic->window->debug("Created a new bullet");
+  logic->createEntity(bulletEntity);
 }

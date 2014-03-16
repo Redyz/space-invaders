@@ -65,7 +65,7 @@ else()
 endif(BUILD_SFML)
 message("Include path: ${CMAKE_INCLUDE_PATH}")
 message("Prefix path: ${CMAKE_PREFIX_PATH}")
-#message("Files: ${PROJECT_SRC}")
+message("Files: ${PROJECT_SRC}")
 list(LENGTH PROJECT_SRC fileCount)
 message("File count: ${fileCount}")
 # install target

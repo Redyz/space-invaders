@@ -59,6 +59,9 @@ void Window::display(std::string text, int x, int y, WINDOW* window){
   mvwprintw(window, y, x, text.c_str());
 }
 
+void Window::debug(std::string text){
+  mvwprintw(scoreWindow, 0, 10, text.c_str());
+}
 void Window::drawScores(){
   int score = logic->getScore(); 
   std::string stringScore = SSTR("Score: " << score);

@@ -37,7 +37,7 @@ void Entity::modLife(int mod){
   life += mod;
   if(life <= 0){
     life = 0;
-    die(0);
+    die();
   }
 }
 
@@ -53,7 +53,9 @@ void Entity::die(Entity* killer){
 }
 
 void Entity::fire(int direction){
-  logic->notify(new FireMessage(this, x, y, direction));
+  logic->window->debug("Firing");
+  //logic->notify(new FireMessage(this, x, y, direction));
+  logic->notify(new DeathMessage(this));
 }
 
 void Entity::step(){
@@ -72,6 +74,8 @@ bool Entity::outsideMap(){
 /**
  * Bullet entity class
  */
+Bullet::Bullet(Logic *logic) : Entity(logic){
+}
 void Bullet::step(){
   int moveResult;
   switch(direction){
@@ -90,6 +94,6 @@ void Bullet::step(){
   }
   //unsuccessful move
   if(moveResult != 0){
-    logic->notify(new DeathMessage(this));
+    this->die();
   }
 }

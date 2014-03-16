@@ -16,6 +16,7 @@ class Window{
     Window();
     ~Window();
     void draw();
+    void debug(std::string text);
     void display(std::string text);
     void display(std::string text, int x, int y);
     void display(std::string text, int x, int y, WINDOW* window);

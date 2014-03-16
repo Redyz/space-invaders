@@ -33,7 +33,7 @@ class Entity{
 
   public:
 
-  private:
+  protected:
     int x;
     int y;
     int life;
@@ -47,6 +47,7 @@ class Entity{
 
 class Bullet : public Entity{
   public:
+    Bullet(Logic *logic);
     void step();
     void setDirection(int direction){ this->direction = direction; }
   private:

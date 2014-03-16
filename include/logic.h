@@ -31,7 +31,6 @@ class Logic{
     void setGameWidth(int width){ gameWidth = width; }
     bool isRunning(){ return running; }
     bool setRunning(bool value){ running = value; }
-  private:
     int createEntity(Entity *newEntity);
   public:
     Window *window;

@@ -7,7 +7,7 @@ class Message{
     Message();
     ~Message();
     void init();
-    void execute(Logic *logic);
+    virtual void execute(Logic *logic);
 };
 
 
@@ -31,5 +31,5 @@ class FireMessage : public Message{
     int startY;
     int direction;
     Entity *firer;
-}
+};
 #endif

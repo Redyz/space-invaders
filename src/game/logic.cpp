@@ -28,23 +28,30 @@ void Logic::init(){
       currentY += 1;
     }
     current->setY(currentY);
-    entityVector.push_back(current);
+    createEntity(current);
   }
   current = new Entity(this);
-  entityVector.push_back(current);
   player = current; //arbitrary for now
   player->setY(getGameHeight());
   player->setX((int)getGameWidth()/2);
+  createEntity(player);
+}
+
+int Logic::createEntity(Entity *newEntity){
+  entityVector.push_back(newEntity);
 }
 
 void Logic::step(){
   //window->display(SSTR("Width: " << getGameHeight()));
-  if(rand() % 100 > 20){
-    Entity* currentEntity = entityVector.at(static_cast<int>(rand()%entityVector.size()));
-    currentEntity->step();
+  for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
+    (*it)->step();
   }
+  //if(rand() % 100 > 20){
+    //Entity* currentEntity = entityVector.at(static_cast<int>(rand()%entityVector.size()));
+    //currentEntity->step();
+  //}
 }
 void Logic::notify(Message *message){
   message->execute(this);
-  delete message;
+//  delete message;
 }
