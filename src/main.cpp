@@ -1,6 +1,5 @@
 #include "config.h"
 #include <iostream>
-#include <SFML/Window.hpp>
 #include <unistd.h>
 #include <time.h>
 #include "logic.h"
