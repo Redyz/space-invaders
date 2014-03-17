@@ -1,4 +1,5 @@
 #include "logic.h"
+#include "utility.h"
 #include "config.h"
 #include "entity.h"
 #include "message.h"
@@ -35,9 +36,7 @@ DeathMessage::DeathMessage(Entity *killed, Entity *killer){
 }
 
 void DeathMessage::execute(Logic *logic){
-  std::vector<Entity*> entityVector = logic->getEntityVector();
-  std::vector<Entity*>::iterator it = std::find(entityVector.begin(), entityVector.end(), killed);
-  entityVector.erase(it);
+  logic->deleteEntity(killed);
 }
 
 /*

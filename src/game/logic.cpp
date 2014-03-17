@@ -55,3 +55,12 @@ void Logic::notify(Message *message){
   message->execute(this);
 //  delete message;
 }
+
+int Logic::deleteEntity(Entity *entity){
+  std::vector<Entity*>::iterator it = std::find(entityVector.begin(), entityVector.end(), entity);
+  int before = 0, after = 0;
+  before = entityVector.size();
+  //delete *it;
+  entityVector.erase(it);
+  after = entityVector.size();
+}

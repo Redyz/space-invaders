@@ -24,7 +24,7 @@ class Logic{
     void notify(Message *message);
     int getScore(){ return score; }
     Entity* getPlayer(){ return this->player; }
-    std::vector<Entity*> getEntityVector(){ return entityVector; }
+    std::vector<Entity*>& getEntityVector(){ return entityVector; }
     int getGameHeight(){ return gameHeight;}
     int getGameWidth(){ return gameWidth;}
     void setGameHeight(int height){ gameHeight = height; }
@@ -32,6 +32,7 @@ class Logic{
     bool isRunning(){ return running; }
     bool setRunning(bool value){ running = value; }
     int createEntity(Entity *newEntity);
+    int deleteEntity(Entity *entity);
   public:
     Window *window;
   private:

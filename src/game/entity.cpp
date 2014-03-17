@@ -53,7 +53,6 @@ void Entity::die(Entity* killer){
 }
 
 void Entity::fire(int direction){
-  logic->window->debug("Firing");
   logic->notify(new FireMessage(this, x, y, direction));
 }
 
@@ -94,6 +93,6 @@ void Bullet::step(){
   }
   //unsuccessful move
   if(moveResult != 0){
-    this->die();
+    die();
   }
 }
