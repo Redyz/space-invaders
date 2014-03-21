@@ -44,7 +44,8 @@ void Window::inputStep(){
 void Window::draw(){
   drawScores();
   drawGame();
-  wmove(gameWindow, logic->getGameWidth(), logic->getGameHeight());
+  wmove(gameWindow, logic->getGameWidth(), logic->getGameHeight()-2);
+  doupdate();
 }
 
 void Window::display(std::string text){
@@ -73,7 +74,7 @@ void Window::drawScores(){
     bottomBorder += "_";
   }
   display(bottomBorder, 0, 1, scoreWindow);
-  wrefresh(scoreWindow);
+  wnoutrefresh(scoreWindow);
 }
 
 void Window::drawGame(){
@@ -98,5 +99,5 @@ void Window::drawGame(){
   attron(COLOR_PAIR(PAIR_ENTITY));
   display("U", logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);
   attroff(COLOR_PAIR(PAIR_ENTITY));
-  wrefresh(gameWindow);
+  wnoutrefresh(gameWindow);
 }

@@ -5,6 +5,8 @@
 #include <sstream>
 #define SSTR( x ) dynamic_cast< std::ostringstream & >( \
     ( std::ostringstream() << std::dec << x ) ).str()
+#define LOG_PATH "../logs/logs.txt"
+//this ^ might be ugly - probably need to revise this part
 class Window;
 class Utility{
   public:
@@ -21,4 +23,15 @@ class Utility{
     Window *window;
 };
 
+class Logger{
+  public:
+    static void log(std::string message);
+};
+
 #endif
+
+//#include "unistd.h"
+//#include "stdio.h"
+//char currentPath[FILENAME_MAX];
+//cout << getcwd(currentPath, sizeof(currentPath));
+//return 0;
