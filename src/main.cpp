@@ -13,7 +13,6 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-  int currentTick = 0;
   cout << (SFML ? "Starting in graphical mode" : "Starting in curses mode") << endl;
   Window window;
   srand(time(NULL)); //new seed
@@ -25,8 +24,8 @@ int main(int argc, char* argv[]) {
     logic.step();
     window.inputStep();
     window.draw();
-    currentTick++;
     usleep(1000 * TICK_LENGTH); //1000 milliseconds => 1 sec
+    logic.incrementTick();
   }
   std::cout << "Exiting game, thank you for playing!" << std::endl;
 }

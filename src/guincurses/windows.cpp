@@ -3,6 +3,7 @@
 #include "logic.h"
 #include "entity.h"
 #include "utility.h"
+#include "tr1/memory"
 #include <ncurses.h>
 #include <vector>
 #define SCORE_HEIGHT 2
@@ -84,6 +85,7 @@ void Window::drawGame(){
       Entity* currentEntity = *it;
       switch(currentEntity->getType()){
         case ENTITY:
+        case GHOST:
           display("@", currentEntity->getX(), currentEntity->getY(), gameWindow);
           //display(SSTR("X:" << currentEntity->getX()));
           break;

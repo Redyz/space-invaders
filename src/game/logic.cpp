@@ -8,8 +8,11 @@
 #include <list>
 #include <cstdlib>
 #include <math.h>
-Logic::Logic(Window *window) : running(true), score(0){
+#include <stdexcept>
+
+Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0){
   this->window = window;
+  Logger::log("BEGAN NEW SESSION");
 }
 
 Logic::~Logic(){
@@ -17,51 +20,85 @@ Logic::~Logic(){
   entityVector.clear();
 }
 void Logic::init(){
-  int numberOfGhosts = 100;
-  Entity *current;
+  currentTick = 0;
+  int numberOfGhosts = 40;
+  //currently, for curses mode the game zone height is equivalent to the gameHeight
+  gameZones.resize(gameHeight+1); //+1? TODO: find out why this is here
+  for(unsigned int y = 0; y < gameHeight+1; y++){
+    gameZones[y].resize(gameWidth);
+    for(unsigned int x = 0; x < gameWidth; x++){
+      gameZones[y].push_back(NULL); //instantiate null pointers
+    }
+  }
+  Logger::log(SSTR("Height: " << gameZones.size()) + SSTR(" Width: " << gameZones[0].size()));
+  Entity* current;
   int currentX = 0, currentY = 0;
   for(int i=0;i<numberOfGhosts;i++){
-    current = new Entity(this);
+    current = new Ghost(this);
     current->setX(currentX += 2);
     if(currentX >= getGameWidth()-3){
       currentX = 0;
       currentY += 1;
     }
     current->setY(currentY);
+    gameZones[current->getY()][current->getX()] = current; //register the entity
     createEntity(current);
   }
   current = new Entity(this);
   player = current; //arbitrary for now
   player->setY(getGameHeight());
   player->setX((int)getGameWidth()/2);
+  player->setDamage(-1);
+  player->modLife(3); //give 3 lives
+  gameZones[current->getY()][current->getX()] = current;
+  //gameZones[current->getY()][current->getX()].reset(current.get());
   createEntity(player);
 }
 
-int Logic::createEntity(Entity *newEntity){
+int Logic::createEntity(Entity* newEntity){
+  newEntity->setUniqueId(SSTR(""<<newEntity->getType()) + SSTR("-" << currentEntityIndex++));
   entityVector.push_back(newEntity);
-  Logger::log("New entity created");
+  Logger::log("New entity created: " + newEntity->getUniqueId());
+}
+
+void Logic::notifyMove(Entity *mover, int oldX, int oldY){
+  //std::vector<shared_ptr<Entity> >::iterator current = std::find(entityVector.begin(), entityVector.end(), mover);
+  //Logger::log(mover->toString());
+  
+  gameZones[mover->getY()][mover->getX()] = mover;
+  gameZones[oldY][oldX] = NULL; //previous x gets cleared
+}
+
+Entity* Logic::testEntityCollision(Entity* tester, int x, int y){
+  try{
+    Entity* current = gameZones[y][x];
+    if(current != tester)
+      return current;
+    else
+      return 0;
+  }catch(const std::out_of_range& oor){
+    return 0; //out of range exception means you tried getting an invalid pos. in the vector
+  }
 }
 
 void Logic::step(){
-  //window->display(SSTR("Width: " << getGameHeight()));
-  for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
-    (*it)->step();
+  Entity* current;
+  for(unsigned int i = 0; i < entityVector.size(); i++){
+    current = entityVector[i];
+    entityVector[i]->step(); //the entity may die after .step, don't do anything after it
   }
-  //if(rand() % 100 > 20){
-    //Entity* currentEntity = entityVector.at(static_cast<int>(rand()%entityVector.size()));
-    //currentEntity->step();
-  //}
 }
 void Logic::notify(Message *message){
   message->execute(this);
-//  delete message;
+  delete message;
 }
 
 int Logic::deleteEntity(Entity *entity){
-  //std::vector<Entity*>::iterator it = std::find(entityVector.begin(), entityVector.end(), entity);
-  int before = 0, after = 0;
-  before = entityVector.size();
-  entityVector.erase(entityVector.begin());
-  //entityVector.erase(it);
-  after = entityVector.size();
+  Logger::log("Deleting an entity");
+  std::vector<Entity*>::iterator current = std::find(entityVector.begin(), entityVector.end(), entity);
+  gameZones[(*current)->getY()][(*current)->getX()] = NULL; //set the pointer to null
+  if(current != entityVector.end() && *current != 0){
+    //Logger::log((*current)->toString());
+    entityVector.erase(current);
+  }
 }

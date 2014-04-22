@@ -5,7 +5,7 @@
 #include <sstream>
 #define SSTR( x ) dynamic_cast< std::ostringstream & >( \
     ( std::ostringstream() << std::dec << x ) ).str()
-#define LOG_PATH "../logs/logs.txt"
+#define LOG_PATH "logs/logs.txt"
 //this ^ might be ugly - probably need to revise this part
 class Window;
 class Utility{
