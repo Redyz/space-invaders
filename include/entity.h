@@ -47,6 +47,7 @@ class Entity{
     int lastMoved;
     int lastAction; //ticks
     int speed;
+    int firingSpeed;
     int damage;
     std::string uniqueId;
     Logic* logic;

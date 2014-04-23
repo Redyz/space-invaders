@@ -22,13 +22,13 @@ include(CPack)
 #SET(CMAKE_CXX_COMPILER i586-mingw32msvc-g++)
 #SET(CMAKE_RC_COMPILER i586-mingw32msvc-windres)
 # here is the target environment located
-#SET(CMAKE_FIND_ROOT_PATH  /usr/i586-mingw32msvc /home/alex/mingw-install )
+#SET(CMAKE_FIND_ROOT_PATH /usr/i586-mingw32msvc )
 # adjust the default behaviour of the FIND_XXX() commands:
-# search headers and libraries in the target environment, search 
-# programs in the host environment
 #set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 #set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 #set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+# search headers and libraries in the target environment, search 
+# programs in the host environment
 # END OF WINDOWS CC #
 
 set(BUILD_SFML false CACHE BOOL "Set this to true to build using SFML, or false to use Ncurses")
@@ -44,18 +44,22 @@ set(INC ${PS}/include)
 
 # create configuration files
 #configure_file(
-#	"${
-#	"${INC}/config.h"	
+        #"${INC}/config.h"	
 #)
 
 # Source files
 message("Configuring using source dir: ${CMAKE_CURRENT_SOURCE_DIR}")
 if(BUILD_SFML)
   message("Building with SFML")
-  file(GLOB_RECURSE PROJECT_SRC
+  file(GLOB PROJECT_SRC
       "${INC}/*.h"
       "${SRC}/*.cpp"
       )
+  file(GLOB_RECURSE GUI_SRC
+      "${INC}/gui/*.h"
+      "${SRC}/gui/*.cpp"
+      )
+  message("SFML Header list: ${PROJECT_SRC}")
 else()
   message("Building with Ncurses")
   file(GLOB_RECURSE PROJECT_SRC
@@ -63,6 +67,7 @@ else()
       "${SRC}/*.cpp"
       )
 endif(BUILD_SFML)
+set(PROJECT_SRC ${PROJECT_SRC} ${GUI_SRC})
 message("Include path: ${CMAKE_INCLUDE_PATH}")
 message("Prefix path: ${CMAKE_PREFIX_PATH}")
 #message("Files: ${PROJECT_SRC}")
@@ -97,4 +102,4 @@ if(BUILD_SFML)
   target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
 endif(BUILD_SFML)
 target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARY})
-set(CMAKE_LIBRARY_PATH "/usr/lib/x86_64-linux-gnu/libncurses.so")
+#set(CMAKE_LIBRARY_PATH "/usr/lib/x86_64-linux-gnu/libncurses.so")

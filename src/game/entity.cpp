@@ -7,7 +7,7 @@
 #include <string>
 #include <cstdlib>
 #include <sstream>
-Entity::Entity(Logic* logic) : x(0), y(0), type(ENTITY), life(1), damage(-1), speed(2){
+Entity::Entity(Logic* logic) : x(0), y(0), type(ENTITY), life(1), damage(-1), speed(2), firingSpeed(10){
   this->logic = logic;
   lastAction = 0;
   lastMoved = 0;
@@ -81,8 +81,14 @@ void Entity::fire(int direction){
 }
 
 bool Entity::step(){
-  if(logic->getCurrentTick() - lastMoved > speed)
+  int currentTick = logic->getCurrentTick();
+  if(currentTick - lastMoved > speed)
     canMove = true;
+  if(currentTick - lastAction > firingSpeed){
+    canAct = true;
+    if(type == GHOST)
+      Logger::log("Can act");
+  }
   return true;
 }
 
@@ -142,6 +148,7 @@ Ghost::Ghost(Logic* logic) : Entity(logic){
   this->logic = logic;
   travelDirection = RIGHT;
   speed = 10;
+  firingSpeed = 4;
 }
 
 bool Ghost::step(){
@@ -159,6 +166,16 @@ bool Ghost::step(){
         die(); //out of bounds..?
       }
     }
+  }
+  
+  if(canAct){
+    if(rand() % 100 < 1){
+      fire(DOWN);
+      canAct = false;
+      lastAction = logic->getCurrentTick();
+    }
+  }else{
+    Logger::log("Can't even act");
   }
 }
 

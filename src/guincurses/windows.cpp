@@ -66,7 +66,7 @@ void Window::debug(std::string text){
 }
 void Window::drawScores(){
   int score = logic->getScore(); 
-  std::string stringScore = SSTR("Score: " << score);
+  std::string stringScore = SSTR("Score: " << score) + SSTR(" Tick: " << logic->getCurrentTick());
   display(stringScore, 0, 0, scoreWindow);
   int lives = logic->getPlayer()->getLife();
   display(SSTR("Lives: " << lives), width - 9, 0, scoreWindow);

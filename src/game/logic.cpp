@@ -21,7 +21,7 @@ Logic::~Logic(){
 }
 void Logic::init(){
   currentTick = 0;
-  int numberOfGhosts = 40;
+  int numberOfGhosts = 1;
   //currently, for curses mode the game zone height is equivalent to the gameHeight
   gameZones.resize(gameHeight+1); //+1? TODO: find out why this is here
   for(unsigned int y = 0; y < gameHeight+1; y++){
