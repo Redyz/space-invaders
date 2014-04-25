@@ -5,6 +5,8 @@
 #include <ctime>
 #include <time.h>
 #include <stdio.h>
+#include <cstdlib>
+#include <iostream>
 
 Utility::Utility(Window *window){
   this->window = window;
@@ -31,8 +33,13 @@ void Logger::log(std::string message){
   struct tm *currentTimeStruct = localtime(&currentTime);
   char buffer[100];
   std::fstream logFile;
-  logFile.open(LOG_PATH, std::fstream::out | std::fstream::ate | std::fstream::app);
+  logFile.open(LOG_PATH, std::ios::out | std::fstream::app);
+  if(!logFile.is_open()){
+    std::cout << "Could not open log file! Cowardly exiting!" << std::endl;
+    std::exit(0);
+  }
   strftime(buffer, sizeof(buffer), "[%Y-%m-%d][%X] ", currentTimeStruct);
   logFile << buffer << message << std::endl; 
   logFile.close();
+  //
 }

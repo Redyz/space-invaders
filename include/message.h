@@ -38,4 +38,10 @@ protected:
     Entity* firer;
     Entity* fired;
 };
+
+class InverDirectionMessage : public Message{
+public:
+    InverDirectionMessage();
+    void execute(Logic* logic);
+};
 #endif

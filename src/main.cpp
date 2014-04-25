@@ -10,6 +10,10 @@
 #else
 	#include "guincurses/windows.h"
 #endif
+
+/**
+ TODO: Pass messages through a queue first
+ */
 using namespace std;
 
 int main(int argc, char* argv[]) {

@@ -21,7 +21,7 @@ Logic::~Logic(){
 }
 void Logic::init(){
   currentTick = 0;
-  int numberOfGhosts = 1;
+  int numberOfGhosts = 100;
   //currently, for curses mode the game zone height is equivalent to the gameHeight
   gameZones.resize(gameHeight+1); //+1? TODO: find out why this is here
   for(unsigned int y = 0; y < gameHeight+1; y++){
@@ -30,13 +30,13 @@ void Logic::init(){
       gameZones[y].push_back(NULL); //instantiate null pointers
     }
   }
-  Logger::log(SSTR("Height: " << gameZones.size()) + SSTR(" Width: " << gameZones[0].size()));
+  Logger::log("Initializing game session with: " + SSTR("Height: " << gameZones.size()) + SSTR(" Width: " << gameZones[0].size()));
   Entity* current;
-  int currentX = 0, currentY = 0;
+  int currentX = 5, currentY = 0;
   for(int i=0;i<numberOfGhosts;i++){
     current = new Ghost(this);
     current->setX(currentX += 2);
-    if(currentX >= getGameWidth()-3){
+    if(currentX >= getGameWidth()-5){
       currentX = 0;
       currentY += 1;
     }
@@ -58,7 +58,7 @@ void Logic::init(){
 int Logic::createEntity(Entity* newEntity){
   newEntity->setUniqueId(SSTR(""<<newEntity->getType()) + SSTR("-" << currentEntityIndex++));
   entityVector.push_back(newEntity);
-  Logger::log("New entity created: " + newEntity->getUniqueId());
+  //Logger::log("New entity created: " + newEntity->getUniqueId());
 }
 
 void Logic::notifyMove(Entity *mover, int oldX, int oldY){
@@ -89,16 +89,17 @@ void Logic::step(){
   }
 }
 void Logic::notify(Message *message){
+  message->init();
   message->execute(this);
   delete message;
 }
 
 int Logic::deleteEntity(Entity *entity){
-  Logger::log("Deleting an entity");
   std::vector<Entity*>::iterator current = std::find(entityVector.begin(), entityVector.end(), entity);
   gameZones[(*current)->getY()][(*current)->getX()] = NULL; //set the pointer to null
   if(current != entityVector.end() && *current != 0){
     //Logger::log((*current)->toString());
+    //Logger::log("Deleting an entitysss");
     entityVector.erase(current);
   }
 }
