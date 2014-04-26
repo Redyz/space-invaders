@@ -44,4 +44,16 @@ public:
     InverDirectionMessage();
     void execute(Logic* logic);
 };
+
+enum GAME_OVER_REASON{
+    REACHED_BOTTOM,
+    LOST_ALL_LIVES
+};
+class GameOverMessage : public Message{
+public:
+    GameOverMessage(int reason);
+    void execute(Logic* logic);
+protected:
+    int reason;
+};
 #endif

@@ -68,7 +68,7 @@ HitMessage::HitMessage(Entity* firer, Entity* fired){
 
 void HitMessage::execute(Logic *logic){
   //Logger::log(firer->getUniqueId() + " just hit " + fired->getUniqueId());
-  fired->modLife(fired->getDamage(), firer);
+  fired->modLife(firer->getDamage(), firer);
 }
 /*
  InvertDirectionMessage class
@@ -89,4 +89,22 @@ void InverDirectionMessage::execute(Logic* logic){
       currentGhost->move(0, 1);
     }
   }
+}
+/**
+ GameOverMessage Class
+ */
+
+
+GameOverMessage::GameOverMessage(int reason) {
+  this->reason = reason;
+}
+
+void GameOverMessage::execute(Logic* logic){
+  std::string gameOverString = "Game is over - ";
+  switch(reason){
+    case LOST_ALL_LIVES: gameOverString += "you lost all your lives!"; break;
+    case REACHED_BOTTOM: gameOverString += "enemies touched the bottom!"; break;
+  }
+  Logger::log(gameOverString);
+  logic->setRunning(false);
 }

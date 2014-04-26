@@ -7,10 +7,13 @@
 #include <string>
 #include <cstdlib>
 #include <sstream>
-Entity::Entity(Logic* logic) : x(0), y(0), type(ENTITY), life(1), damage(-1), speed(2), firingSpeed(10){
+Entity::Entity(Logic* logic){
   this->logic = logic;
-  lastAction = 0;
-  lastMoved = 0;
+  x = y = lastAction = lastMoved = 0;
+  life = 1;
+  damage = -1;
+  speed = 2;
+  firingSpeed = 10;
   canMove = true;
   canAct = true;
 }
@@ -80,26 +83,28 @@ int Entity::getLife(){
   return life;
 }
 void Entity::die(){
-  logic->notify(new DeathMessage(this));
   doDie();
+  logic->notify(new DeathMessage(this));
 }
 
 void Entity::die(Entity* killer){
-  logic->notify(new DeathMessage(this, killer));
   doDie();
+  logic->notify(new DeathMessage(this, killer));
 }
 
 void Entity::fire(int direction){
-  logic->notify(new FireMessage(this, x, y, direction));
-  doFire();
+  if(canAct){
+    lastAction = logic->getCurrentTick();
+    canAct = false;
+    logic->notify(new FireMessage(this, x, y, direction));
+    doFire();
+  }
 }
 
 bool Entity::step(){
   int currentTick = logic->getCurrentTick();
   if(currentTick - lastMoved > speed){
     canMove = true;
-  }else{
-    //Logger::log("Can't move");
   }
   if(currentTick - lastAction > firingSpeed){
     canAct = true;
@@ -163,7 +168,9 @@ Ghost::Ghost(Logic* logic) : Entity(logic){
   type = GHOST;
   travelDirection = RIGHT;
   speed = 10;
-  firingSpeed = 4;
+  firingSpeed = 15;
+  life = 1;
+  damage = -1;
 }
 
 bool Ghost::step(){
@@ -176,6 +183,7 @@ bool Ghost::step(){
     }
     if(!move(modX, 0)){
       logic->notify(new InverDirectionMessage());
+      Logger::log("Can't move..?");
       /*}else{
         die(); //out of bounds..?
       }*/
@@ -183,14 +191,21 @@ bool Ghost::step(){
   }
   
   if(canAct){
-    if(rand() % 100 < 1){
+    if(rand() % 95 < 1){
       fire(DOWN);
-      canAct = false;
-      lastAction = logic->getCurrentTick();
     }
+    canAct = false;
+    lastAction = logic->getCurrentTick();
   }else{
     //Logger::log("Can't even act");
   }
+}
+
+bool Ghost::move(int modX, int modY){
+  bool result = Entity::move(modX, modY);
+  if(y == logic->getGameHeight())
+    logic->notify(new GameOverMessage(REACHED_BOTTOM));
+  return result;
 }
 
 void Ghost::doHit(Entity* hitter){
@@ -203,4 +218,20 @@ void Ghost::setTravelDirection(int direction){
 
 void Ghost::invertTravelDirection(){
   travelDirection = (travelDirection == LEFT ? RIGHT : LEFT);
+}
+
+Player::Player(Logic* logic) : Entity(logic){
+  damage = -2;
+  speed = 0;
+  firingSpeed = 5;
+  life = 3;
+}
+
+bool Player::step(){
+  Entity::step();
+}
+
+void Player::doDie(){
+  logic->setRunning(false);
+  std::cout << "Game over!";
 }

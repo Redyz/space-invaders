@@ -18,10 +18,12 @@ Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0){
 Logic::~Logic(){
   //std::cout << "Destructing the logic" << std::endl;
   entityVector.clear();
+  gameZones.clear();
 }
 void Logic::init(){
   currentTick = 0;
   int numberOfGhosts = 100;
+  int sideConstant = 5;
   //currently, for curses mode the game zone height is equivalent to the gameHeight
   gameZones.resize(gameHeight+1); //+1? TODO: find out why this is here
   for(unsigned int y = 0; y < gameHeight+1; y++){
@@ -32,24 +34,23 @@ void Logic::init(){
   }
   Logger::log("Initializing game session with: " + SSTR("Height: " << gameZones.size()) + SSTR(" Width: " << gameZones[0].size()));
   Entity* current;
-  int currentX = 5, currentY = 0;
+  int currentX = sideConstant, currentY = 0;
   for(int i=0;i<numberOfGhosts;i++){
     current = new Ghost(this);
-    current->setX(currentX += 2);
-    if(currentX >= getGameWidth()-5){
-      currentX = 0;
+    if(currentX >= getGameWidth()-sideConstant){
+      currentX = sideConstant;
       currentY += 1;
     }
+    current->setX(currentX);
     current->setY(currentY);
     gameZones[current->getY()][current->getX()] = current; //register the entity
     createEntity(current);
+    currentX+=2;
   }
-  current = new Entity(this);
+  current = new Player(this);
   player = current; //arbitrary for now
   player->setY(getGameHeight());
   player->setX((int)getGameWidth()/2);
-  player->setDamage(-1);
-  player->modLife(3); //give 3 lives
   gameZones[current->getY()][current->getX()] = current;
   //gameZones[current->getY()][current->getX()].reset(current.get());
   createEntity(player);

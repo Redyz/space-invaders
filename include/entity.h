@@ -83,10 +83,20 @@ public:
   virtual bool step();
   void setTravelDirection(int direction);
   void invertTravelDirection();
+  bool move(int modX, int modY);
 protected:
     virtual void doHit(Entity* hitter);
+    
 
     int travelDirection;
 };
 
+class Player : public Entity{
+public:
+    Player(Logic *logic);
+    virtual bool step();
+
+protected:
+    void doDie();
+};
 #endif
