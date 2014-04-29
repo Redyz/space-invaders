@@ -33,9 +33,20 @@ class Entity{
     std::string getUniqueId(){ return uniqueId; }
     void setUniqueId(std::string uniqueId){ this->uniqueId = uniqueId; }
     void setDamage(int damage){ this->damage = damage; }
+    bool isOutsideMap();
     virtual bool step();
-  private:
-    bool outsideMap();
+    /**
+    * Action methods
+    * TODO: Implement those instead
+    */
+protected:
+    virtual void doHit(Entity *hitter){}
+    virtual void doMove(){}
+    virtual void doIncreaseLife(int lifeAmount){}
+    virtual void doDecreaseLife(int lifeAmount){}
+    virtual void doDie(){}
+    virtual void doTickUpdate(){}
+    virtual void doFire(){}
 
   public:
 
@@ -58,11 +69,12 @@ class Entity{
 
 class Bullet : public Entity{
   public:
-    Bullet(Logic *logic);
+    Bullet(Logic *logic, Entity *firer);
     virtual bool step();
     void setDirection(int direction){ this->direction = direction; }
   private:
     int direction;
+    Entity *firer;
 };
 
 class Ghost : public Entity{
@@ -70,8 +82,21 @@ public:
   Ghost(Logic *logic);
   virtual bool step();
   void setTravelDirection(int direction);
+  void invertTravelDirection();
+  bool move(int modX, int modY);
 protected:
-  int travelDirection;
+    virtual void doHit(Entity* hitter);
+    
+
+    int travelDirection;
 };
 
+class Player : public Entity{
+public:
+    Player(Logic *logic);
+    virtual bool step();
+
+protected:
+    void doDie();
+};
 #endif

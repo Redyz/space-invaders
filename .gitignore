@@ -20,3 +20,4 @@
 src/.cproject
 src/.project
 bin
+logs/*

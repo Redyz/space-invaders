@@ -45,7 +45,7 @@ void Window::inputStep(){
 void Window::draw(){
   drawScores();
   drawGame();
-  wmove(gameWindow, logic->getGameWidth(), logic->getGameHeight()-2);
+  wmove(gameWindow, logic->getGameWidth(), logic->getGameHeight()-SCORE_HEIGHT);
   doupdate();
 }
 
@@ -96,7 +96,7 @@ void Window::drawGame(){
     }
 
   }catch(...){
-    display("Exception caught", 0, 1, gameWindow);
+    Logger::log("Exception caught");
   }
   attron(COLOR_PAIR(PAIR_ENTITY));
   display("U", logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);
