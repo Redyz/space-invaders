@@ -4,3 +4,4 @@
 -Add nice equal, multi-line splitting of ghosts + centered
 --Maybe fix the 'exiting game' message that does not display in main.cpp:32
 -Remove cursor display after drawing text (the [] after drawing the main character)
+-The ::draw() methods in windows.cpp are not fully portable, would be better to have something like draw(entity) or something along those lines)
