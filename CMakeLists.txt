@@ -7,6 +7,7 @@ project(Space-Invaders)
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 0)
 set(VERSION_PATCH 0)
+set(VERSION "v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Redyz doodle Redyz@doodle.com")
 set(CPACK_PACKAGE_DESCRIPTION "Some space invaders game")
@@ -14,6 +15,83 @@ set(CPACK_DEBIAN_PACKAGE_NAME "bacon")
 set(CPACK_DEBIAN_PACKAGE_VERSION ${VERSION})
 
 include(CPack)
+set(BUILD_SFML false CACHE BOOL "Set this to true to build using SFML, or false to use Ncurses")
+# add header location
+include_directories(
+	${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+set(PS ${CMAKE_CURRENT_SOURCE_DIR})
+set(SRC ${PS}/src)
+set(INC ${PS}/include)
+
+# create configuration files
+configure_file(
+    cmake_modules/project.cmake.in
+    "${INC}/project.h"	
+)
+
+# Source files
+message("Configuring using source dir: ${CMAKE_CURRENT_SOURCE_DIR}")
+if(BUILD_SFML)
+  message("Building with SFML")
+  file(GLOB PROJECT_SRC
+      "${INC}/*.h"
+      "${SRC}/*.cpp"
+      )
+  file(GLOB_RECURSE GUI_SRC
+      "${INC}/gui/*.h"
+      "${SRC}/gui/*.cpp"
+      )
+else()
+  message("Building with Ncurses")
+  file(GLOB PROJECT_SRC
+      "${INC}/*.h"
+      "${SRC}/*.cpp"
+      )
+  file(GLOB_RECURSE GUI_SRC
+      "${INC}/guincurses/*.h"
+      "${SRC}/guincurses/*.cpp"
+      )
+endif(BUILD_SFML)
+set(PROJECT_SRC ${PROJECT_SRC} ${GUI_SRC})
+message("Include path: ${CMAKE_INCLUDE_PATH}")
+message("Prefix path: ${CMAKE_PREFIX_PATH}")
+#message("Files: ${PROJECT_SRC}")
+list(LENGTH PROJECT_SRC fileCount)
+message("Full project header list: ${PROJECT_SRC}")
+message("File count: ${fileCount}")
+# install target
+
+# windows specific code
+if(WIN32)
+	message("Windows environnement detected - we shall build on windows")
+endif()
+
+if(UNIX)
+	message("Linux environnement detected - we're building on some Ganoo/linucks")
+endif()
+
+#
+# if(ARCH_32BITS) // if(ARCH_64BITS)
+#
+set(FULL_PROJECT_NAME v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}) 
+message("Beginning build of ${PROJECT_NAME}, ${FULL_PROJECT_NAME} ")
+
+add_executable(${PROJECT_NAME} ${PROJECT_SRC})
+install(TARGETS ${NAME} DESTINATION {DEST})
+
+# detect and add SFML + ncurses
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+if(BUILD_SFML)
+    find_package(SFML 2.1 REQUIRED system window graphics network audio)
+    target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
+  else()
+    set(CURSES_NEED_NCURSES TRUE)
+    find_package(Curses)
+    target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARY})
+endif(BUILD_SFML)
 
 # WINDOW CROSS COMPILE #
 #SET(CMAKE_SYSTEM_NAME Windows)
@@ -31,75 +109,4 @@ include(CPack)
 # programs in the host environment
 # END OF WINDOWS CC #
 
-set(BUILD_SFML false CACHE BOOL "Set this to true to build using SFML, or false to use Ncurses")
-# add header location
-include_directories(
-	${CMAKE_CURRENT_SOURCE_DIR}
-	${CMAKE_CURRENT_SOURCE_DIR}/include
-	${CMAKE_CURRENT_SOURCE_DIR}/src
-)
-set(PS ${CMAKE_CURRENT_SOURCE_DIR})
-set(SRC ${PS}/src)
-set(INC ${PS}/include)
-
-# create configuration files
-#configure_file(
-        #"${INC}/config.h"	
-#)
-
-# Source files
-message("Configuring using source dir: ${CMAKE_CURRENT_SOURCE_DIR}")
-if(BUILD_SFML)
-  message("Building with SFML")
-  file(GLOB PROJECT_SRC
-      "${INC}/*.h"
-      "${SRC}/*.cpp"
-      )
-  file(GLOB_RECURSE GUI_SRC
-      "${INC}/gui/*.h"
-      "${SRC}/gui/*.cpp"
-      )
-  message("SFML Header list: ${PROJECT_SRC}")
-else()
-  message("Building with Ncurses")
-  file(GLOB_RECURSE PROJECT_SRC
-      "${INC}/*.h"
-      "${SRC}/*.cpp"
-      )
-endif(BUILD_SFML)
-set(PROJECT_SRC ${PROJECT_SRC} ${GUI_SRC})
-message("Include path: ${CMAKE_INCLUDE_PATH}")
-message("Prefix path: ${CMAKE_PREFIX_PATH}")
-#message("Files: ${PROJECT_SRC}")
-list(LENGTH PROJECT_SRC fileCount)
-message("File count: ${fileCount}")
-# install target
-#install(TARGETS ${NAME} DESTINATION {DEST})
-
-# windows specific code
-if(WIN32)
-	message("Windows environnement detected - we shall build on windows")
-endif()
-
-if(UNIX)
-	message("Linux environnement detected - we're building on some Ganoo/linucks")
-endif()
-
-#
-# if(ARCH_32BITS) // if(ARCH_64BITS)
-#
-set(FULL_PROJECT_NAME v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}) 
-message("Beginning build of ${PROJECT_NAME}, version ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
-
-add_executable(${PROJECT_NAME} ${PROJECT_SRC})
-
-# detect and add SFML + ncurses
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
-set(CURSES_NEED_NCURSES TRUE)
-find_package(Curses)
-if(BUILD_SFML)
-  find_package(SFML 2.1 REQUIRED system window graphics network audio)
-  target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
-endif(BUILD_SFML)
-target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARY})
 #set(CMAKE_LIBRARY_PATH "/usr/lib/x86_64-linux-gnu/libncurses.so")
