@@ -182,8 +182,7 @@ bool Ghost::step(){
       modX = -1;
     }
     if(!move(modX, 0)){
-      logic->notify(new InverDirectionMessage());
-      Logger::log("Can't move..?");
+      logic->notify(new InvertDirectionMessage());
       /*}else{
         die(); //out of bounds..?
       }*/
@@ -225,6 +224,7 @@ Player::Player(Logic* logic) : Entity(logic){
   speed = 0;
   firingSpeed = 5;
   life = 3;
+  type = PLAYER;
 }
 
 bool Player::step(){
@@ -232,6 +232,25 @@ bool Player::step(){
 }
 
 void Player::doDie(){
-  logic->setRunning(false);
-  std::cout << "Game over!";
+  logic->notify(new GameOverMessage(LOST_ALL_LIVES));
+}
+
+Prop::Prop(Logic* logic) : Entity(logic){
+  
+}
+
+bool Prop::step(){
+  
+}
+
+bool Prop::move(int modX, int modY){
+  //lel
+}
+
+Wall::Wall(Logic* logic) : Prop(logic){
+  facingDirection = UP;
+}
+
+bool Wall::step(){
+  
 }

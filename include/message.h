@@ -39,9 +39,9 @@ protected:
     Entity* fired;
 };
 
-class InverDirectionMessage : public Message{
+class InvertDirectionMessage : public Message{
 public:
-    InverDirectionMessage();
+    InvertDirectionMessage();
     void execute(Logic* logic);
 };
 

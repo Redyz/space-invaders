@@ -2,13 +2,18 @@
 #define ENTITY_H
 #include <string>
 #include <cstdlib>
-enum entityType{
-  ENTITY,
-  WALL,
-  BULLET,
-  TANK,
-  GHOST
-};
+typedef enum entityType{
+  ENTITY = 0b1,
+  WALL = 0b10,
+  BULLET = 0b100,
+  TANK = 0b1000,
+  GHOST = 0b10000,
+  PLAYER = 0b100000
+}entityTypes;
+typedef enum entityGroup{
+    ENEMY = GHOST | BULLET,
+    FRIENDLY = PLAYER | WALL
+}entityGroups;
 class Logic;
 class Entity{
   public:
@@ -98,5 +103,21 @@ public:
 
 protected:
     void doDie();
+};
+
+class Prop : public Entity{
+public:
+    Prop(Logic *logic);
+    virtual bool step();
+    bool move(int modX, int modY);
+    
+protected:
+    int facingDirection;
+};
+
+class Wall : public Prop{
+public:
+    Wall(Logic *logic);
+    virtual bool step();
 };
 #endif

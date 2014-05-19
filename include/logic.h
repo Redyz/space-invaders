@@ -7,12 +7,16 @@ class Entity;
 class Window;
 class Message;
 
-
+typedef std::vector<Entity*> EntV;
 enum directions{
   UP,
   DOWN,
   LEFT,
-  RIGHT
+  RIGHT,
+  DUPLEFT,
+  DUPRIGHT,
+  DDOWNLEFT,
+  DDOWNRIGHT
 };
 
 class Logic{
@@ -28,7 +32,7 @@ class Logic{
     int getCurrentTick(){ return currentTick; }
     Entity* getPlayer(){ return this->player; }
     //std::shared_ptr<typename Entity> test;
-    std::vector<Entity*>& getEntityVector(){ return entityVector; }
+    EntV& getEntityVector(){ return entityVector; }
     int getGameHeight(){ return gameHeight;}
     int getGameWidth(){ return gameWidth;}
     void setGameHeight(int height){ gameHeight = height; }
@@ -45,9 +49,10 @@ class Logic{
   private:
     int gameHeight;
     int gameWidth;
-    std::vector<Entity*> entityVector; //container for all entities
-    std::vector<Entity*> backgroundEntityVector; //such as walls, bullets, etc
-    std::vector<std::vector<Entity*> > gameZones; //container for the game matrix, indicating presence using coordinates
+    EntV entityVector; //container for all entities
+    EntV enemyVector;
+    EntV backgroundEntityVector; //such as walls, bullets, etc
+    std::vector<EntV> gameZones; //container for the game matrix, indicating presence using coordinates
     Entity* player;
     int score;
     int currentEntityIndex;
