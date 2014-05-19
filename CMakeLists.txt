@@ -39,6 +39,7 @@ if(BUILD_SFML)
   file(GLOB PROJECT_SRC
       "${INC}/*.h"
       "${SRC}/*.cpp"
+      "${SRC}/game/*.cpp"
       )
   file(GLOB_RECURSE GUI_SRC
       "${INC}/gui/*.h"
@@ -49,6 +50,11 @@ else()
   file(GLOB PROJECT_SRC
       "${INC}/*.h"
       "${SRC}/*.cpp"
+      "${SRC}/game/*.cpp"
+      )
+  file(GLOB_RECURSE GUI_SRC
+      "${INC}/guincurses/*.h"
+      "${SRC}/guincurses/*.cpp"
       )
   file(GLOB_RECURSE GUI_SRC
       "${INC}/guincurses/*.h"
@@ -67,11 +73,9 @@ message("File count: ${fileCount}")
 # windows specific code
 if(WIN32)
 	message("Windows environnement detected - we shall build on windows")
-endif()
-
-if(UNIX)
+elseif(UNIX)
 	message("Linux environnement detected - we're building on some Ganoo/linucks")
-endif()
+endif(WIN32)
 
 #
 # if(ARCH_32BITS) // if(ARCH_64BITS)

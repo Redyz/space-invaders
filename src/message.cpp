@@ -75,11 +75,11 @@ void HitMessage::execute(Logic *logic){
  */
 
 
-InverDirectionMessage::InverDirectionMessage() {
+InvertDirectionMessage::InvertDirectionMessage() {
 
 }
 
-void InverDirectionMessage::execute(Logic* logic){
+void InvertDirectionMessage::execute(Logic* logic){
   std::vector<Entity*> entityVector = logic->getEntityVector();
   for(int i = 0; i < entityVector.size(); i++){
     Entity *currentEntity = entityVector[i];
@@ -100,11 +100,14 @@ GameOverMessage::GameOverMessage(int reason) {
 }
 
 void GameOverMessage::execute(Logic* logic){
-  std::string gameOverString = "Game is over - ";
-  switch(reason){
-    case LOST_ALL_LIVES: gameOverString += "you lost all your lives!"; break;
-    case REACHED_BOTTOM: gameOverString += "enemies touched the bottom!"; break;
+  //Since this can happen multiple times, let's mute it
+  if(logic->isRunning()){
+    std::string gameOverString = "Game is over - ";
+    switch(reason){
+      case LOST_ALL_LIVES: gameOverString += "you lost all your lives!"; break;
+      case REACHED_BOTTOM: gameOverString += "enemies touched the bottom!"; break;
+    }
+    Logger::log(gameOverString);
+    logic->setRunning(false);
   }
-  Logger::log(gameOverString);
-  logic->setRunning(false);
 }

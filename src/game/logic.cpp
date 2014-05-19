@@ -18,6 +18,7 @@ Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0){
 Logic::~Logic(){
   //std::cout << "Destructing the logic" << std::endl;
   entityVector.clear();
+  enemyVector.clear();
   gameZones.clear();
 }
 void Logic::init(){
@@ -59,8 +60,35 @@ void Logic::init(){
 int Logic::createEntity(Entity* newEntity){
   newEntity->setUniqueId(SSTR(""<<newEntity->getType()) + SSTR("-" << currentEntityIndex++));
   entityVector.push_back(newEntity);
+  //Logger::log("Current entity: "  + SSTR(newEntity->getType()) + " and enemy: " + SSTR("" << ENEMY));
+  if(newEntity->getType() & ENEMY){
+    Logger::log("Created an enemy, the type: " + SSTR(newEntity->getType()));
+    enemyVector.push_back(newEntity);
+  }
   //Logger::log("New entity created: " + newEntity->getUniqueId());
 }
+
+//bool Logic::createWall(int x, int y){
+  //try{
+    //Entity *wall;
+    //int currentX = 0, currentY = 0;
+    //for(int row = 0; row < 2; row++){
+      //for(int i = 0; i < 3; i++){
+        //if(row != 1){
+          //wall = new Wall(this);
+          //currentX = x + i;
+          //currentY = y + row;
+          //wall->setX(currentX);
+          //wall->setY(currentY);
+          //gameZones
+        //}
+      //}
+    //}
+  //}catch(...){
+    
+  //}
+  //return false;
+//}
 
 void Logic::notifyMove(Entity *mover, int oldX, int oldY){
   //std::vector<shared_ptr<Entity> >::iterator current = std::find(entityVector.begin(), entityVector.end(), mover);
@@ -88,6 +116,8 @@ void Logic::step(){
     current = entityVector[i];
     entityVector[i]->step(); //the entity may die after .step, don't do anything after it
   }
+  
+  Logger::log("Current number of enemies: " + SSTR(""<<enemyVector.size()));
 }
 void Logic::notify(Message *message){
   message->init();
@@ -96,11 +126,15 @@ void Logic::notify(Message *message){
 }
 
 int Logic::deleteEntity(Entity *entity){
-  std::vector<Entity*>::iterator current = std::find(entityVector.begin(), entityVector.end(), entity);
-  gameZones[(*current)->getY()][(*current)->getX()] = NULL; //set the pointer to null
-  if(current != entityVector.end() && *current != 0){
-    //Logger::log((*current)->toString());
-    //Logger::log("Deleting an entitysss");
-    entityVector.erase(current);
+  static std::vector<EntV*> lists;
+  if(lists.size() == 0){
+    lists.push_back(&entityVector);
+    lists.push_back(&enemyVector);
   }
+  EntV::iterator current;
+  for(int i = 0; i < lists.size(); i++){
+    current = std::find(lists[i]->begin(), lists[i]->end(), entity);
+    if(current != lists[i]->end() && *current != 0) lists[i]->erase(current);
+  }
+  gameZones[(*current)->getY()][(*current)->getX()] = NULL; //set the pointer to null
 }
