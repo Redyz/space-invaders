@@ -64,6 +64,7 @@ void Window::display(std::string text, int x, int y, WINDOW* window){
 void Window::debug(std::string text){
   mvwprintw(scoreWindow, 0, 10, text.c_str());
 }
+
 void Window::drawScores(){
   int score = logic->getScore(); 
   std::string stringScore = SSTR("Score: " << score) + SSTR(" Tick: " << logic->getCurrentTick());
@@ -87,12 +88,14 @@ void Window::drawGame(){
         case ENTITY:
         case GHOST:
           display("@", currentEntity->getX(), currentEntity->getY(), gameWindow);
-          //display(SSTR("X:" << currentEntity->getX()));
           break;
         case BULLET:
           display("|", currentEntity->getX(), currentEntity->getY(), gameWindow);
+          break;
+        case WALL:
+          display("X", currentEntity->getX(), currentEntity->getY(), gameWindow);
+          break;
       }
-
     }
 
   }catch(...){

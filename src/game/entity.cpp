@@ -14,7 +14,7 @@ Entity::Entity(Logic* logic){
   damage = -1;
   speed = 2;
   firingSpeed = 10;
-  canMove = true;
+  canMove = true;   
   canAct = true;
 }
 
@@ -236,7 +236,10 @@ void Player::doDie(){
 }
 
 Prop::Prop(Logic* logic) : Entity(logic){
-  
+  damage = 0;
+  speed = 0;
+  firingSpeed = 0;
+  life = 3;
 }
 
 bool Prop::step(){
@@ -248,7 +251,9 @@ bool Prop::move(int modX, int modY){
 }
 
 Wall::Wall(Logic* logic) : Prop(logic){
+  type = WALL;
   facingDirection = UP;
+  life = 1;
 }
 
 bool Wall::step(){

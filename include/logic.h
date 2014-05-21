@@ -31,7 +31,6 @@ class Logic{
     int getScore(){ return score; }
     int getCurrentTick(){ return currentTick; }
     Entity* getPlayer(){ return this->player; }
-    //std::shared_ptr<typename Entity> test;
     EntV& getEntityVector(){ return entityVector; }
     int getGameHeight(){ return gameHeight;}
     int getGameWidth(){ return gameWidth;}
@@ -41,6 +40,7 @@ class Logic{
     void notifyMove(Entity *mover, int newX, int newY);
     bool isRunning(){ return running; }
     bool setRunning(bool value){ running = value; }
+    bool createWall(int x, int y);
     int createEntity(Entity* newEntity);
     int deleteEntity(Entity* entity);
     Entity* testEntityCollision(Entity* tester, int x, int y);

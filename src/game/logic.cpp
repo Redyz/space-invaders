@@ -15,6 +15,7 @@ Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0){
   Logger::log("BEGAN NEW SESSION");
 }
 
+
 Logic::~Logic(){
   //std::cout << "Destructing the logic" << std::endl;
   entityVector.clear();
@@ -54,6 +55,11 @@ void Logic::init(){
   player->setX((int)getGameWidth()/2);
   gameZones[current->getY()][current->getX()] = current;
   //gameZones[current->getY()][current->getX()].reset(current.get());
+  int totalSpread = getGameWidth() - 4;
+  int spacing = totalSpread / (3*5);
+  for(int i = 0; i < 5; i++){
+    createWall(5+(i*spacing), 5);
+  }
   createEntity(player);
 }
 
@@ -62,38 +68,36 @@ int Logic::createEntity(Entity* newEntity){
   entityVector.push_back(newEntity);
   //Logger::log("Current entity: "  + SSTR(newEntity->getType()) + " and enemy: " + SSTR("" << ENEMY));
   if(newEntity->getType() & ENEMY){
-    Logger::log("Created an enemy, the type: " + SSTR(newEntity->getType()));
+    //Logger::log("Created an enemy, the type: " + SSTR(newEntity->getType()));
     enemyVector.push_back(newEntity);
   }
   //Logger::log("New entity created: " + newEntity->getUniqueId());
 }
 
-//bool Logic::createWall(int x, int y){
-  //try{
-    //Entity *wall;
-    //int currentX = 0, currentY = 0;
-    //for(int row = 0; row < 2; row++){
-      //for(int i = 0; i < 3; i++){
-        //if(row != 1){
-          //wall = new Wall(this);
-          //currentX = x + i;
-          //currentY = y + row;
-          //wall->setX(currentX);
-          //wall->setY(currentY);
-          //gameZones
-        //}
-      //}
-    //}
-  //}catch(...){
-    
-  //}
-  //return false;
-//}
+bool Logic::createWall(int x, int y){
+  try{
+    Entity *wall;
+    int currentX = 0, currentY = 0;
+    for(int row = 0; row < 2; row++){
+      for(int i = 0; i < 3; i++){
+        if(row != 1){
+          wall = new Wall(this);
+          currentX = x + i;
+          currentY = y + row;
+          wall->setX(currentX);
+          wall->setY(currentY);
+          gameZones[wall->getY()][wall->getX()] = wall;
+          createEntity(wall);
+        }
+      }
+    }
+  }catch(...){
+    Logger::log("Failed to create a wall");
+  }
+  return false;
+}
 
 void Logic::notifyMove(Entity *mover, int oldX, int oldY){
-  //std::vector<shared_ptr<Entity> >::iterator current = std::find(entityVector.begin(), entityVector.end(), mover);
-  //Logger::log(mover->toString());
-  
   gameZones[mover->getY()][mover->getX()] = mover;
   gameZones[oldY][oldX] = NULL; //previous x gets cleared
 }
@@ -117,7 +121,7 @@ void Logic::step(){
     entityVector[i]->step(); //the entity may die after .step, don't do anything after it
   }
   
-  Logger::log("Current number of enemies: " + SSTR(""<<enemyVector.size()));
+  //Logger::log("Current number of enemies: " + SSTR(""<<enemyVector.size()));
 }
 void Logic::notify(Message *message){
   message->init();
