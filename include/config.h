@@ -3,6 +3,7 @@
 
 #define IS_UNIX 1
 /* #undef IS_NT */
+#define IS_DEBUG 1
 
 #define SFML false
 #define TICK_LENGTH 40

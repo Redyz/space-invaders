@@ -6,7 +6,7 @@ project(Space-Invaders)
 # versions
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 0)
-set(VERSION_PATCH 0)
+set(VERSION_PATCH 5)
 set(VERSION "v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Redyz doodle Redyz@doodle.com")
@@ -25,6 +25,9 @@ include_directories(
 set(PS ${CMAKE_CURRENT_SOURCE_DIR})
 set(SRC ${PS}/src)
 set(INC ${PS}/include)
+
+#c++ flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g")
 
 # windows specific code
 if(WIN32)

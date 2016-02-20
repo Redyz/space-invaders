@@ -6,7 +6,13 @@
 #define SSTR( x ) dynamic_cast< std::ostringstream & >( \
     ( std::ostringstream() << std::dec << x ) ).str()
 #define LOG_PATH "logs/logs.txt"
-//this ^ might be ugly - probably need to revise this part
+
+#ifdef IS_DEBUG
+static bool DEBUG = true;
+#else
+static bool DEBUG = false;
+#endif
+
 class Window;
 class Utility{
   public:
@@ -32,9 +38,3 @@ class Logger{
 
 
 #endif
-
-//#include "unistd.h"
-//#include "stdio.h"
-//char currentPath[FILENAME_MAX];
-//cout << getcwd(currentPath, sizeof(currentPath));
-//return 0;

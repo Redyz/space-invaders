@@ -138,7 +138,9 @@ int Logic::deleteEntity(Entity *entity){
   EntV::iterator current;
   for(int i = 0; i < lists.size(); i++){
     current = std::find(lists[i]->begin(), lists[i]->end(), entity);
-    if(current != lists[i]->end() && *current != 0) lists[i]->erase(current);
+    if(current != lists[i]->end() && *current != 0){
+			gameZones[(*current)->getY()][(*current)->getX()] = NULL; //set the pointer to null
+			lists[i]->erase(current);
+		}
   }
-  gameZones[(*current)->getY()][(*current)->getX()] = NULL; //set the pointer to null
 }

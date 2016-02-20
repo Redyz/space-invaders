@@ -14,12 +14,15 @@
 /**
  TODO: Pass messages through a queue first
  */
-using namespace std;
-
 int main(int argc, char* argv[]) {
-  cout << (SFML ? "Starting in graphical mode" : "Starting in curses mode") << endl;
+#if defined(IS_UNIX) && defined(IS_DEBUG)
+	std::cout << "Sleeping to allow attach" << std::endl;
+	std::cout << getpid() << std::endl;
+	sleep(1);
+#endif
+	std::cout << (SFML ? "Starting in graphical mode" : "Starting in curses mode") << std::endl;
   Window window;
-  srand(time(NULL)); //new seed
+  srand(time(NULL)); 
   Logic logic(&window);
   window.setup(&logic);
   logic.init();
@@ -33,13 +36,3 @@ int main(int argc, char* argv[]) {
   }
   std::cout << "Exiting game, thank you for playing!" << std::endl;
 }
-
-////cout << "Version " << myproject_VERSION_MAJOR << "." << myproject_VERSION_MINOR << endl;
-
-//sf::Window screen(sf::VideoMode(800, 600), "myproject");
-//bool running = true;
-//while (running) {
-//  screen.display();
-//}
-
-	

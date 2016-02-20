@@ -21,6 +21,7 @@ Message::~Message(){
 void Message::execute(Logic *logic){
 
 };
+
 /*
  * DeathMessage class
  */
@@ -70,11 +71,10 @@ void HitMessage::execute(Logic *logic){
   //Logger::log(firer->getUniqueId() + " just hit " + fired->getUniqueId());
   fired->modLife(firer->getDamage(), firer);
 }
+
 /*
- InvertDirectionMessage class
+ * InvertDirectionMessage class
  */
-
-
 InvertDirectionMessage::InvertDirectionMessage() {
 
 }
@@ -90,11 +90,10 @@ void InvertDirectionMessage::execute(Logic* logic){
     }
   }
 }
-/**
- GameOverMessage Class
+
+/*
+ * GameOverMessage Class
  */
-
-
 GameOverMessage::GameOverMessage(int reason) {
   this->reason = reason;
 }
