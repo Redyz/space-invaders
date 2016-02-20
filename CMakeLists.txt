@@ -26,10 +26,19 @@ set(PS ${CMAKE_CURRENT_SOURCE_DIR})
 set(SRC ${PS}/src)
 set(INC ${PS}/include)
 
+# windows specific code
+if(WIN32)
+	message("Windows environnement detected - we shall build on windows")
+	set(IS_NT 1)
+elseif(UNIX)
+	message("Linux environnement detected - we're building on some Ganoo/linucks")
+	set(IS_UNIX 1)
+endif(WIN32)
+
 # create configuration files
 configure_file(
-    cmake_modules/project.cmake.in
-    "${INC}/project.h"	
+    cmake_modules/config.cmake.in
+    "${INC}/config.h"	
 )
 
 # Source files
@@ -70,12 +79,6 @@ message("Full project header list: ${PROJECT_SRC}")
 message("File count: ${fileCount}")
 # install target
 
-# windows specific code
-if(WIN32)
-	message("Windows environnement detected - we shall build on windows")
-elseif(UNIX)
-	message("Linux environnement detected - we're building on some Ganoo/linucks")
-endif(WIN32)
 
 #
 # if(ARCH_32BITS) // if(ARCH_64BITS)

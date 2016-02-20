@@ -14,6 +14,8 @@ class Utility{
     ~Utility();
     void print(std::string);
     void print(std::string, int x, int y);
+		static bool directory_exists(std::string path);
+		static int create_directory(std::string path);
   private:
     int log(std::string);
 
@@ -27,6 +29,7 @@ class Logger{
   public:
     static void log(std::string message);
 };
+
 
 #endif
 
