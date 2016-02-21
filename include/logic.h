@@ -39,7 +39,7 @@ class Logic{
     void incrementTick(){ currentTick++; }
     void notifyMove(Entity *mover, int newX, int newY);
     bool isRunning(){ return running; }
-    bool setRunning(bool value){ running = value; }
+    void setRunning(bool value){ running = value; }
     bool createWall(int x, int y);
     int createEntity(Entity* newEntity);
     int deleteEntity(Entity* entity);
@@ -47,17 +47,17 @@ class Logic{
   public:
     Window *window;
   private:
-    int gameHeight;
-    int gameWidth;
+    unsigned int gameHeight;
+    unsigned int gameWidth;
     EntV entityVector; //container for all entities
     EntV enemyVector;
     EntV backgroundEntityVector; //such as walls, bullets, etc
     std::vector<EntV> gameZones; //container for the game matrix, indicating presence using coordinates
     Entity* player;
+    bool running;
     int score;
     int currentEntityIndex;
     int currentTick;
-    bool running;
 };
 
 #endif

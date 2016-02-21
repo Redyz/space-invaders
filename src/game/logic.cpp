@@ -10,18 +10,16 @@
 #include <math.h>
 #include <stdexcept>
 
-Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0){
+Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0), currentTick(0){
   this->window = window;
   Logger::log("BEGAN NEW SESSION");
 }
 
 
 Logic::~Logic(){
+	// Free all entities
 	for(auto current : entityVector)
 		delete current;
-
-	//for(auto current : gameZones)
-		//delete current;
 
   entityVector.clear();
   enemyVector.clear();
@@ -61,7 +59,6 @@ void Logic::init(){
   player->setY(getGameHeight());
   player->setX((int)getGameWidth()/2);
   gameZones[current->getY()][current->getX()] = current;
-  //gameZones[current->getY()][current->getX()].reset(current.get());
   int totalSpread = getGameWidth() - 4;
   int spacing = totalSpread / (3*5);
   for(int i = 0; i < 5; i++){
@@ -79,6 +76,7 @@ int Logic::createEntity(Entity* newEntity){
     enemyVector.push_back(newEntity);
   }
   //Logger::log("New entity created: " + newEntity->getUniqueId());
+	return 0;
 }
 
 bool Logic::createWall(int x, int y){
@@ -125,7 +123,7 @@ void Logic::step(){
   Entity* current;
   for(unsigned int i = 0; i < entityVector.size(); i++){
     current = entityVector[i];
-    entityVector[i]->step(); //the entity may die after .step, don't do anything after it
+    current->step(); //the entity may die after .step, don't do anything after it
   }
   
   //Logger::log("Current number of enemies: " + SSTR(""<<enemyVector.size()));
@@ -143,11 +141,13 @@ int Logic::deleteEntity(Entity *entity){
     lists.push_back(&enemyVector);
   }
   EntV::iterator current;
-  for(int i = 0; i < lists.size(); i++){
+  for(unsigned int i = 0; i < lists.size(); i++){
     current = std::find(lists[i]->begin(), lists[i]->end(), entity);
     if(current != lists[i]->end() && *current != 0){
 			gameZones[(*current)->getY()][(*current)->getX()] = NULL; //set the pointer to null
 			lists[i]->erase(current);
+			return 0;
 		}
   }
+	return 1;
 }

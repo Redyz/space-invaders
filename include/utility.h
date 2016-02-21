@@ -7,11 +7,11 @@
     ( std::ostringstream() << std::dec << x ) ).str()
 #define LOG_PATH "logs/logs.txt"
 
-#ifdef IS_DEBUG
-static bool DEBUG = true;
-#else
-static bool DEBUG = false;
-#endif
+//#ifdef IS_DEBUG
+//static bool DEBUG = true;
+//#else
+//static bool DEBUG = false;
+//#endif
 
 class Window;
 class Utility{

@@ -81,7 +81,7 @@ InvertDirectionMessage::InvertDirectionMessage() {
 
 void InvertDirectionMessage::execute(Logic* logic){
   std::vector<Entity*> entityVector = logic->getEntityVector();
-  for(int i = 0; i < entityVector.size(); i++){
+  for(unsigned int i = 0; i < entityVector.size(); i++){
     Entity *currentEntity = entityVector[i];
     if(currentEntity->getType() == GHOST){
       Ghost *currentGhost = static_cast<Ghost*>(currentEntity);

@@ -30,7 +30,7 @@ void Utility::print(std::string text, int x, int y){
 }
 
 int Utility::log(std::string){
-
+	return 0;
 }
 
 bool Utility::directory_exists(std::string path){

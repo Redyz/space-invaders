@@ -6,7 +6,7 @@ class Entity;
 class Message{
   public:
     Message();
-    ~Message();
+    virtual ~Message();
     void init();
     virtual void execute(Logic *logic);
 };

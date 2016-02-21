@@ -18,7 +18,7 @@ class Logic;
 class Entity{
   public:
     Entity(Logic* logic);
-    ~Entity();
+    virtual ~Entity();
 
     int getX(){ return x; }
     int getY(){ return y; }
@@ -39,7 +39,9 @@ class Entity{
     void setUniqueId(std::string uniqueId){ this->uniqueId = uniqueId; }
     void setDamage(int damage){ this->damage = damage; }
     bool isOutsideMap();
-    virtual bool step();
+    virtual bool step() = 0;
+		
+
     /**
     * Action methods
     * TODO: Implement those instead
@@ -91,8 +93,6 @@ public:
   bool move(int modX, int modY);
 protected:
     virtual void doHit(Entity* hitter);
-    
-
     int travelDirection;
 };
 

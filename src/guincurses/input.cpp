@@ -22,7 +22,7 @@ void Input::step(){
     std::stringstream ss;
     ss << *name;
     ss >> fullText;
-    char secondCharacter;
+    //char secondCharacter;
     switch(c){
       case 'q':
         logic->setRunning(false);

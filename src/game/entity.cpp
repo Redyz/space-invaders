@@ -152,6 +152,7 @@ bool Bullet::step(){
   //unsuccessful move
   if(!testMove(modX, modY)){
     die();
+		return false;
   }else{
     Entity* collision = logic->testEntityCollision(this, x+modX, y+modY);
     if(collision){ //friendly fire is off!
@@ -162,6 +163,8 @@ bool Bullet::step(){
       move(modX, modY);
     }
   }
+
+	return true;
 }
 
 Ghost::Ghost(Logic* logic) : Entity(logic){
@@ -183,6 +186,7 @@ bool Ghost::step(){
     }
     if(!move(modX, 0)){
       logic->notify(new InvertDirectionMessage());
+			return false;
       /*}else{
         die(); //out of bounds..?
       }*/
@@ -198,6 +202,7 @@ bool Ghost::step(){
   }else{
     //Logger::log("Can't even act");
   }
+	return true;
 }
 
 bool Ghost::move(int modX, int modY){
@@ -228,7 +233,7 @@ Player::Player(Logic* logic) : Entity(logic){
 }
 
 bool Player::step(){
-  Entity::step();
+  return Entity::step();
 }
 
 void Player::doDie(){
@@ -243,11 +248,11 @@ Prop::Prop(Logic* logic) : Entity(logic){
 }
 
 bool Prop::step(){
-  
+	return true;  
 }
 
 bool Prop::move(int modX, int modY){
-  //lel
+	return true;
 }
 
 Wall::Wall(Logic* logic) : Prop(logic){
@@ -257,5 +262,5 @@ Wall::Wall(Logic* logic) : Prop(logic){
 }
 
 bool Wall::step(){
-  
+ return true; 
 }
