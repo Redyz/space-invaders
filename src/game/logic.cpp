@@ -3,6 +3,7 @@
 #include "config.h"
 #include "utility.h"
 #include "message.h"
+#include "menu.h"
 #include <algorithm>
 #include <iostream>
 #include <list>
@@ -17,6 +18,8 @@ Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0), c
 
 
 Logic::~Logic(){
+	delete menu;
+
 	// Free all entities
 	for(auto current : entityVector)
 		delete current;
@@ -24,8 +27,12 @@ Logic::~Logic(){
   entityVector.clear();
   enemyVector.clear();
   gameZones.clear();
+
+	Logger::log("Bye!");
+	std::cout << "Bye!" << std::endl;
 }
 void Logic::init(){
+	this->menu = new Menu(this);
   currentTick = 0;
   int numberOfGhosts = 100;
   int sideConstant = 5;

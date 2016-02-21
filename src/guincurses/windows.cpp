@@ -16,6 +16,7 @@ Window::Window(){
   start_color();
   initColors();
   getmaxyx(stdscr, height, width); //store the screen size
+	curs_set(0); //disable cursor
   scoreWindow = newwin(SCORE_HEIGHT, width, 0, 0); //create the score 
   gameWindow = newwin(height-SCORE_HEIGHT, width, SCORE_HEIGHT, 0); //height, width, sy, sx
 }

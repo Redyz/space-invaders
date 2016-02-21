@@ -6,6 +6,7 @@
 class Entity;
 class Window;
 class Message;
+class Menu;
 
 typedef std::vector<Entity*> EntV;
 enum directions{
@@ -49,6 +50,7 @@ class Logic{
   private:
     unsigned int gameHeight;
     unsigned int gameWidth;
+		Menu *menu;
     EntV entityVector; //container for all entities
     EntV enemyVector;
     EntV backgroundEntityVector; //such as walls, bullets, etc
