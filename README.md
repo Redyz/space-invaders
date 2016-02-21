@@ -10,4 +10,7 @@ pretty please?
 
 :^(
 
-screen-256
+Note:
+Apparently tmux doesn't play nice with the bazzilion screen refreshes this program uses, either
+run it outside of tmux or await a fix from me
+

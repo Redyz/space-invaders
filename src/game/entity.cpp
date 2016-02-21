@@ -167,6 +167,11 @@ bool Bullet::step(){
 	return true;
 }
 
+void Bullet::die(){
+  logic->notify(new DeathMessage(this));
+	//Logger::log("Deleting the bullet!");
+}
+
 Ghost::Ghost(Logic* logic) : Entity(logic){
   type = GHOST;
   travelDirection = RIGHT;

@@ -79,6 +79,7 @@ class Bullet : public Entity{
     Bullet(Logic *logic, Entity *firer);
     virtual bool step();
     void setDirection(int direction){ this->direction = direction; }
+		void die();
   private:
     int direction;
     Entity *firer;

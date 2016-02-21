@@ -22,6 +22,7 @@ Window::Window(){
 
 Window::~Window(){
   endwin();
+	delete input;
 }
 
 void Window::setup(Logic* logic){

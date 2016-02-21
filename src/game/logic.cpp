@@ -75,7 +75,7 @@ int Logic::createEntity(Entity* newEntity){
     //Logger::log("Created an enemy, the type: " + SSTR(newEntity->getType()));
     enemyVector.push_back(newEntity);
   }
-  //Logger::log("New entity created: " + newEntity->getUniqueId());
+  Logger::log("New entity created: " + newEntity->getUniqueId());
 	return 0;
 }
 
@@ -135,7 +135,7 @@ void Logic::notify(Message *message){
 }
 
 int Logic::deleteEntity(Entity *entity){
-  static std::vector<EntV*> lists;
+  std::vector<EntV*> lists;
   if(lists.size() == 0){
     lists.push_back(&entityVector);
     lists.push_back(&enemyVector);
@@ -146,6 +146,7 @@ int Logic::deleteEntity(Entity *entity){
     if(current != lists[i]->end() && *current != 0){
 			gameZones[(*current)->getY()][(*current)->getX()] = NULL; //set the pointer to null
 			lists[i]->erase(current);
+			delete entity;
 			return 0;
 		}
   }
