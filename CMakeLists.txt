@@ -27,7 +27,7 @@ set(SRC ${PS}/src)
 set(INC ${PS}/include)
 
 #c++ flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -g")
 
 # windows specific code
 if(WIN32)

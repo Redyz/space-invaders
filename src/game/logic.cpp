@@ -17,7 +17,12 @@ Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0){
 
 
 Logic::~Logic(){
-  //std::cout << "Destructing the logic" << std::endl;
+	for(auto current : entityVector)
+		delete current;
+
+	//for(auto current : gameZones)
+		//delete current;
+
   entityVector.clear();
   enemyVector.clear();
   gameZones.clear();
@@ -26,6 +31,7 @@ void Logic::init(){
   currentTick = 0;
   int numberOfGhosts = 100;
   int sideConstant = 5;
+
   //currently, for curses mode the game zone height is equivalent to the gameHeight
   gameZones.resize(gameHeight+1); //+1? TODO: find out why this is here
   for(unsigned int y = 0; y < gameHeight+1; y++){
@@ -34,6 +40,7 @@ void Logic::init(){
       gameZones[y].push_back(NULL); //instantiate null pointers
     }
   }
+
   Logger::log("Initializing game session with: " + SSTR("Height: " << gameZones.size()) + SSTR(" Width: " << gameZones[0].size()));
   Entity* current;
   int currentX = sideConstant, currentY = 0;
