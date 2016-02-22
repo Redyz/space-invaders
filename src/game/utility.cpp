@@ -22,11 +22,11 @@ Utility::~Utility(){
 }
 
 void Utility::print(std::string text){
-  window->display(text);
+  //window->display(text);
 }
 
 void Utility::print(std::string text, int x, int y){
-  window->display(text, x, y);
+  //window->display(text, x, y);
 }
 
 int Utility::log(std::string){

@@ -5,6 +5,7 @@
 #include <curses.h>
 #include <string>
 #include "config.h"
+#include "utility.h"
 #include <sstream>
 Input::Input(Logic* logic){
   this->logic = logic;
@@ -18,21 +19,17 @@ void Input::step(){
   int c = getch();
   if(c != ERR){
     const char *name = keyname( c );
-    std::string fullText = "You wanted: " + c;
-    std::stringstream ss;
-    ss << *name;
-    ss >> fullText;
-    //char secondCharacter;
     switch(c){
       case 'q':
+			case 27: // Escape key
         logic->setRunning(false);
         break;
-      case KEY_UP:
-        logic->getPlayer()->move(0, -1);
-        break;
-      case KEY_DOWN:
-        logic->getPlayer()->move(0, 1);
-        break;
+      //case KEY_UP:
+        //logic->getPlayer()->move(0, -1);
+        //break;
+      //case KEY_DOWN:
+        //logic->getPlayer()->move(0, 1);
+        //break;
       case KEY_LEFT:
         logic->getPlayer()->move(-1, 0);
         break;
@@ -42,6 +39,11 @@ void Input::step(){
       case ' ':
         logic->getPlayer()->fire(UP);
         break;
+			default:
+#ifdef IS_DEBUG
+				Logger::log("Unknown key pressed: " + SSTR(c));
+#endif
+				break;
     }
   }
 }

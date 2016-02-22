@@ -3,12 +3,12 @@
 #include <string>
 #include <cstdlib>
 typedef enum entityType{
-  ENTITY = 0b1,
-  WALL = 0b10,
-  BULLET = 0b100,
-  TANK = 0b1000,
-  GHOST = 0b10000,
-  PLAYER = 0b100000
+  ENTITY = 1,
+  WALL = 1 << 1,
+  BULLET = 1 << 2,
+  TANK = 1 << 3,
+  GHOST = 1 << 4,
+  PLAYER = 1 << 5
 }entityTypes;
 typedef enum entityGroup{
     ENEMY = GHOST | BULLET,
@@ -101,6 +101,7 @@ class Player : public Entity{
 public:
     Player(Logic *logic);
     virtual bool step();
+		bool move(int modX, int modY);
 
 protected:
     void doDie();

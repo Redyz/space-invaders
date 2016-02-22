@@ -14,3 +14,8 @@ Note:
 Apparently tmux doesn't play nice with the bazzilion screen refreshes this program uses, either
 run it outside of tmux or await a fix from me
 
+Debian:
+sudo apt-get update
+sudo apt-get install cmake libncurses-dev 
+
+#build essentials

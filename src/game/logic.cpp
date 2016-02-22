@@ -28,13 +28,14 @@ Logic::~Logic(){
   enemyVector.clear();
   gameZones.clear();
 
+	// Seemingly some of this isn't called when the destructor is
 	Logger::log("Bye!");
 	std::cout << "Bye!" << std::endl;
 }
 void Logic::init(){
 	this->menu = new Menu(this);
   currentTick = 0;
-  int numberOfGhosts = 100;
+  int numberOfGhosts = 50;
   int sideConstant = 5;
 
   //currently, for curses mode the game zone height is equivalent to the gameHeight
@@ -82,7 +83,7 @@ int Logic::createEntity(Entity* newEntity){
     //Logger::log("Created an enemy, the type: " + SSTR(newEntity->getType()));
     enemyVector.push_back(newEntity);
   }
-  Logger::log("New entity created: " + newEntity->getUniqueId());
+  //Logger::log("New entity created: " + newEntity->getUniqueId());
 	return 0;
 }
 
@@ -132,7 +133,9 @@ void Logic::step(){
     current = entityVector[i];
     current->step(); //the entity may die after .step, don't do anything after it
   }
-  
+
+	if(enemyVector.size() == 0)
+		notify(new GameOverMessage(NO_MORE_ENEMIES));
   //Logger::log("Current number of enemies: " + SSTR(""<<enemyVector.size()));
 }
 void Logic::notify(Message *message){

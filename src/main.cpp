@@ -24,7 +24,6 @@ int main(int argc, char* argv[]) {
   Window window;
   srand(time(NULL)); 
   Logic logic(&window);
-	
   window.setup(&logic);
   logic.init();
   while(logic.isRunning()){	

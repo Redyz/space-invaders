@@ -149,7 +149,8 @@ bool Bullet::step(){
       modX = -1, modY = 0;
       break;
   }
-  //unsuccessful move
+
+  // Unsuccessful move
   if(!testMove(modX, modY)){
     die();
 		return false;
@@ -169,7 +170,6 @@ bool Bullet::step(){
 
 void Bullet::die(){
   logic->notify(new DeathMessage(this));
-	//Logger::log("Deleting the bullet!");
 }
 
 Ghost::Ghost(Logic* logic) : Entity(logic){
@@ -235,6 +235,11 @@ Player::Player(Logic* logic) : Entity(logic){
   firingSpeed = 5;
   life = 3;
   type = PLAYER;
+}
+
+bool Player::move(int modX, int modY){
+	modY = 0; // prevent all Y moves from player
+	return Entity::move(modX, modY);
 }
 
 bool Player::step(){

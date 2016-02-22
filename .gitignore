@@ -21,3 +21,6 @@ src/.cproject
 src/.project
 bin
 logs/*
+
+*.vim
+.ycm_extra_conf.py*

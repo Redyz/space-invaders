@@ -47,7 +47,8 @@ public:
 
 enum GAME_OVER_REASON{
     REACHED_BOTTOM,
-    LOST_ALL_LIVES
+    LOST_ALL_LIVES,
+    NO_MORE_ENEMIES
 };
 class GameOverMessage : public Message{
 public:
