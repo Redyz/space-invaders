@@ -5,7 +5,7 @@
 /* #undef IS_NT */
 #define IS_DEBUG 1
 
-#define SFML false
+#define SFML 1
 #define TICK_LENGTH 40
 #if SFML
   #include "gui/windows.h"

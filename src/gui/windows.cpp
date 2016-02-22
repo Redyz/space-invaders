@@ -1,10 +1,10 @@
 #include "gui/windows.h"
 #include "logic.h"
-#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 
 
 Window::Window(){
-	sfWindow = new sf::Window();
+	sfWindow = new sf::RenderWindow();
 }
 
 Window::~Window(){
@@ -29,7 +29,8 @@ void Window::inputStep(){
 }
 
 void Window::draw(){
-
+	sfWindow->clear(sf::Color::Blue);
+	sfWindow->display();
 }
 
 void Window::debug(std::string text){

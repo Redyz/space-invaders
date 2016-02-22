@@ -3,7 +3,7 @@
 #include <string>
 
 namespace sf{
-	class Window;
+	class RenderWindow;;
 };
 
 class Logic;
@@ -28,7 +28,7 @@ class Window{
     void drawScores();
     void drawGame();
 
-		sf::Window *sfWindow;
+		sf::RenderWindow *sfWindow;
     int width;
     int height;
     Logic* logic;
