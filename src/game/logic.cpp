@@ -40,7 +40,7 @@ void Logic::init(){
 
   //currently, for curses mode the game zone height is equivalent to the gameHeight
 	// bad alloc here with gameheight in SFML mode
-#ifndef SFML
+#if !SFML
   gameZones.resize(gameHeight+1); //+1? TODO: find out why this is here
   for(unsigned int y = 0; y < gameHeight+1; y++){
     gameZones[y].resize(gameWidth);
@@ -137,7 +137,7 @@ void Logic::step(){
     current->step(); //the entity may die after .step, don't do anything after it
   }
 
-#ifndef SFML
+#if !SFML
 	if(enemyVector.size() == 0)
 		notify(new GameOverMessage(NO_MORE_ENEMIES));
 #endif
