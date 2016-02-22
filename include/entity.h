@@ -2,6 +2,8 @@
 #define ENTITY_H
 #include <string>
 #include <cstdlib>
+
+#define GHOST_FIRE_CHANCE 95
 typedef enum entityType{
   ENTITY = 1,
   WALL = 1 << 1,

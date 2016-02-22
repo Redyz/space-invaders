@@ -199,7 +199,8 @@ bool Ghost::step(){
   }
   
   if(canAct){
-    if(rand() % 95 < 1){
+    //if(rand() % 95 < 1){
+    if(rand() % GHOST_FIRE_CHANCE < 1){
       fire(DOWN);
     }
     canAct = false;

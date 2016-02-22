@@ -3,9 +3,9 @@
 
 #define IS_UNIX 1
 /* #undef IS_NT */
-/* #undef IS_DEBUG */
+#define IS_DEBUG 1
 
-#define SFML false
+#define SFML 1
 #define TICK_LENGTH 40
 #if SFML
   #include "gui/windows.h"

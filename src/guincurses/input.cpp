@@ -18,7 +18,7 @@ Input::~Input(){
 void Input::step(){
   int c = getch();
   if(c != ERR){
-    const char *name = keyname( c );
+    //const char *name = keyname( c );
     switch(c){
       case 'q':
 			case 27: // Escape key

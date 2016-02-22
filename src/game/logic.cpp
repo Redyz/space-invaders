@@ -35,10 +35,12 @@ Logic::~Logic(){
 void Logic::init(){
 	this->menu = new Menu(this);
   currentTick = 0;
-  int numberOfGhosts = 50;
+  int numberOfGhosts = 500;
   int sideConstant = 5;
 
   //currently, for curses mode the game zone height is equivalent to the gameHeight
+	// bad alloc here with gameheight in SFML mode
+#ifndef SFML
   gameZones.resize(gameHeight+1); //+1? TODO: find out why this is here
   for(unsigned int y = 0; y < gameHeight+1; y++){
     gameZones[y].resize(gameWidth);
@@ -73,6 +75,7 @@ void Logic::init(){
     createWall(5+(i*spacing), 5);
   }
   createEntity(player);
+#endif
 }
 
 int Logic::createEntity(Entity* newEntity){
@@ -134,8 +137,10 @@ void Logic::step(){
     current->step(); //the entity may die after .step, don't do anything after it
   }
 
+#ifndef SFML
 	if(enemyVector.size() == 0)
 		notify(new GameOverMessage(NO_MORE_ENEMIES));
+#endif
   //Logger::log("Current number of enemies: " + SSTR(""<<enemyVector.size()));
 }
 void Logic::notify(Message *message){

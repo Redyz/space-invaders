@@ -2,6 +2,10 @@
 #define WINDOW_H
 #include <string>
 
+namespace sf{
+	class Window;
+};
+
 class Logic;
 class Input;
 class WINDOW;
@@ -23,10 +27,8 @@ class Window{
   private:
     void drawScores();
     void drawGame();
-  private:
-    //todo: SFML replace
-    //WINDOW* gameWindow;
-    //WINDOW* scoreWindow;
+
+		sf::Window *sfWindow;
     int width;
     int height;
     Logic* logic;
