@@ -4,6 +4,8 @@
 
 namespace sf{
 	class RenderWindow;;
+	class Font;
+	class Text;
 };
 
 class Logic;
@@ -29,6 +31,8 @@ class Window{
     void drawGame();
 
 		sf::RenderWindow *sfWindow;
+		sf::Font *font;
+		sf::Text *debugText;
     int width;
     int height;
     Logic* logic;

@@ -64,7 +64,8 @@ void Window::display(std::string text, int x, int y, WINDOW* window){
 }
 
 void Window::debug(std::string text){
-  mvwprintw(scoreWindow, 0, 10, text.c_str());
+  //mvwprintw(scoreWindow, 0, 10, text.c_str());
+  display(text, 20, 0, scoreWindow);
 }
 
 void Window::drawScores(){

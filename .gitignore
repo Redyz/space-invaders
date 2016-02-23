@@ -19,7 +19,7 @@
 # Bin folder
 src/.cproject
 src/.project
-bin
+bin*
 logs/*
 
 *.vim

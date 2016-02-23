@@ -30,6 +30,7 @@ int main(int argc, char* argv[]) {
     window.clearWindow();
     logic.step();
     window.inputStep();
+		window.debug("Test: " + SSTR(logic.getCurrentTick()));
     window.draw();
     usleep(1000 * TICK_LENGTH); //1000 milliseconds => 1 sec
     logic.incrementTick();
