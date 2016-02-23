@@ -1,4 +1,5 @@
 #include "config.h"
+#include "message.h"
 #include <iostream>
 #include <unistd.h>
 #include <time.h>
@@ -26,6 +27,7 @@ int main(int argc, char* argv[]) {
   Logic logic(&window);
   window.setup(&logic);
   logic.init();
+
   while(logic.isRunning()){	
     window.clearWindow();
     logic.step();
@@ -35,5 +37,7 @@ int main(int argc, char* argv[]) {
     usleep(1000 * TICK_LENGTH); //1000 milliseconds => 1 sec
     logic.incrementTick();
   }
+	window.~Window(); // force destroy window
+	logic.processMessages(); // Finish up messages
   std::cout << "Exiting game, thank you for playing!" << std::endl;
 }

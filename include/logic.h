@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
+#include <deque>
+
 class Entity;
 class Window;
 class Message;
@@ -29,6 +31,7 @@ class Logic{
     void step();
     void init();
     void notify(Message *message);
+		void processMessages();
     int getScore(){ return score; }
     int getCurrentTick(){ return currentTick; }
     Entity* getPlayer(){ return this->player; }
@@ -59,7 +62,10 @@ class Logic{
     bool running;
     int score;
     int currentEntityIndex;
+		int currentMessageId;
     int currentTick;
+
+		std::deque<Message*> messageDeque;
 };
 
 #endif

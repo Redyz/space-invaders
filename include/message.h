@@ -1,5 +1,6 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
+#include <iostream>
 class Logic;
 class Entity;
 
@@ -7,8 +8,13 @@ class Message{
   public:
     Message();
     virtual ~Message();
-    void init();
     virtual void execute(Logic *logic);
+		virtual bool canExecute(Logic *logic);
+		virtual std::string toString();
+	private:
+		friend class Logic;
+		void setId(unsigned int id);
+		unsigned int messageId = -1;
 };
 class DeathMessage : public Message{
   public:
@@ -31,16 +37,16 @@ class FireMessage : public Message{
 };
 
 class HitMessage : public Message{
-public:
-  HitMessage(Entity* firer, Entity* fired);
-  void execute(Logic* logic);
-protected:
+	public:
+		HitMessage(Entity* firer, Entity* fired);
+		void execute(Logic* logic);
+	protected:
     Entity* firer;
     Entity* fired;
 };
 
 class InvertDirectionMessage : public Message{
-public:
+	public:
     InvertDirectionMessage();
     void execute(Logic* logic);
 };
@@ -48,13 +54,24 @@ public:
 enum GAME_OVER_REASON{
     REACHED_BOTTOM,
     LOST_ALL_LIVES,
-    NO_MORE_ENEMIES
+    NO_MORE_ENEMIES,
+		QUIT_GAME
 };
 class GameOverMessage : public Message{
-public:
+	public:
     GameOverMessage(int reason);
     void execute(Logic* logic);
-protected:
+	protected:
     int reason;
+};
+
+class ConsoleMessage : public Message{
+	public:
+		ConsoleMessage(std::string message);
+    virtual void execute(Logic *logic);
+		virtual bool canExecute(Logic *logic);
+		virtual std::string toString();
+	protected:
+		std::string message;
 };
 #endif

@@ -6,6 +6,7 @@
 #include <string>
 #include "config.h"
 #include "utility.h"
+#include "message.h"
 #include <sstream>
 Input::Input(Logic* logic){
   this->logic = logic;
@@ -22,7 +23,8 @@ void Input::step(){
     switch(c){
       case 'q':
 			case 27: // Escape key
-        logic->setRunning(false);
+				logic->notify(new GameOverMessage(QUIT_GAME));
+        //logic->setRunning(false);
         break;
       //case KEY_UP:
         //logic->getPlayer()->move(0, -1);

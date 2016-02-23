@@ -86,6 +86,7 @@ message("Prefix path: ${CMAKE_PREFIX_PATH}")
 if(IS_UNIX)
 	add_custom_target(valgrind COMMAND "valgrind" "./${PROJECT_NAME}" "-v" "--leak-check=full")
 	add_custom_target(cgdb COMMAND "cgdb" "./${PROJECT_NAME}")
+	add_custom_target(cgdba COMMAND "../tools/debug.sh" )
 endif(IS_UNIX)
 
 set(FULL_PROJECT_NAME v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}) 

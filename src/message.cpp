@@ -10,18 +10,28 @@ Message::Message(){
 
 }
 
-void Message::init(){
+Message::~Message(){
 
 }
 
-Message::~Message(){
-
+void Message::setId(unsigned int id){
+	if(this->messageId == -1)
+		this->messageId = id;
+	else
+		Logger::log("Error: trying to change message id more than once (" + SSTR(this->messageId) + ")");
 }
 
 void Message::execute(Logic *logic){
 
 };
 
+bool Message::canExecute(Logic *logic){
+	return true;
+}
+
+std::string Message::toString(){
+	return "Default message";
+}
 /*
  * DeathMessage class
  */
@@ -113,9 +123,27 @@ void GameOverMessage::execute(Logic* logic){
       case LOST_ALL_LIVES: gameOverString += "you lost all your lives!"; break;
       case REACHED_BOTTOM: gameOverString += "enemies touched the bottom!"; break;
       case NO_MORE_ENEMIES: gameOverString += "You won; You repelled the alien invasion!"; break;
+			case QUIT_GAME: gameOverString += "You quit the game!"; break;
     }
     Logger::log(gameOverString);
-		//TODO: Non-cout win message
+		logic->notify(new ConsoleMessage(gameOverString));
     logic->setRunning(false);
   }
+}
+
+ConsoleMessage::ConsoleMessage(std::string message){
+	this->message = message;
+}
+
+std::string ConsoleMessage::toString(){
+	return message;
+}
+
+void ConsoleMessage::execute(Logic *logic){
+	Logger::log("Processed message " + SSTR(message));
+	logic->window->display(message);
+}
+
+bool ConsoleMessage::canExecute(Logic *logic){
+	return !logic->isRunning();
 }

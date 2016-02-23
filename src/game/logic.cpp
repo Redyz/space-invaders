@@ -11,7 +11,7 @@
 #include <math.h>
 #include <stdexcept>
 
-Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0), currentTick(0){
+Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0), currentMessageId(0), currentTick(0){
   this->window = window;
   Logger::log("BEGAN NEW SESSION");
 }
@@ -56,6 +56,10 @@ void Logic::init(){
     current = new Ghost(this);
     if(currentX >= getGameWidth()-sideConstant){
       currentX = sideConstant;
+			if(currentY+1 > gameHeight){
+				Logger::log("Too many ghosts for screen size; skipping some");
+				break;
+			}
       currentY += 1;
     }
     current->setX(currentX);
@@ -130,7 +134,22 @@ Entity* Logic::testEntityCollision(Entity* tester, int x, int y){
   }
 }
 
+void Logic::processMessages(){
+	std::deque<Message*>::iterator it = messageDeque.begin();
+	while(it != messageDeque.end()){
+		Message* current = *it;
+		Logger::log("Trying to process unprocessed message " + current->toString());
+		if(current->canExecute(this)){
+			current->execute(this);
+			it = messageDeque.erase(it);
+			delete current;
+		}else
+			++it;
+	}
+}
+
 void Logic::step(){
+	processMessages();
   Entity* current;
   for(unsigned int i = 0; i < entityVector.size(); i++){
     current = entityVector[i];
@@ -144,9 +163,12 @@ void Logic::step(){
   //Logger::log("Current number of enemies: " + SSTR(""<<enemyVector.size()));
 }
 void Logic::notify(Message *message){
-  message->init();
-  message->execute(this);
-  delete message;
+	message->setId(currentMessageId++);
+	if(message->canExecute(this)){
+		message->execute(this);
+		delete message;
+	}else
+		messageDeque.push_back(message);
 }
 
 int Logic::deleteEntity(Entity *entity){

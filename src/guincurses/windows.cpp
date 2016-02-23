@@ -53,10 +53,12 @@ void Window::draw(){
 
 void Window::display(std::string text){
   wprintw(gameWindow, text.c_str());
+	std::cout << text << std::endl;
 }
 
 void Window::display(std::string text, int x, int y){
   mvwprintw(gameWindow, y, x, text.c_str());
+	std::cout << text << std::endl;
 }
 
 void Window::display(std::string text, int x, int y, WINDOW* window){

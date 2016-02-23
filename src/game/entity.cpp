@@ -27,6 +27,7 @@ std::string Entity::toString(){
   convertingStream << "E:" << x << ":" << y;
   return convertingStream.str();
 }
+
 bool Entity::testMove(int modX, int modY){
   if(x + modX < 0 || x + modX > logic->getGameWidth()){
     //Logger::log(SSTR("Game height: " << logic->getGameWidth()) + SSTR(" current: " << x+modX));
@@ -37,6 +38,7 @@ bool Entity::testMove(int modX, int modY){
   }
   return true;
 }
+
 bool Entity::move(int modX, int modY){
   if(testMove(modX, modY)){
     int oldX = x, oldY = y;
@@ -57,7 +59,7 @@ void Entity::modLife(int mod){
   if(mod > 0){
     doIncreaseLife(mod);
   }else{
-    doDecreaseLife(-1*mod);
+    doDecreaseLife(-mod);
   }
   if(life <= 0){
     life = 0;
@@ -82,6 +84,7 @@ void Entity::modLife(int mod, Entity* shooter){
 int Entity::getLife(){
   return life;
 }
+
 void Entity::die(){
   doDie();
   logic->notify(new DeathMessage(this));
@@ -133,6 +136,7 @@ Bullet::Bullet(Logic *logic, Entity *firer) : Entity(logic){
   this->firer = firer;
   damage = -1; //means you lose 1hp
 }
+
 bool Bullet::step(){
   int modX, modY;
   switch(direction){
