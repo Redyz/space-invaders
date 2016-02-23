@@ -86,6 +86,12 @@ message("File count: ${fileCount}")
 #
 # if(ARCH_32BITS) // if(ARCH_64BITS)
 #
+# Valgrind recipe on Unix
+if(IS_UNIX)
+	add_custom_target(valgrind COMMAND "valgrind" "./${PROJECT_NAME}" "-v" "--leak-check=full")
+	add_custom_target(cgdb COMMAND "cgdb" "./${PROJECT_NAME}")
+endif(IS_UNIX)
+
 set(FULL_PROJECT_NAME v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}) 
 message("Beginning build of ${PROJECT_NAME}, ${FULL_PROJECT_NAME} ")
 
