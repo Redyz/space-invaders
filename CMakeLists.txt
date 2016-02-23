@@ -9,12 +9,7 @@ set(VERSION_MINOR 0)
 set(VERSION_PATCH 5)
 set(VERSION "v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
-set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Redyz doodle Redyz@doodle.com")
-set(CPACK_PACKAGE_DESCRIPTION "Some space invaders game")
-set(CPACK_DEBIAN_PACKAGE_NAME "bacon")
-set(CPACK_DEBIAN_PACKAGE_VERSION ${VERSION})
 
-include(CPack)
 set(BUILD_SFML false CACHE BOOL "Set this to true to build using SFML, or false to use Ncurses")
 # add header location
 include_directories(
@@ -95,8 +90,26 @@ endif(IS_UNIX)
 set(FULL_PROJECT_NAME v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}) 
 message("Beginning build of ${PROJECT_NAME}, ${FULL_PROJECT_NAME} ")
 
+#set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 add_executable(${PROJECT_NAME} ${PROJECT_SRC})
-install(TARGETS ${NAME} DESTINATION {DEST})
+#install(TARGETS ${NAME} DESTINATION /usr/bin/ COMPONENT applications)
+#file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/some/file)
+#install(TARGETS ${PROJECT_NAME} DESTINATION /bin) 
+install(TARGETS ${PROJECT_NAME} DESTINATION bin) 
+#install(PROGRAMS ${NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/some/folder) 
+#install(PROGRAMS ${CMAKE_BINARY_DIR}/${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+set(CPACK_ARCHIVE_COMPONENT_INSTALL "ON")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Redyz doodle Redyz@doodle.com")
+set(CPACK_DEBIAN_PACKAGE_NAME "bacon")
+set(CPACK_DEBIAN_PACKAGE_VERSION ${VERSION})
+set(CPACK_PACKAGE_DESCRIPTION "Some space invaders game")
+SET(CPACK_CMAKE_GENERATOR "Unix Makefiles")
+SET(CPACK_GENERATOR "TGZ;STGZ;NSIS")
+set(CPACK_COMPONENT_ALL applications)
+#SET(CPACK_GENERATOR "STGZ;TGZ;TZ;DEB")
+#SET(CPACK_STRIP_FILES "${PROJECT_NAME}")
+#SET(CPACK_PACKAGE_EXECUTABLES "${PROJECT_NAME}" "Space")
 
 # detect and add SFML + ncurses
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
@@ -109,6 +122,7 @@ if(BUILD_SFML)
     target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARY})
 endif(BUILD_SFML)
 
+include(CPack)
 # WINDOW CROSS COMPILE #
 #SET(CMAKE_SYSTEM_NAME Windows)
 # which compilers to use for C and C++
