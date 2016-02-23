@@ -9,8 +9,9 @@ set(VERSION_MINOR 0)
 set(VERSION_PATCH 5)
 set(VERSION "v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
+set(IS_SFML false CACHE BOOL "Set this to true to build using SFML, or false to use Ncurses")
+set(IS_DEBUG false CACHE BOOL "Whether or not to add debugging symbols to the build") # there is probably a more native way
 
-set(BUILD_SFML false CACHE BOOL "Set this to true to build using SFML, or false to use Ncurses")
 # add header location
 include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}
@@ -41,8 +42,9 @@ configure_file(
 
 # Source files
 message("Configuring using source dir: ${CMAKE_CURRENT_SOURCE_DIR}")
-if(BUILD_SFML)
+if(IS_SFML)
   message("Building with SFML")
+	set(PROJECT_NAME ${PROJECT_NAME}-SFML)
   file(GLOB PROJECT_SRC
       "${INC}/*.h"
       "${SRC}/*.cpp"
@@ -67,15 +69,14 @@ else()
       "${INC}/guincurses/*.h"
       "${SRC}/guincurses/*.cpp"
       )
-endif(BUILD_SFML)
+endif(IS_SFML)
 set(PROJECT_SRC ${PROJECT_SRC} ${GUI_SRC})
 message("Include path: ${CMAKE_INCLUDE_PATH}")
 message("Prefix path: ${CMAKE_PREFIX_PATH}")
 #message("Files: ${PROJECT_SRC}")
-list(LENGTH PROJECT_SRC fileCount)
-message("Full project header list: ${PROJECT_SRC}")
-message("File count: ${fileCount}")
-# install target
+#list(LENGTH PROJECT_SRC fileCount)
+#message("Full project header list: ${PROJECT_SRC}")
+#message("File count: ${fileCount}")
 
 
 #
@@ -90,19 +91,12 @@ endif(IS_UNIX)
 set(FULL_PROJECT_NAME v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}) 
 message("Beginning build of ${PROJECT_NAME}, ${FULL_PROJECT_NAME} ")
 
-#set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 add_executable(${PROJECT_NAME} ${PROJECT_SRC})
-#install(TARGETS ${NAME} DESTINATION /usr/bin/ COMPONENT applications)
-#file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/some/file)
-#install(TARGETS ${PROJECT_NAME} DESTINATION /bin) 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin) 
 add_custom_command(
   TARGET ${PROJECT_NAME}
   POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/fonts $<TARGET_FILE_DIR:${PROJECT_NAME}>/fonts)
-
-#install(PROGRAMS ${NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/some/folder) 
-#install(PROGRAMS ${CMAKE_BINARY_DIR}/${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
 set(CPACK_ARCHIVE_COMPONENT_INSTALL "ON")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Redyz doodle Redyz@doodle.com")
@@ -118,14 +112,14 @@ set(CPACK_COMPONENT_ALL applications)
 
 # detect and add SFML + ncurses
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
-if(BUILD_SFML)
+if(IS_SFML)
     find_package(SFML 2.1 REQUIRED system window graphics network audio)
     target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
   else()
     set(CURSES_NEED_NCURSES TRUE)
     find_package(Curses)
     target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARY})
-endif(BUILD_SFML)
+endif(IS_SFML)
 
 include(CPack)
 # WINDOW CROSS COMPILE #

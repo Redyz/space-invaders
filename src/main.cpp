@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
 	std::cout << getpid() << std::endl;
 	sleep(1);
 #endif
-	std::cout << (SFML ? "Starting in graphical mode" : "Starting in curses mode") << std::endl;
+	std::cout << (IS_SFML ? "Starting in graphical mode" : "Starting in curses mode") << std::endl;
   Window window;
   srand(time(NULL)); 
   Logic logic(&window);
