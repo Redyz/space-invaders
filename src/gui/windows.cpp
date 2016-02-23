@@ -48,4 +48,8 @@ void Window::debug(std::string text){
 	debugText->setString(text);
 }
 
+void Window::display(std::string text){
+	debug(text);
+}
+
 

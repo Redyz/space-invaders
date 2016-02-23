@@ -30,7 +30,6 @@ Logic::~Logic(){
 
 	// Seemingly some of this isn't called when the destructor is
 	Logger::log("Bye!");
-	std::cout << "Bye!" << std::endl;
 }
 void Logic::init(){
 	this->menu = new Menu(this);

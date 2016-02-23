@@ -20,5 +20,3 @@ sudo apt-get install cmake libncurses-dev
 
 #build essentials
 
-Thanks Fontlibrary for the Libre fonts:
-https://fontlibrary.org/en/font/comprehension
