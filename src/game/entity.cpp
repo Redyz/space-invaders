@@ -16,6 +16,7 @@ Entity::Entity(Logic* logic){
   firingSpeed = 10;
   canMove = true;   
   canAct = true;
+	type = ENTITY;
 }
 
 Entity::~Entity(){
@@ -245,6 +246,10 @@ Player::Player(Logic* logic) : Entity(logic){
 bool Player::move(int modX, int modY){
 	modY = 0; // prevent all Y moves from player
 	return Entity::move(modX, modY);
+}
+
+void Player::doHit(Entity* hitter){
+	setX(logic->getGameWidth()/2);
 }
 
 bool Player::step(){

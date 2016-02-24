@@ -36,6 +36,12 @@ class FireMessage : public Message{
     Entity* firer;
 };
 
+class ArmageddonMessage : public Message{
+  public:
+    ArmageddonMessage();
+    virtual void execute(Logic *logic);
+};
+
 class HitMessage : public Message{
 	public:
 		HitMessage(Entity* firer, Entity* fired);

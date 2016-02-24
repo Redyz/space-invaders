@@ -71,6 +71,18 @@ void FireMessage::execute(Logic *logic){
   logic->createEntity(bulletEntity);
 }
 
+ArmageddonMessage::ArmageddonMessage(){
+
+}
+
+void ArmageddonMessage::execute(Logic* logic){
+	auto vect = logic->getEntityVector();
+	for(auto entity : vect){
+		if(entity->getType() == GHOST)	
+			logic->notify(new FireMessage(entity, entity->getX(), entity->getY(), DOWN));
+	}
+}
+
 /*
  * HitMessage class
  */

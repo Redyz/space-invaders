@@ -106,6 +106,7 @@ public:
 		bool move(int modX, int modY);
 
 protected:
+    void doHit(Entity* hitter);
     void doDie();
 };
 
