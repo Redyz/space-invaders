@@ -34,7 +34,11 @@ int main(int argc, char* argv[]) {
     window.inputStep();
 		window.debug("Test: " + SSTR(logic.getCurrentTick()));
     window.draw();
-    usleep(1000 * TICK_LENGTH); //1000 milliseconds => 1 sec
+#if IS_SFML
+    sleep(TICK_LENGTH/1000); //1000 milliseconds => 1 sec
+#else
+		napms(TICK_LENGTH);
+#endif
     logic.incrementTick();
   }
 	window.~Window(); // force destroy window

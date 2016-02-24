@@ -15,6 +15,10 @@ Window::Window(){
   keypad(stdscr, TRUE); //enable F1-F12 + arrow keys
   start_color();
   initColors();
+	clearok(stdscr, FALSE);
+	immedok(stdscr, FALSE);
+	idcok(stdscr, FALSE);
+	idlok(stdscr, FALSE);
   getmaxyx(stdscr, height, width); //store the screen size
 	curs_set(0); //disable cursor
   scoreWindow = newwin(SCORE_HEIGHT, width, 0, 0); //create the score 
@@ -33,12 +37,14 @@ void Window::setup(Logic* logic){
   this->input = new Input(logic);
 }
 void Window::initColors(){
-  init_pair(PAIR_ENTITY, COLOR_GREEN, COLOR_BLACK);
-  init_pair(PAIR_GHOST, COLOR_YELLOW, COLOR_BLACK);
+  //init_pair(PAIR_ENTITY, COLOR_GREEN, COLOR_BLACK);
+  //init_pair(PAIR_GHOST, COLOR_YELLOW, COLOR_BLACK);
 }
 void Window::clearWindow(){
-  wclear(gameWindow);
-  wclear(scoreWindow);
+	if(this->logic->getCurrentTick() % 10 == 0)
+		werase(scoreWindow);//wclear(scoreWindow);
+	//wnoutrefresh(gameWindow);
+	werase(gameWindow);
 };
 
 void Window::inputStep(){
@@ -46,8 +52,8 @@ void Window::inputStep(){
 }
 void Window::draw(){
   drawScores();
-  drawGame();
-  wmove(gameWindow, logic->getGameWidth(), logic->getGameHeight()-SCORE_HEIGHT);
+	drawGame();
+  //wmove(gameWindow, logic->getGameWidth(), logic->getGameHeight()-SCORE_HEIGHT);
   doupdate();
 }
 
@@ -85,6 +91,9 @@ void Window::drawScores(){
 }
 
 void Window::drawGame(){
+	//for(int i = 0; i < logic->getGameHeight(); i++){
+		//setsyx(i, )	
+	//}
   std::vector<Entity*> entityVector = logic->getEntityVector();
   try{
     for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
@@ -106,8 +115,8 @@ void Window::drawGame(){
   }catch(...){
     Logger::log("Exception caught");
   }
-  attron(COLOR_PAIR(PAIR_ENTITY));
+  //attron(COLOR_PAIR(PAIR_ENTITY));
   display("U", logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);
-  attroff(COLOR_PAIR(PAIR_ENTITY));
+  //attroff(COLOR_PAIR(PAIR_ENTITY));
   wnoutrefresh(gameWindow);
 }
