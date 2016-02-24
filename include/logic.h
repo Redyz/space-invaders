@@ -33,6 +33,7 @@ class Logic{
     void notify(Message *message);
 		void processMessages();
     int getScore(){ return score; }
+		void modScore(int mod){ score += mod; }
     int getCurrentTick(){ return currentTick; }
     Entity* getPlayer(){ return this->player; }
     EntV& getEntityVector(){ return entityVector; }

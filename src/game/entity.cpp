@@ -225,6 +225,7 @@ bool Ghost::move(int modX, int modY){
 
 void Ghost::doHit(Entity* hitter){
   //logic->notify(new InverDirectionMessage());
+	logic->modScore(10);
 }
 
 void Ghost::setTravelDirection(int direction){
@@ -250,6 +251,7 @@ bool Player::move(int modX, int modY){
 
 void Player::doHit(Entity* hitter){
 	setX(logic->getGameWidth()/2);
+	logic->modScore(-500);
 }
 
 bool Player::step(){

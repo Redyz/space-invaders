@@ -35,7 +35,7 @@ Logic::~Logic(){
 void Logic::init(){
 	this->menu = new Menu(this);
   currentTick = 0;
-  int numberOfGhosts = 500;
+  int numberOfGhosts = 100;
   int sideConstant = 5;
 
   //currently, for curses mode the game zone height is equivalent to the gameHeight

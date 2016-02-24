@@ -137,6 +137,7 @@ void GameOverMessage::execute(Logic* logic){
       case NO_MORE_ENEMIES: gameOverString += "You won; You repelled the alien invasion!"; break;
 			case QUIT_GAME: gameOverString += "You quit the game!"; break;
     }
+		gameOverString += " - Final score: " + SSTR(logic->getScore());
     Logger::log(gameOverString);
 		logic->notify(new ConsoleMessage(gameOverString));
     logic->setRunning(false);
