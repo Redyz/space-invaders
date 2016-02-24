@@ -37,13 +37,12 @@ void Window::setup(Logic* logic){
   this->input = new Input(logic);
 }
 void Window::initColors(){
-  //init_pair(PAIR_ENTITY, COLOR_GREEN, COLOR_BLACK);
-  //init_pair(PAIR_GHOST, COLOR_YELLOW, COLOR_BLACK);
+  init_pair(PAIR_ENTITY, COLOR_GREEN, COLOR_BLACK);
+  init_pair(PAIR_GHOST, COLOR_YELLOW, COLOR_BLACK);
 }
 void Window::clearWindow(){
 	if(this->logic->getCurrentTick() % 10 == 0)
-		werase(scoreWindow);//wclear(scoreWindow);
-	//wnoutrefresh(gameWindow);
+		werase(scoreWindow);
 	werase(gameWindow);
 };
 
@@ -53,7 +52,6 @@ void Window::inputStep(){
 void Window::draw(){
   drawScores();
 	drawGame();
-  //wmove(gameWindow, logic->getGameWidth(), logic->getGameHeight()-SCORE_HEIGHT);
   doupdate();
 }
 
@@ -72,7 +70,6 @@ void Window::display(std::string text, int x, int y, WINDOW* window){
 }
 
 void Window::debug(std::string text){
-  //mvwprintw(scoreWindow, 0, 10, text.c_str());
   display(text, 20, 0, scoreWindow);
 }
 
@@ -91,9 +88,6 @@ void Window::drawScores(){
 }
 
 void Window::drawGame(){
-	//for(int i = 0; i < logic->getGameHeight(); i++){
-		//setsyx(i, )	
-	//}
   std::vector<Entity*> entityVector = logic->getEntityVector();
   try{
     for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
@@ -115,8 +109,8 @@ void Window::drawGame(){
   }catch(...){
     Logger::log("Exception caught");
   }
-  //attron(COLOR_PAIR(PAIR_ENTITY));
+  attron(COLOR_PAIR(PAIR_ENTITY));
   display("U", logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);
-  //attroff(COLOR_PAIR(PAIR_ENTITY));
+  attroff(COLOR_PAIR(PAIR_ENTITY));
   wnoutrefresh(gameWindow);
 }

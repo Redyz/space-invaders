@@ -3,12 +3,19 @@
 #include <string>
 #include <ncurses.h>
 enum colorPairs{
-  PAIR_ENTITY,
+  PAIR_ENTITY = 1,
   PAIR_WALL,
   PAIR_BULLET,
   PAIR_TANK,
   PAIR_GHOST
 };
+
+static std::string WALL_IMG[] = { 
+"  XX  ", 
+" XXXX ", 
+"XX  XX"  
+};
+
 class Logic;
 class Input;
 class Window{

@@ -4,6 +4,7 @@
 #include "utility.h"
 #include "message.h"
 #include "menu.h"
+#include <string>
 #include <algorithm>
 #include <iostream>
 #include <list>
@@ -72,10 +73,12 @@ void Logic::init(){
   player->setY(getGameHeight());
   player->setX((int)getGameWidth()/2);
   gameZones[current->getY()][current->getX()] = current;
-  int totalSpread = getGameWidth() - 4;
-  int spacing = totalSpread / (3*5);
-  for(int i = 0; i < 5; i++){
-    createWall(5+(i*spacing), 5);
+  unsigned int totalSpread = getGameWidth() - 4;
+  unsigned int spacing = 11;
+	unsigned int yPos = getGameHeight() - 5;
+	unsigned int numberOfWalls = (unsigned int)totalSpread/11;
+  for(unsigned int i = 0; i < numberOfWalls; i++){
+    createWall(5+(i*spacing), yPos);
   }
   createEntity(player);
 #endif
@@ -97,19 +100,20 @@ bool Logic::createWall(int x, int y){
   try{
     Entity *wall;
     int currentX = 0, currentY = 0;
-    for(int row = 0; row < 2; row++){
-      for(int i = 0; i < 3; i++){
-        if(row != 1){
+		for(int curY = 0; curY < 3; curY++){
+			for(int curX = 0; curX < WALL_IMG[curY].length(); curX++){
+				char current = WALL_IMG[curY][curX];
+				if(current == 'X'){
           wall = new Wall(this);
-          currentX = x + i;
-          currentY = y + row;
+          currentX = x + curX;
+          currentY = y + curY;
           wall->setX(currentX);
           wall->setY(currentY);
           gameZones[wall->getY()][wall->getX()] = wall;
           createEntity(wall);
-        }
-      }
-    }
+				}
+			}
+		}
   }catch(...){
     Logger::log("Failed to create a wall");
   }
