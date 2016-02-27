@@ -236,6 +236,19 @@ void Ghost::invertTravelDirection(){
   travelDirection = (travelDirection == LEFT ? RIGHT : LEFT);
 }
 
+UFO::UFO(Logic *logic) : Ghost(logic){
+
+}
+
+void UFO::doHit(Entity *hitter){
+
+}
+
+bool UFO::step(){
+
+	return true;
+}
+
 Player::Player(Logic* logic) : Entity(logic){
   damage = -2;
   speed = 0;

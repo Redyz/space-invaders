@@ -4,7 +4,11 @@
 #include "entity.h"
 #include "utility.h"
 #include "tr1/memory"
+#ifdef IS_NT
+#include <curses.h>
+#else
 #include <ncurses.h>
+#endif
 #include <vector>
 #define SCORE_HEIGHT 2
 Window::Window(){

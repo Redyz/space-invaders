@@ -99,6 +99,14 @@ protected:
     int travelDirection;
 };
 
+class UFO : public Ghost{
+public:
+	UFO(Logic *logic);
+	bool step();
+protected:
+	void doHit(Entity *hitter);
+};
+
 class Player : public Entity{
 public:
     Player(Logic *logic);

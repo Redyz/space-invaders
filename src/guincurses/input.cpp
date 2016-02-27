@@ -1,10 +1,14 @@
 #include "logic.h"
+#include "config.h"
 #include "entity.h"
 #include "guincurses/input.h"
+#ifdef IS_NT
+#include <curses.h>
+#else
 #include <ncurses.h>
+#endif
 #include <curses.h>
 #include <string>
-#include "config.h"
 #include "utility.h"
 #include "message.h"
 #include <sstream>

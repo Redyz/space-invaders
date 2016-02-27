@@ -14,7 +14,7 @@ class Message{
 	private:
 		friend class Logic;
 		void setId(unsigned int id);
-		unsigned int messageId = -1;
+		unsigned int messageId = 0;
 };
 class DeathMessage : public Message{
   public:

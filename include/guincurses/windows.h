@@ -1,7 +1,12 @@
 #ifndef WINDOW_H
 #define WINDOW_H
+#include "config.h"
 #include <string>
+#ifdef IS_NT
+#include <curses.h>
+#else
 #include <ncurses.h>
+#endif
 enum colorPairs{
   PAIR_ENTITY = 1,
   PAIR_WALL,

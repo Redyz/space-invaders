@@ -15,7 +15,7 @@ Message::~Message(){
 }
 
 void Message::setId(unsigned int id){
-	if(this->messageId == -1)
+	if(this->messageId == 0)
 		this->messageId = id;
 	else
 		Logger::log("Error: trying to change message id more than once (" + SSTR(this->messageId) + ")");

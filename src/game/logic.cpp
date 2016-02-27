@@ -12,7 +12,7 @@
 #include <math.h>
 #include <stdexcept>
 
-Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0), currentMessageId(0), currentTick(0){
+Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0), currentMessageId(10), currentTick(0){
   this->window = window;
   Logger::log("BEGAN NEW SESSION");
 }
@@ -35,8 +35,8 @@ Logic::~Logic(){
 void Logic::init(){
 	this->menu = new Menu(this);
   currentTick = 0;
-  int numberOfGhosts = 100;
-  int sideConstant = 5;
+  unsigned int numberOfGhosts = 100;
+  unsigned int sideConstant = 5;
 
   //currently, for curses mode the game zone height is equivalent to the gameHeight
 	// bad alloc here with gameheight in SFML mode
@@ -51,8 +51,8 @@ void Logic::init(){
 
   Logger::log("Initializing game session with: " + SSTR("Height: " << gameZones.size()) + SSTR(" Width: " << gameZones[0].size()));
   Entity* current;
-  int currentX = sideConstant, currentY = 0;
-  for(int i=0;i<numberOfGhosts;i++){
+  unsigned int currentX = sideConstant, currentY = 0;
+  for(unsigned int i=0;i<numberOfGhosts;i++){
     current = new Ghost(this);
     if(currentX >= getGameWidth()-sideConstant){
       currentX = sideConstant;
@@ -100,8 +100,8 @@ bool Logic::createWall(int x, int y){
   try{
     Entity *wall;
     int currentX = 0, currentY = 0;
-		for(int curY = 0; curY < 3; curY++){
-			for(int curX = 0; curX < WALL_IMG[curY].length(); curX++){
+		for(unsigned int curY = 0; curY < 3; curY++){
+			for(unsigned int curX = 0; curX < WALL_IMG[curY].length(); curX++){
 				char current = WALL_IMG[curY][curX];
 				if(current == 'X'){
           wall = new Wall(this);
