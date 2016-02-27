@@ -34,6 +34,7 @@ class Window{
     void display(std::string text, int x, int y, WINDOW* window);
     void setup(Logic *logic);
     void clearWindow();
+		void destroy();
     int getWidth(){ return width; }
     int getHeight(){ return height; }
     void initColors();

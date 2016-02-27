@@ -22,6 +22,10 @@ enum directions{
   DDOWNRIGHT
 };
 
+
+#define GHOST_FIRE_CHANCE 95
+#define UFO_SPAWN_TIMER  60 //in seconds
+
 class Logic{
   public:
     Logic(Window *window);

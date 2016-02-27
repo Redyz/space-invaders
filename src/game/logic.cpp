@@ -68,11 +68,6 @@ void Logic::init(){
     createEntity(current);
     currentX+=2;
   }
-  current = new Player(this);
-  player = current; //arbitrary for now
-  player->setY(getGameHeight());
-  player->setX((int)getGameWidth()/2);
-  gameZones[current->getY()][current->getX()] = current;
   unsigned int totalSpread = getGameWidth() - 4;
   unsigned int spacing = 11;
 	unsigned int yPos = getGameHeight() - 5;
@@ -80,6 +75,11 @@ void Logic::init(){
   for(unsigned int i = 0; i < numberOfWalls; i++){
     createWall(5+(i*spacing), yPos);
   }
+  current = new Player(this);
+  player = current; //arbitrary for now
+  player->setY(getGameHeight());
+  player->setX((int)getGameWidth()/2);
+  gameZones[current->getY()][current->getX()] = current;
   createEntity(player);
 #endif
 }
@@ -87,12 +87,8 @@ void Logic::init(){
 int Logic::createEntity(Entity* newEntity){
   newEntity->setUniqueId(SSTR(""<<newEntity->getType()) + SSTR("-" << currentEntityIndex++));
   entityVector.push_back(newEntity);
-  //Logger::log("Current entity: "  + SSTR(newEntity->getType()) + " and enemy: " + SSTR("" << ENEMY));
-  if(newEntity->getType() & ENEMY){
-    //Logger::log("Created an enemy, the type: " + SSTR(newEntity->getType()));
+  if(newEntity->getType() & ENEMY)
     enemyVector.push_back(newEntity);
-  }
-  //Logger::log("New entity created: " + newEntity->getUniqueId());
 	return 0;
 }
 
@@ -114,6 +110,7 @@ bool Logic::createWall(int x, int y){
 				}
 			}
 		}
+		return true;
   }catch(...){
     Logger::log("Failed to create a wall");
   }
@@ -151,9 +148,15 @@ void Logic::processMessages(){
 	}
 }
 
+static unsigned int lastSpawnedUfo = 0; 
 void Logic::step(){
 	processMessages();
   Entity* current;
+	if(currentTick - lastSpawnedUfo > 100 && currentTick*TICK_LENGTH/1000 % UFO_SPAWN_TIMER == 0){
+		createEntity(new UFO(this));
+		Logger::log(SSTR(currentTick*TICK_LENGTH/1000) + " seconds elapsed");
+		lastSpawnedUfo = currentTick;
+	}
   for(unsigned int i = 0; i < entityVector.size(); i++){
     current = entityVector[i];
     current->step(); //the entity may die after .step, don't do anything after it

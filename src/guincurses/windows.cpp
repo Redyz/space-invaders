@@ -30,8 +30,12 @@ Window::Window(){
 }
 
 Window::~Window(){
-  endwin();
+	destroy();
 	delete input;
+}
+
+void Window::destroy(){
+  endwin();
 }
 
 void Window::setup(Logic* logic){
@@ -61,12 +65,10 @@ void Window::draw(){
 
 void Window::display(std::string text){
   wprintw(gameWindow, text.c_str());
-	std::cout << text << std::endl;
 }
 
 void Window::display(std::string text, int x, int y){
   mvwprintw(gameWindow, y, x, text.c_str());
-	std::cout << text << std::endl;
 }
 
 void Window::display(std::string text, int x, int y, WINDOW* window){
@@ -74,14 +76,19 @@ void Window::display(std::string text, int x, int y, WINDOW* window){
 }
 
 void Window::debug(std::string text){
-  display(text, 20, 0, scoreWindow);
+#if IS_DEBUG
+  display(text, 25, 0, scoreWindow);
+#endif
 }
 
 void Window::drawScores(){
   int score = logic->getScore(); 
-  std::string stringScore = "Score: " + SSTR(score) + SSTR(" Tick: " << logic->getCurrentTick());
+  std::string stringScore = "Score: " + SSTR(score);
   display(stringScore, 0, 0, scoreWindow);
-  int lives = logic->getPlayer()->getLife();
+#if IS_DEBUG
+	display(SSTR(" Tick: " << logic->getCurrentTick()), 10, 0, scoreWindow);
+#endif
+  unsigned int lives = logic->getPlayer()->getLife();
   display(SSTR("Lives: " << lives), width - 9, 0, scoreWindow);
   std::string bottomBorder = "";
   for(int i = 0; i < width; i++){
@@ -96,18 +103,23 @@ void Window::drawGame(){
   try{
     for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
       Entity* currentEntity = *it;
+			char displayCar = '!';
       switch(currentEntity->getType()){
         case ENTITY:
         case GHOST:
-          display("@", currentEntity->getX(), currentEntity->getY(), gameWindow);
+					displayCar = '@';
           break;
         case BULLET:
-          display("|", currentEntity->getX(), currentEntity->getY(), gameWindow);
+					displayCar = '|';
           break;
         case WALL:
-          display("X", currentEntity->getX(), currentEntity->getY(), gameWindow);
+					displayCar = 'X';
+          break;
+        case UFOS:
+					displayCar = '#';
           break;
       }
+			display(SSTR(displayCar), currentEntity->getX(), currentEntity->getY(), gameWindow);
     }
 
   }catch(...){

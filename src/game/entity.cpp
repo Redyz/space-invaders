@@ -237,16 +237,24 @@ void Ghost::invertTravelDirection(){
 }
 
 UFO::UFO(Logic *logic) : Ghost(logic){
-
+  speed = 3;
+  life = 1;
+  type = UFOS;
+	setX(0);
+	setY(0);
+	setTravelDirection(RIGHT);
 }
 
 void UFO::doHit(Entity *hitter){
-
+	Logger::log("Killed a UFO");
+	logic->modScore(500);
 }
 
 bool UFO::step(){
-
-	return true;
+	bool moved = Ghost::step();
+	if(!moved)
+		logic->notify(new DeathMessage(this));
+	return moved;
 }
 
 Player::Player(Logic* logic) : Entity(logic){

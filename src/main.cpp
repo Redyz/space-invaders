@@ -6,15 +6,6 @@
 #include "logic.h"
 #include "utility.h"
 
-#if SFML
-	#include "gui/windows.h"
-#else
-	#include "guincurses/windows.h"
-#endif
-
-/**
- TODO: Pass messages through a queue first
- */
 int main(int argc, char* argv[]) {
 #if defined(IS_UNIX) && defined(IS_DEBUG)
 	std::cout << "Sleeping to allow attach" << std::endl;
@@ -32,7 +23,7 @@ int main(int argc, char* argv[]) {
     window.clearWindow();
     logic.step();
     window.inputStep();
-		window.debug("Test: " + SSTR(logic.getCurrentTick()));
+		window.debug("Time: " + SSTR(logic.getCurrentTick()*TICK_LENGTH/1000));
     window.draw();
 #if IS_SFML
     sleep(TICK_LENGTH/1000); //1000 milliseconds => 1 sec
@@ -41,7 +32,7 @@ int main(int argc, char* argv[]) {
 #endif
     logic.incrementTick();
   }
-	window.~Window(); // force destroy window
+	window.destroy();
 	logic.processMessages(); // Finish up messages
   std::cout << "Exiting game, thank you for playing!" << std::endl;
 }

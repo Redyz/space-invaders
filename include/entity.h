@@ -3,17 +3,17 @@
 #include <string>
 #include <cstdlib>
 
-#define GHOST_FIRE_CHANCE 95
 typedef enum entityType{
   ENTITY = 1,
   WALL = 1 << 1,
   BULLET = 1 << 2,
   TANK = 1 << 3,
   GHOST = 1 << 4,
-  PLAYER = 1 << 5
+  UFOS = 1 << 5,
+  PLAYER = 1 << 6
 }entityTypes;
 typedef enum entityGroup{
-    ENEMY = GHOST | BULLET,
+    ENEMY = GHOST | BULLET | UFOS,
     FRIENDLY = PLAYER | WALL
 }entityGroups;
 class Logic;
