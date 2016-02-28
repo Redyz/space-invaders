@@ -22,6 +22,7 @@ class Window{
     void display(std::string text, int x, int y);
     void display(std::string text, int x, int y, WINDOW* window);
     void setup(Logic *logic);
+		void configText(sf::Text &text);
     void clearWindow();
 		void destroy();
     int getWidth(){ return width; }

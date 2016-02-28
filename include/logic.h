@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
+#include <string>
 #include <deque>
 
 class Entity;
@@ -25,6 +26,7 @@ enum directions{
 #define GHOST_FIRE_CHANCE 95
 #define UFO_SPAWN_TIMER  60 // in seconds
 #define SFML_FRAME_LIMIT 60 // in FPS
+#define TICK_LENGTH 40
 
 class Logic{
   public:
@@ -39,6 +41,7 @@ class Logic{
     int getScore(){ return score; }
 		void modScore(int mod){ score += mod; }
     int getCurrentTick(){ return currentTick; }
+		int getSecondsSinceStart();
     Entity* getPlayer(){ return this->player; }
     EntV& getEntityVector(){ return entityVector; }
     int getGameHeight(){ return gameHeight;}
@@ -61,7 +64,6 @@ class Logic{
 		Menu *menu;
     EntV entityVector; //container for all entities
     EntV enemyVector;
-    //EntV backgroundEntityVector; //such as walls, bullets, etc
     std::vector<EntV> gameZones; //container for the game matrix, indicating presence using coordinates
     Entity* player;
     bool running;

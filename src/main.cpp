@@ -23,15 +23,10 @@ int main(int argc, char* argv[]) {
     window.clearWindow();
     logic.step();
     window.inputStep();
-#if IS_SFML
-		window.debug("Time: " + SSTR(logic.getCurrentTick()*(1000/SFML_FRAME_LIMIT)/1000));
-#else
-		window.debug("Time: " + SSTR(logic.getCurrentTick()*TICK_LENGTH/1000));
-#endif
+		window.debug("Time: " + SSTR(logic.getSecondsSinceStart()));
     window.draw();
-#if IS_SFML
-    //sleep(TICK_LENGTH/1000); //1000 milliseconds => 1 sec
-#else
+
+#if !IS_SFML
 		napms(TICK_LENGTH);
 #endif
     logic.incrementTick();

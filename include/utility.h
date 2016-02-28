@@ -3,15 +3,12 @@
 #include <string>
 //Macro from http://stackoverflow.com/questions/5590381/easiest-way-to-convert-int-to-string-in-c
 #include <sstream>
+#include <cstdio>
 #define SSTR( x ) dynamic_cast< std::ostringstream & >( \
     ( std::ostringstream() << std::dec << x ) ).str()
 #define LOG_PATH "logs/logs.txt"
 
-//#ifdef IS_DEBUG
-//static bool DEBUG = true;
-//#else
-//static bool DEBUG = false;
-//#endif
+#define PPRINT( x, y ) printf("Adress of %s, 0%p\n", y, (void*)x);
 
 class Window;
 class Utility{

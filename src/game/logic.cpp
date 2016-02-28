@@ -1,6 +1,6 @@
+#include "config.h"
 #include "logic.h"
 #include "entity.h"
-#include "config.h"
 #include "utility.h"
 #include "message.h"
 #include "menu.h"
@@ -13,8 +13,8 @@
 #include <stdexcept>
 
 Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0), currentMessageId(10), currentTick(0){
-  this->window = window;
   Logger::log("BEGAN NEW SESSION");
+  this->window = window;
 }
 
 
@@ -38,8 +38,7 @@ void Logic::init(){
   unsigned int sideConstant = 5;
 
   // currently, for curses mode the game zone height is equivalent to the gameHeight
-#if !IS_SFML
-  gameZones.resize(gameHeight+1); //+1? TODO: find out why this is here
+  gameZones.resize(gameHeight+1);
   for(unsigned int y = 0; y < gameHeight+1; y++){
     gameZones[y].resize(gameWidth);
     for(unsigned int x = 0; x < gameWidth; x++){
@@ -79,7 +78,6 @@ void Logic::init(){
   player->setX((int)getGameWidth()/2);
   gameZones[current->getY()][current->getX()] = current;
   createEntity(player);
-#endif
 }
 
 int Logic::createEntity(Entity* newEntity){
@@ -91,6 +89,7 @@ int Logic::createEntity(Entity* newEntity){
 }
 
 bool Logic::createWall(int x, int y){
+#if !IS_SFML
   try{
     Entity *wall;
     int currentX = 0, currentY = 0;
@@ -112,6 +111,7 @@ bool Logic::createWall(int x, int y){
   }catch(...){
     Logger::log("Failed to create a wall");
   }
+#endif
   return false;
 }
 
@@ -150,22 +150,28 @@ static unsigned int lastSpawnedUfo = 0;
 void Logic::step(){
 	processMessages();
   Entity* current;
-#if !IS_SFML
-	if(currentTick - lastSpawnedUfo > 100 && currentTick*TICK_LENGTH/1000 % UFO_SPAWN_TIMER == 0){
+	if(currentTick - lastSpawnedUfo > 100 && getSecondsSinceStart() % UFO_SPAWN_TIMER == 0){
 		createEntity(new UFO(this));
-		Logger::log(SSTR(currentTick*TICK_LENGTH/1000) + " seconds elapsed");
+		Logger::log(SSTR(getSecondsSinceStart()) + " seconds elapsed");
 		lastSpawnedUfo = currentTick;
 	}
-#endif
   for(unsigned int i = 0; i < entityVector.size(); i++){
     current = entityVector[i];
     current->step(); //the entity may die after .step, don't do anything after it
   }
 
-#if !IS_SFML
 	if(enemyVector.size() == 0)
 		notify(new GameOverMessage(NO_MORE_ENEMIES));
+}
+
+int Logic::getSecondsSinceStart(){
+	int seconds;
+#if IS_SFML
+	seconds = getCurrentTick()*(1000/SFML_FRAME_LIMIT)/1000;
+#else
+	seconds = getCurrentTick()*TICK_LENGTH/1000;
 #endif
+	return seconds;
 }
 
 void Logic::notify(Message *message){

@@ -71,13 +71,6 @@ else()
       )
 endif(IS_SFML)
 set(PROJECT_SRC ${PROJECT_SRC} ${GUI_SRC})
-message("Include path: ${CMAKE_INCLUDE_PATH}")
-message("Prefix path: ${CMAKE_PREFIX_PATH}")
-#message("Files: ${PROJECT_SRC}")
-#list(LENGTH PROJECT_SRC fileCount)
-#message("Full project header list: ${PROJECT_SRC}")
-#message("File count: ${fileCount}")
-
 
 #
 # if(ARCH_32BITS) // if(ARCH_64BITS)

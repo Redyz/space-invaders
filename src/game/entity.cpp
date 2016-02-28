@@ -31,7 +31,6 @@ std::string Entity::toString(){
 
 bool Entity::testMove(int modX, int modY){
   if(x + modX < 0 || x + modX > logic->getGameWidth()){
-    //Logger::log(SSTR("Game height: " << logic->getGameWidth()) + SSTR(" current: " << x+modX));
     return false;
   }
   if(y + modY < 0 || y + modY > logic->getGameHeight()){
@@ -112,8 +111,6 @@ bool Entity::step(){
   }
   if(currentTick - lastAction > firingSpeed){
     canAct = true;
-    /*if(type == GHOST)
-      Logger::log("Can act");*/
   }
   doTickUpdate();
   return true;
@@ -204,15 +201,13 @@ bool Ghost::step(){
   }
   
   if(canAct){
-    //if(rand() % 95 < 1){
     if(rand() % GHOST_FIRE_CHANCE < 1){
       fire(DOWN);
     }
     canAct = false;
     lastAction = logic->getCurrentTick();
-  }else{
-    //Logger::log("Can't even act");
   }
+  
 	return true;
 }
 

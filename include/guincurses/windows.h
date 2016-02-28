@@ -15,7 +15,7 @@ enum colorPairs{
   PAIR_GHOST
 };
 
-static std::string WALL_IMG[] = { 
+static const std::string WALL_IMG[] = { 
 "  XX  ", 
 " XXXX ", 
 "XX  XX"  
