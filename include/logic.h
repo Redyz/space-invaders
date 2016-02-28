@@ -22,7 +22,6 @@ enum directions{
   DDOWNRIGHT
 };
 
-
 #define GHOST_FIRE_CHANCE 95
 #define UFO_SPAWN_TIMER  60 //in seconds
 
@@ -61,7 +60,7 @@ class Logic{
 		Menu *menu;
     EntV entityVector; //container for all entities
     EntV enemyVector;
-    EntV backgroundEntityVector; //such as walls, bullets, etc
+    //EntV backgroundEntityVector; //such as walls, bullets, etc
     std::vector<EntV> gameZones; //container for the game matrix, indicating presence using coordinates
     Entity* player;
     bool running;

@@ -29,17 +29,15 @@ Logic::~Logic(){
   enemyVector.clear();
   gameZones.clear();
 
-	// Seemingly some of this isn't called when the destructor is
 	Logger::log("Bye!");
 }
 void Logic::init(){
 	this->menu = new Menu(this);
   currentTick = 0;
-  unsigned int numberOfGhosts = 100;
+  unsigned int numberOfGhosts = 55;
   unsigned int sideConstant = 5;
 
-  //currently, for curses mode the game zone height is equivalent to the gameHeight
-	// bad alloc here with gameheight in SFML mode
+  // currently, for curses mode the game zone height is equivalent to the gameHeight
 #if !IS_SFML
   gameZones.resize(gameHeight+1); //+1? TODO: find out why this is here
   for(unsigned int y = 0; y < gameHeight+1; y++){
@@ -72,9 +70,9 @@ void Logic::init(){
   unsigned int spacing = 11;
 	unsigned int yPos = getGameHeight() - 5;
 	unsigned int numberOfWalls = (unsigned int)totalSpread/11;
-  for(unsigned int i = 0; i < numberOfWalls; i++){
-    createWall(5+(i*spacing), yPos);
-  }
+	for(unsigned int i = 0; i < numberOfWalls; i++)
+		createWall(5+(i*spacing), yPos);
+
   current = new Player(this);
   player = current; //arbitrary for now
   player->setY(getGameHeight());
@@ -85,7 +83,7 @@ void Logic::init(){
 }
 
 int Logic::createEntity(Entity* newEntity){
-  newEntity->setUniqueId(SSTR(""<<newEntity->getType()) + SSTR("-" << currentEntityIndex++));
+  newEntity->setUniqueId(SSTR(newEntity->getType()) + SSTR("-" << currentEntityIndex++));
   entityVector.push_back(newEntity);
   if(newEntity->getType() & ENEMY)
     enemyVector.push_back(newEntity);
@@ -166,8 +164,8 @@ void Logic::step(){
 	if(enemyVector.size() == 0)
 		notify(new GameOverMessage(NO_MORE_ENEMIES));
 #endif
-  //Logger::log("Current number of enemies: " + SSTR(""<<enemyVector.size()));
 }
+
 void Logic::notify(Message *message){
 	message->setId(currentMessageId++);
 	if(message->canExecute(this)){
@@ -178,20 +176,18 @@ void Logic::notify(Message *message){
 }
 
 int Logic::deleteEntity(Entity *entity){
-  std::vector<EntV*> lists;
-  if(lists.size() == 0){
-    lists.push_back(&entityVector);
-    lists.push_back(&enemyVector);
-  }
-  EntV::iterator current;
-  for(unsigned int i = 0; i < lists.size(); i++){
-    current = std::find(lists[i]->begin(), lists[i]->end(), entity);
-    if(current != lists[i]->end() && *current != 0){
-			gameZones[(*current)->getY()][(*current)->getX()] = NULL; //set the pointer to null
-			lists[i]->erase(current);
-			delete entity;
-			return 0;
-		}
-  }
-	return 1;
+	auto positionEntity = std::find(entityVector.begin(), entityVector.end(), entity);
+	auto positionEnemy = std::find(enemyVector.begin(), enemyVector.end(), entity);
+	if(positionEntity != entityVector.end()){
+	
+		// Remove entity from enemy vector
+		if(positionEnemy != enemyVector.end())
+			positionEnemy = enemyVector.erase(positionEnemy);	
+			
+		gameZones[(*positionEntity)->getY()][(*positionEntity)->getX()] = NULL; //set the pointer to null
+		delete *positionEntity;
+		positionEntity = entityVector.erase(positionEntity);
+		return 0;
+	}
+return 1;
 }

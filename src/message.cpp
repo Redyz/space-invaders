@@ -92,12 +92,14 @@ HitMessage::HitMessage(Entity* firer, Entity* fired){
 }
 
 void HitMessage::execute(Logic *logic){
+#if IS_DEBUG
 	if(firer == NULL)
 		Logger::log("Firer is null");
 	else if(fired == NULL)
 		Logger::log("Fired is null");
 	else
 		Logger::log(firer->getUniqueId() + " just hit " + fired->getUniqueId());
+#endif
   fired->modLife(firer->getDamage(), firer);
 }
 
@@ -154,7 +156,7 @@ std::string ConsoleMessage::toString(){
 
 void ConsoleMessage::execute(Logic *logic){
 	Logger::log("Processed message " + SSTR(message));
-	logic->window->display(message);
+	logic->window->console(message);
 }
 
 bool ConsoleMessage::canExecute(Logic *logic){

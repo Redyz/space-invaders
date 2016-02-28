@@ -81,6 +81,10 @@ void Window::debug(std::string text){
 #endif
 }
 
+void Window::console(std::string text){
+	std::cout << text << std::endl;
+}
+
 void Window::drawScores(){
   int score = logic->getScore(); 
   std::string stringScore = "Score: " + SSTR(score);

@@ -36,13 +36,15 @@ void Input::step(){
       //case KEY_DOWN:
         //logic->getPlayer()->move(0, 1);
         //break;
-			case 'w':
+			case 'r':
 				logic->notify(new ArmageddonMessage());
 				Logger::log("ARMAGEDDON!");
 				break;
+			case 'a':
       case KEY_LEFT:
         logic->getPlayer()->move(-1, 0);
         break;
+			case 'd':
       case KEY_RIGHT:
         logic->getPlayer()->move(1, 0);
         break;

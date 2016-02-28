@@ -52,4 +52,8 @@ void Window::display(std::string text){
 	debug(text);
 }
 
+void Window::console(std::string text){
+	std::cout << text << std::endl;
+}
+
 
