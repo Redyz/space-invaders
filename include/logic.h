@@ -23,7 +23,8 @@ enum directions{
 };
 
 #define GHOST_FIRE_CHANCE 95
-#define UFO_SPAWN_TIMER  60 //in seconds
+#define UFO_SPAWN_TIMER  60 // in seconds
+#define SFML_FRAME_LIMIT 60 // in FPS
 
 class Logic{
   public:

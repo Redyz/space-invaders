@@ -4,6 +4,8 @@
 #include <SFML/Graphics/Text.hpp>
 
 
+static sf::Sprite sprite;
+static sf::Texture texture;
 Window::Window(){
 	sfWindow = new sf::RenderWindow();
 	font = new sf::Font();
@@ -13,6 +15,8 @@ Window::Window(){
 	debugText->setColor(sf::Color::White);
 	//TODO: Portable paths
 	font->loadFromFile("fonts/Comprehension-Dark.ttf");
+	texture.loadFromFile("assets/img/Spaceship.png");
+	sprite.setTexture(texture);
 }
 
 Window::~Window(){
@@ -23,6 +27,7 @@ Window::~Window(){
 
 void Window::setup(Logic *logic){
 	sfWindow->create(sf::VideoMode(800, 600), "Window");
+	sfWindow->setFramerateLimit(SFML_FRAME_LIMIT);
 }
 
 void Window::clearWindow(){
@@ -41,6 +46,7 @@ void Window::inputStep(){
 void Window::draw(){
 	sfWindow->clear(sf::Color::Blue);
 	sfWindow->draw(*debugText);
+	sfWindow->draw(sprite);
 	sfWindow->display();
 }
 
