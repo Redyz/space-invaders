@@ -1,15 +1,18 @@
+#include "tr1/memory"
 #include "guincurses/input.h"
 #include "guincurses/windows.h"
 #include "logic.h"
 #include "entity.h"
 #include "utility.h"
-#include "tr1/memory"
+#include "menu.h"
+
 #ifdef IS_NT
 #include <curses.h>
 #else
 #include <ncurses.h>
 #endif
 #include <vector>
+
 #define SCORE_HEIGHT 2
 Window::Window(){
   initscr();
@@ -32,6 +35,7 @@ Window::Window(){
 Window::~Window(){
 	destroy();
 	delete input;
+  delete menu;
 }
 
 void Window::destroy(){
@@ -43,6 +47,8 @@ void Window::setup(Logic* logic){
   logic->setGameHeight(height - SCORE_HEIGHT-1);
   this->logic = logic;
   this->input = new Input(logic);
+
+  this->menu = new Menu(logic);
 }
 void Window::initColors(){
   init_pair(PAIR_ENTITY, COLOR_GREEN, COLOR_BLACK);
@@ -59,7 +65,10 @@ void Window::inputStep(){
 }
 void Window::draw(){
   drawScores();
+  drawMenu();
 	drawGame();
+  wnoutrefresh(gameWindow);
+  wnoutrefresh(scoreWindow);
   doupdate();
 }
 
@@ -99,7 +108,6 @@ void Window::drawScores(){
     bottomBorder += "_";
   }
   display(bottomBorder, 0, 1, scoreWindow);
-  wnoutrefresh(scoreWindow);
 }
 
 void Window::drawGame(){
@@ -132,5 +140,32 @@ void Window::drawGame(){
   attron(COLOR_PAIR(PAIR_ENTITY));
   display("U", logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);
   attroff(COLOR_PAIR(PAIR_ENTITY));
-  wnoutrefresh(gameWindow);
+}
+
+void Window::drawMenu(){
+  //Logger::log(SSTR("Drawing the menu: " << (int)logic->getGameWidth()/2 << " " << (int)logic->getGameHeight()/2));
+  int currentInd = 0;
+  int textOffset = 0;
+  MenuComponent* current = menu->getTop();
+  do{
+    textOffset = current->text.size()/2;
+    if(current == menu->getSelected())
+      display(SSTR(">" << current->text << "<"), logic->getGameWidth()/2 + textOffset+1 - (current->text.length()+2) , logic->getGameHeight()/2 + currentInd, gameWindow);
+    else
+      display(current->text, logic->getGameWidth()/2 + textOffset - current->text.length(), logic->getGameHeight()/2 + currentInd, gameWindow);
+    current = current->down;
+    currentInd++;
+  }while(current != menu->getTop());
+}
+
+void Window::menuUp(){
+  menu->goUp();
+}
+
+void Window::menuDown(){
+  menu->goDown();
+}
+
+void Window::menuSelect(){
+  menu->getSelected()->activate();
 }

@@ -7,6 +7,9 @@
 #else
 #include <ncurses.h>
 #endif
+
+class Menu;
+
 enum colorPairs{
   PAIR_ENTITY = 1,
   PAIR_WALL,
@@ -40,9 +43,15 @@ class Window{
     int getHeight(){ return height; }
     void initColors();
     void inputStep();
+    
+    //TODO Think this through
+    void menuUp();
+    void menuDown();
+    void menuSelect();
   private:
     void drawScores();
     void drawGame();
+    void drawMenu();
   private:
     WINDOW* gameWindow;
     WINDOW* scoreWindow;
@@ -50,6 +59,8 @@ class Window{
     int height;
     Logic* logic;
     Input* input;
+
+    Menu* menu;
 };
 
 #endif

@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
     window.clearWindow();
     logic.step();
     window.inputStep();
-		window.debug("Time: " + SSTR(logic.getSecondsSinceStart()));
+    window.debug("Time: " + SSTR(logic.getSecondsSinceStart()));
     window.draw();
 
 #if !IS_SFML
@@ -31,6 +31,7 @@ int main(int argc, char* argv[]) {
 #endif
     logic.incrementTick();
   }
+
 	window.destroy();
 	logic.processMessages(); // Finish up messages
   std::cout << "Exiting game, thank you for playing!" << std::endl;

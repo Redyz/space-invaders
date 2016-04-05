@@ -3,7 +3,6 @@
 #include "entity.h"
 #include "utility.h"
 #include "message.h"
-#include "menu.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -19,7 +18,6 @@ Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0), c
 
 
 Logic::~Logic(){
-	delete menu;
 
 	// Free all entities
 	for(auto current : entityVector)
@@ -32,7 +30,6 @@ Logic::~Logic(){
 	Logger::log("Bye!");
 }
 void Logic::init(){
-	this->menu = new Menu(this);
   currentTick = 0;
   unsigned int numberOfGhosts = 55;
   unsigned int sideConstant = 5;

@@ -30,12 +30,15 @@ void Input::step(){
 				logic->notify(new GameOverMessage(QUIT_GAME));
         //logic->setRunning(false);
         break;
-      //case KEY_UP:
-        //logic->getPlayer()->move(0, -1);
-        //break;
-      //case KEY_DOWN:
-        //logic->getPlayer()->move(0, 1);
-        //break;
+      case KEY_UP:
+        logic->window->menuUp();
+        break;
+      case KEY_DOWN:
+        logic->window->menuDown();
+        break;
+      case '\n':
+        logic->window->menuSelect();
+        break;
 			case 'r':
 				logic->notify(new ArmageddonMessage());
 				Logger::log("ARMAGEDDON!");

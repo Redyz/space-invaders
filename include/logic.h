@@ -23,7 +23,7 @@ enum directions{
   DDOWNRIGHT
 };
 
-#define GHOST_FIRE_CHANCE 95
+#define GHOST_FIRE_CHANCE 70
 #define UFO_SPAWN_TIMER  60 // in seconds
 #define SFML_FRAME_LIMIT 60 // in FPS
 #define TICK_LENGTH 40
