@@ -31,9 +31,13 @@ class Menu{
 		MenuComponent* getTop(){ return top; }
 		MenuComponent* getSelected(){ return selected; }
 
+    bool isVisible() { return visible; }
+    void setVisible(bool visible) { this->visible = visible; }
+
 	private:
-    unsigned int itemCount;
 		MenuComponent *top;
 		MenuComponent *selected;
+
+    bool visible;
 };
 #endif

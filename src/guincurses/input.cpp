@@ -25,8 +25,11 @@ void Input::step(){
   if(c != ERR){
     //const char *name = keyname( c );
     switch(c){
-      case 'q':
 			case 27: // Escape key
+        logic->setGameState(PAUSED);
+        logic->window->menuVisible(true);
+        break;
+      case 'q':
 				logic->notify(new GameOverMessage(QUIT_GAME));
         //logic->setRunning(false);
         break;
@@ -45,14 +48,17 @@ void Input::step(){
 				break;
 			case 'a':
       case KEY_LEFT:
-        logic->getPlayer()->move(-1, 0);
+        if(logic->getGameRunning())
+          logic->getPlayer()->move(-1, 0);
         break;
 			case 'd':
       case KEY_RIGHT:
-        logic->getPlayer()->move(1, 0);
+        if(logic->getGameRunning())
+          logic->getPlayer()->move(1, 0);
         break;
       case ' ':
-        logic->getPlayer()->fire(UP);
+        if(logic->getGameRunning())
+          logic->getPlayer()->fire(UP);
         break;
 			default:
 #ifdef IS_DEBUG

@@ -143,7 +143,8 @@ void Window::drawGame(){
 }
 
 void Window::drawMenu(){
-  //Logger::log(SSTR("Drawing the menu: " << (int)logic->getGameWidth()/2 << " " << (int)logic->getGameHeight()/2));
+  if(!menu->isVisible())
+    return;
   int currentInd = 0;
   int textOffset = 0;
   MenuComponent* current = menu->getTop();
@@ -168,4 +169,8 @@ void Window::menuDown(){
 
 void Window::menuSelect(){
   menu->getSelected()->activate();
+}
+
+void Window::menuVisible(bool visible){
+  menu->setVisible(visible);
 }

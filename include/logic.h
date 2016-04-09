@@ -57,6 +57,7 @@ class Logic{
     void incrementTick(){ currentTick++; }
     void notifyMove(Entity *mover, int newX, int newY);
     gameState getGameState(){ return state; }
+    bool getGameRunning() { return (state == UNPAUSED); }
     void setGameState(gameState state){ this->state = state; }
     bool createWall(int x, int y);
     int createEntity(Entity* newEntity);

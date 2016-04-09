@@ -48,6 +48,7 @@ class Window{
     void menuUp();
     void menuDown();
     void menuSelect();
+    void menuVisible(bool visible);
   private:
     void drawScores();
     void drawGame();

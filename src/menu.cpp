@@ -2,21 +2,16 @@
 #include "include/logic.h"
 #include "include/menu.h"
 
-Menu::Menu(Logic *logic) : itemCount(0){
-  top = new MenuComponent(logic, "Top", NULL);
+Menu::Menu(Logic *logic) : visible(true){
+  top = new MenuComponent(logic, "Start game", 
+      [=]{
+        Logger::log("Activated!");
+        setVisible(false);
+        logic->setGameState(UNPAUSED);
+      });
   selected = top;
 
-  addMenuComponent(new MenuComponent(logic, "Test1", [=]{Logger::log("Activated!");}));
-  addMenuComponent(new MenuComponent(logic, "Test1", [=]{Logger::log("Activated!");}));
-  addMenuComponent(new MenuComponent(logic, "Test1", [=]{Logger::log("Activated!");}));
-  addMenuComponent(new MenuComponent(logic, "Test1", [=]{Logger::log("Activated!");}));
-  addMenuComponent(new MenuComponent(logic, "Test1", [=]{Logger::log("Activated!");}));
-  addMenuComponent(new MenuComponent(logic, "Test1", [=]{Logger::log("Activated!");}));
-  addMenuComponent(new MenuComponent(logic, "Test3", NULL));
-  addMenuComponent(new MenuComponent(logic, "Test2", NULL));
-  addMenuComponent(new MenuComponent(logic, "Test2", NULL));
-  addMenuComponent(new MenuComponent(logic, "Test2", NULL));
-  addMenuComponent(new MenuComponent(logic, "Test2", NULL));
+  addMenuComponent(top);
   addMenuComponent(new MenuComponent(logic, "Quit", [=]{logic->setGameState(QUITTING);}));
 
   // Link top to bottom and vice versa
@@ -40,7 +35,6 @@ Menu::~Menu(){
 }
 
 void Menu::addMenuComponent(MenuComponent* component){
-  itemCount++;
   selected->down = component;
   component->up = selected;
   selected = component;
