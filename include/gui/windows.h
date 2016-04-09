@@ -1,6 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 #include <string>
+#include "menu.h"
 
 namespace sf{
 	class RenderWindow;;
@@ -31,13 +32,16 @@ class Window{
     void inputStep();
 
     //TODO Think this through
-    void menuUp();
-    void menuDown();
-    void menuSelect();
+    void menuUp() { menu->goUp(); }
+    void menuDown() { menu->goDown(); }
+    void menuSelect() { menu->getSelected()->activate(); }
+    void menuVisible(bool visible){ this->menu->setVisible(visible); }
   private:
     void drawScores();
     void drawGame();
+    void drawMenu();
 
+    Menu* menu;
 		sf::RenderWindow *sfWindow;
 		sf::Font *font;
 		sf::Text *debugText;

@@ -32,7 +32,7 @@ Logic::~Logic(){
 }
 void Logic::init(){
   currentTick = 0;
-  unsigned int numberOfGhosts = 55;
+  unsigned int numberOfGhosts = NUMBER_OF_GHOST;
   unsigned int sideConstant = 5;
 
   // currently, for curses mode the game zone height is equivalent to the gameHeight

@@ -33,6 +33,7 @@ enum gameState{
 #define UFO_SPAWN_TIMER  60 // in seconds
 #define SFML_FRAME_LIMIT 60 // in FPS
 #define TICK_LENGTH 40
+#define NUMBER_OF_GHOST 100
 
 class Logic{
   public:

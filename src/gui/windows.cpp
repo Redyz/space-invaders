@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+//TODO: Think this bit through
 static sf::Sprite ghostSprite;
 static sf::Texture ghostTexture;
 
@@ -29,24 +30,30 @@ Window::Window(){
 	missileTexture.loadFromFile("assets/img/Missile.png");
 	missileSprite.setTexture(missileTexture);
 	sprite.setTexture(texture);
-
 }
 
 Window::~Window(){
 	delete input;
+  delete menu;
 	delete sfWindow;
 	delete font;
 	delete debugText;
 }
 
+#define GAME_WIDTH 800
+#define GAME_HEIGHT 600
+
 static unsigned int scale;
 void Window::setup(Logic *logic){
 	this->logic = logic;
 	input = new Input(logic);
-	sfWindow->create(sf::VideoMode(800, 600), "Window");
+	sfWindow->create(sf::VideoMode(GAME_WIDTH, GAME_HEIGHT), "Window");
 	sfWindow->setFramerateLimit(SFML_FRAME_LIMIT);
-	logic->setGameWidth(500);
-	logic->setGameHeight(600);
+	logic->setGameWidth(GAME_WIDTH);
+	logic->setGameHeight(GAME_HEIGHT);
+
+  menu = new Menu(logic);
+  menu->addMenuComponent(new MenuComponent(logic, "Start", [=]{ Logger::log("actiavted"); }));
 }
 
 void Window::configText(sf::Text &text){
@@ -94,6 +101,23 @@ void Window::draw(){
 	sfWindow->display();
 }
 
+void Window::drawMenu(){
+  if(!menu->isVisible())
+    return;
+  int currentInd = 0;
+  int textOffset = 0;
+  MenuComponent* current = menu->getTop();
+  do{
+    textOffset = current->text.size()/2;
+    //if(current == menu->getSelected())
+      //display(SSTR(">" << current->text << "<"), logic->getGameWidth()/2 + textOffset+1 - (current->text.length()+2) , logic->getGameHeight()/2 + currentInd, gameWindow);
+    //else
+      //display(current->text, logic->getGameWidth()/2 + textOffset - current->text.length(), logic->getGameHeight()/2 + currentInd, gameWindow);
+    current = current->down;
+    currentInd++;
+  }while(current != menu->getTop());
+}
+
 void Window::debug(std::string text){
 	debugText->setString(text);
 }
@@ -108,6 +132,7 @@ void Window::console(std::string text){
 
 void Window::destroy(){
 	sfWindow->close();
+  logic->setGameState(QUITTING);
 }
 
 
