@@ -17,10 +17,16 @@ enum directions{
   DOWN,
   LEFT,
   RIGHT,
-  DUPLEFT,
+  DUPLEFT, // diagonals
   DUPRIGHT,
   DDOWNLEFT,
   DDOWNRIGHT
+};
+
+enum gameState{
+  PAUSED,
+  UNPAUSED,
+  QUITTING
 };
 
 #define GHOST_FIRE_CHANCE 70
@@ -50,8 +56,8 @@ class Logic{
     void setGameWidth(int width){ gameWidth = width; }
     void incrementTick(){ currentTick++; }
     void notifyMove(Entity *mover, int newX, int newY);
-    bool isRunning(){ return running; }
-    void setRunning(bool value){ running = value; }
+    gameState getGameState(){ return state; }
+    void setGameState(gameState state){ this->state = state; }
     bool createWall(int x, int y);
     int createEntity(Entity* newEntity);
     int deleteEntity(Entity* entity);
@@ -66,7 +72,7 @@ class Logic{
     EntV enemyVector;
     std::vector<EntV> gameZones; //container for the game matrix, indicating presence using coordinates
     Entity* player;
-    bool running;
+    gameState state;
     int score;
     int currentEntityIndex;
 		int currentMessageId;

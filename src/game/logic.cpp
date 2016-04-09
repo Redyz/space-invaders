@@ -11,7 +11,8 @@
 #include <math.h>
 #include <stdexcept>
 
-Logic::Logic(Window *window) : running(true), score(0), currentEntityIndex(0), currentMessageId(10), currentTick(0){
+//TODO: unify gameState and running
+Logic::Logic(Window *window) : state(PAUSED), score(0), currentEntityIndex(0), currentMessageId(10), currentTick(0){
   Logger::log("BEGAN NEW SESSION");
   this->window = window;
 }

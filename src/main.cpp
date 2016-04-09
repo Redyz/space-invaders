@@ -19,9 +19,12 @@ int main(int argc, char* argv[]) {
   window.setup(&logic);
   logic.init();
 
-  while(logic.isRunning()){	
+  //TODO: This should probably game.isRunning instead of logic
+  //      considering the game can run without the logic
+  while(logic.getGameState() != QUITTING){	
     window.clearWindow();
-    logic.step();
+    if(logic.getGameState() == UNPAUSED)
+      logic.step();
     window.inputStep();
     window.debug("Time: " + SSTR(logic.getSecondsSinceStart()));
     window.draw();

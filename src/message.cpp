@@ -131,7 +131,7 @@ GameOverMessage::GameOverMessage(int reason) {
 
 void GameOverMessage::execute(Logic* logic){
   //Since this can happen multiple times, let's mute it
-  if(logic->isRunning()){
+  if(logic->getGameState() != QUITTING){
     std::string gameOverString = "Game is over - ";
     switch(reason){
       case LOST_ALL_LIVES: gameOverString += "you lost all your lives!"; break;
@@ -142,7 +142,7 @@ void GameOverMessage::execute(Logic* logic){
 		gameOverString += " - Final score: " + SSTR(logic->getScore());
     Logger::log(gameOverString);
 		logic->notify(new ConsoleMessage(gameOverString));
-    logic->setRunning(false);
+    logic->setGameState(QUITTING);
   }
 }
 
@@ -160,5 +160,5 @@ void ConsoleMessage::execute(Logic *logic){
 }
 
 bool ConsoleMessage::canExecute(Logic *logic){
-	return !logic->isRunning();
+	return logic->getGameState() != QUITTING;
 }

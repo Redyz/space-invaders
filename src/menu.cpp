@@ -17,7 +17,7 @@ Menu::Menu(Logic *logic) : itemCount(0){
   addMenuComponent(new MenuComponent(logic, "Test2", NULL));
   addMenuComponent(new MenuComponent(logic, "Test2", NULL));
   addMenuComponent(new MenuComponent(logic, "Test2", NULL));
-  addMenuComponent(new MenuComponent(logic, "Quit", [=]{logic->setRunning(false);}));
+  addMenuComponent(new MenuComponent(logic, "Quit", [=]{logic->setGameState(QUITTING);}));
 
   // Link top to bottom and vice versa
   selected->down = top;
@@ -28,17 +28,15 @@ Menu::Menu(Logic *logic) : itemCount(0){
 }
 
 Menu::~Menu(){
-  unsigned int deletedItemCount = 0;
   MenuComponent *current, *old;
   current = top;
+  current->up->down = NULL; // destroy link between last and first
   do{
     old = current;
     current = current->down;
-    deletedItemCount++;
     delete old;
-  }while(deletedItemCount != itemCount);
-
-  delete current;
+    old = NULL;
+  }while(current != NULL);
 }
 
 void Menu::addMenuComponent(MenuComponent* component){
