@@ -45,7 +45,7 @@ DeathMessage::DeathMessage(Entity* killed, Entity* killer){
 	if(killed->getType() == PLAYER)
 		Logger::log("Player has been hit");
   if(killed->getType() != BULLET)
-    Logger::log("Deleting an entity, killed by " + killer->toString());
+    Logger::log("Deleting an entity (" + killed->toString() + "), killed by " + killer->toString());
 }
 
 void DeathMessage::execute(Logic *logic){

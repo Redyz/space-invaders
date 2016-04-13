@@ -5,6 +5,7 @@
 #include <time.h>
 #include "logic.h"
 #include "utility.h"
+#include <ncurses.h>
 
 int main(int argc, char* argv[]) {
 #if defined(IS_UNIX) && defined(IS_DEBUG)

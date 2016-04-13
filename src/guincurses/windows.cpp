@@ -6,6 +6,8 @@
 #include "utility.h"
 #include "menu.h"
 
+#include <stdlib.h>
+
 #ifdef IS_NT
 #include <curses.h>
 #else
@@ -18,18 +20,19 @@ Window::Window(){
   initscr();
   raw();// -> add quitting functionality first
   noecho(); //disable user getches
-  nodelay(stdscr, TRUE); //make getch non-blocking
-  keypad(stdscr, TRUE); //enable F1-F12 + arrow keys
-  start_color();
-  initColors();
-	clearok(stdscr, FALSE);
-	immedok(stdscr, FALSE);
-	idcok(stdscr, FALSE);
-	idlok(stdscr, FALSE);
+  nodelay(stdscr, true); //make getch non-blocking
+  keypad(stdscr, true); //enable f1-f12 + arrow keys
   getmaxyx(stdscr, height, width); //store the screen size
 	curs_set(0); //disable cursor
   scoreWindow = newwin(SCORE_HEIGHT, width, 0, 0); //create the score 
   gameWindow = newwin(height-SCORE_HEIGHT, width, SCORE_HEIGHT, 0); //height, width, sy, sx
+  start_color();
+  initColors();
+  clearok(stdscr, FALSE);
+  immedok(stdscr, FALSE);
+  idcok(stdscr, FALSE);
+  idlok(stdscr, FALSE);
+
 }
 
 Window::~Window(){
@@ -52,7 +55,10 @@ void Window::setup(Logic* logic){
 }
 void Window::initColors(){
   init_pair(PAIR_ENTITY, COLOR_GREEN, COLOR_BLACK);
-  init_pair(PAIR_GHOST, COLOR_YELLOW, COLOR_BLACK);
+  init_pair(PAIR_GHOST, COLOR_GREEN, COLOR_BLACK);
+  init_pair(PAIR_WALL, COLOR_WHITE, COLOR_BLACK);
+  init_pair(PAIR_UFO, COLOR_RED, COLOR_WHITE);
+  init_pair(PAIR_BULLET, COLOR_YELLOW, COLOR_BLACK);
 }
 void Window::clearWindow(){
 	if(this->logic->getCurrentTick() % 10 == 0)
@@ -115,31 +121,40 @@ void Window::drawGame(){
   try{
     for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
       Entity* currentEntity = *it;
+      unsigned int colorPair = 0;
 			char displayCar = '!';
       switch(currentEntity->getType()){
         case ENTITY:
         case GHOST:
 					displayCar = '@';
+          colorPair = PAIR_GHOST;
           break;
         case BULLET:
 					displayCar = '|';
+          colorPair = PAIR_BULLET;
           break;
         case WALL:
 					displayCar = 'X';
+          colorPair = PAIR_WALL;
           break;
         case UFOS:
+          wattron(gameWindow, A_BOLD);
 					displayCar = '#';
+          colorPair = PAIR_UFO;
           break;
       }
+      wattron(gameWindow, COLOR_PAIR(colorPair));
 			display(SSTR(displayCar), currentEntity->getX(), currentEntity->getY(), gameWindow);
+      wattroff(gameWindow, COLOR_PAIR(colorPair));
+      wattroff(gameWindow, A_BOLD);
     }
 
   }catch(...){
     Logger::log("Exception caught");
   }
-  attron(COLOR_PAIR(PAIR_ENTITY));
+  wattron(gameWindow, COLOR_PAIR(PAIR_BULLET));
   display("U", logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);
-  attroff(COLOR_PAIR(PAIR_ENTITY));
+  wattroff(gameWindow, COLOR_PAIR(PAIR_BULLET));
 }
 
 void Window::drawMenu(){
