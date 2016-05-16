@@ -1,4 +1,3 @@
--Add nice equal, multi-line splitting of ghosts + centered
 -The ::draw() methods in windows.cpp are not fully portable, would be better to have something like draw(entity) or something along those lines)
 -Figure out how to do menus:
 --What about menu::step()
@@ -7,6 +6,7 @@
 --- get input
 --- process input & send to logic::menu
 -Is it possible/logical to impose a max width even when using SFML?
+--We can have an imposed gamewidth and gameheight
 --Things such as wall need to be based on ncurses but shouldn't... hm
 -Menus menus menus
 -Nultilevels? Powerups? New enemies?

@@ -5,7 +5,10 @@
 #include <time.h>
 #include "logic.h"
 #include "utility.h"
+
+#if !IS_SFML
 #include <ncurses.h>
+#endif
 
 int main(int argc, char* argv[]) {
 #if defined(IS_UNIX) && defined(IS_DEBUG)

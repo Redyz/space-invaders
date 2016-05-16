@@ -177,7 +177,7 @@ void Bullet::die(){
 Ghost::Ghost(Logic* logic) : Entity(logic){
   type = GHOST;
   travelDirection = RIGHT;
-  speed = 10;
+  speed = GHOST_SPEED;
   firingSpeed = 15;
   life = 1;
   damage = -1;
@@ -215,6 +215,9 @@ bool Ghost::move(int modX, int modY){
   bool result = Entity::move(modX, modY);
   if(y == logic->getGameHeight())
     logic->notify(new GameOverMessage(REACHED_BOTTOM));
+  if(modY > 0){
+    unsigned int screenDelta = logic->getGameHeight() - y; 
+  }
   return result;
 }
 
