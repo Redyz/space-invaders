@@ -68,5 +68,21 @@ void Logger::log(std::string message){
   strftime(buffer, sizeof(buffer), "[%Y-%m-%d][%X] ", currentTimeStruct);
   logFile << buffer << message << std::endl; 
   logFile.close();
-  //
+}
+
+// http://stackoverflow.com/questions/23526556/c11-analog-of-c-sharp-stopwatch
+typedef std::chrono::high_resolution_clock precise_clock;
+Timer::Timer(std::string message){
+  this->message = message;
+  start_time = precise_clock::now();
+}
+
+void Timer::stop(){
+  auto end_time = precise_clock::now();
+  auto diff = end_time - start_time;
+  auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(diff);
+  char buffer[200];
+  sprintf(buffer, "'%s' took %i ns to complete", message.c_str(), (int)nanoseconds.count());
+  Logger::log(buffer);
+
 }

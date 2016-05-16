@@ -23,11 +23,11 @@ Input::~Input(){
 void Input::step(){
   int c = getch();
   if(c != ERR){
-    //const char *name = keyname( c );
     switch(c){
 			case 27: // Escape key
         logic->setGameState(PAUSED);
         logic->window->menuVisible(true);
+        Logger::log("Pressed pause");
         break;
       case 'q':
 				logic->notify(new GameOverMessage(QUIT_GAME));

@@ -29,10 +29,11 @@ int main(int argc, char* argv[]) {
     window.clearWindow();
     if(logic.getGameState() == UNPAUSED)
       logic.step();
+    auto time = Timer("Window");
     window.inputStep();
     window.debug("Time: " + SSTR(logic.getSecondsSinceStart()));
     window.draw();
-
+    time.stop();
 #if !IS_SFML
 		napms(TICK_LENGTH);
 #endif

@@ -4,6 +4,7 @@
 //Macro from http://stackoverflow.com/questions/5590381/easiest-way-to-convert-int-to-string-in-c
 #include <sstream>
 #include <cstdio>
+#include <chrono>
 #define SSTR( x ) dynamic_cast< std::ostringstream & >( \
     ( std::ostringstream() << std::dec << x ) ).str()
 #define LOG_PATH "logs/logs.txt"
@@ -26,6 +27,16 @@ class Utility{
 
   private:
     Window *window;
+};
+
+class Timer{
+  public:
+    Timer(std::string message);
+    void stop();
+
+  private:
+    std::string message;
+    std::chrono::high_resolution_clock::time_point start_time;
 };
 
 class Logger{
