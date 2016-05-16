@@ -98,6 +98,7 @@ void Window::draw(){
 	sfWindow->draw(sprite);
 	sfWindow->draw(*debugText);
 	sfWindow->draw(sprite);
+  drawMenu();
 	sfWindow->display();
 }
 
@@ -113,6 +114,9 @@ void Window::drawMenu(){
       //display(SSTR(">" << current->text << "<"), logic->getGameWidth()/2 + textOffset+1 - (current->text.length()+2) , logic->getGameHeight()/2 + currentInd, gameWindow);
     //else
       //display(current->text, logic->getGameWidth()/2 + textOffset - current->text.length(), logic->getGameHeight()/2 + currentInd, gameWindow);
+    debugText->setPosition(10, 10);
+    Logger::log("Drawing another");
+    sfWindow->draw(*debugText);
     current = current->down;
     currentInd++;
   }while(current != menu->getTop());

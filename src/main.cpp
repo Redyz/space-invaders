@@ -5,7 +5,6 @@
 #include <time.h>
 #include "logic.h"
 #include "utility.h"
-#include <ncurses.h>
 
 int main(int argc, char* argv[]) {
 #if defined(IS_UNIX) && defined(IS_DEBUG)
@@ -26,10 +25,11 @@ int main(int argc, char* argv[]) {
     window.clearWindow();
     if(logic.getGameState() == UNPAUSED)
       logic.step();
+    auto time = Timer("Window");
     window.inputStep();
     window.debug("Time: " + SSTR(logic.getSecondsSinceStart()));
     window.draw();
-
+    time.stop();
 #if !IS_SFML
 		napms(TICK_LENGTH);
 #endif
