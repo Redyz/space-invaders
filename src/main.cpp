@@ -19,8 +19,6 @@ int main(int argc, char* argv[]) {
   window.setup(&logic);
   logic.init();
 
-  //TODO: This should probably game.isRunning instead of logic
-  //      considering the game can run without the logic
   while(logic.getGameState() != QUITTING){  
     window.clearWindow();
     if(logic.getGameState() == UNPAUSED)

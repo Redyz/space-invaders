@@ -12,7 +12,7 @@
 #include <stdexcept>
 
 //TODO: unify gameState and running
-Logic::Logic(Window *window) : state(PAUSED), score(0), currentEntityIndex(0), currentMessageId(10), currentTick(0){
+Logic::Logic(Window *window) : state(START), score(0), currentEntityIndex(0), currentMessageId(10), currentTick(0){
   Logger::log("BEGAN NEW SESSION");
   this->window = window;
 }

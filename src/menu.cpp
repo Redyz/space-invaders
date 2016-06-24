@@ -52,12 +52,24 @@ void Menu::goDown(){
 MenuComponent::MenuComponent(Logic *logic, std::string text, std::function<void()> callback) : left(NULL), right(NULL), up(NULL), down(NULL) {
   this->logic = logic;
   this->text = text;
+  this->originalText = text;
   this->callback = callback;
 }
 
 MenuComponent::~MenuComponent(){
 
 }
+
+void MenuComponent::revertText()
+{
+  text = originalText;
+}
+
+void MenuComponent::setText(std::string newText)
+{
+  text = newText;
+}
+
 
 bool MenuComponent::activate(){
   if(callback != NULL)

@@ -24,6 +24,7 @@ enum directions{
 };
 
 enum gameState{
+  START,
   PAUSED,
   UNPAUSED,
   QUITTING

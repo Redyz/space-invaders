@@ -9,9 +9,12 @@ class MenuComponent{
   public:
     MenuComponent(Logic *logic, std::string text, std::function<void()> callback); 
     ~MenuComponent();
+    void setText(std::string newText);
+    void revertText();
     bool activate();
     MenuComponent *left, *right, *up, *down;
     std::string text;
+    std::string originalText;
     std::function<void()> callback;
 
   private:

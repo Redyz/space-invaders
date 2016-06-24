@@ -163,6 +163,13 @@ void Window::drawMenu(){
   int currentInd = 0;
   int textOffset = 0;
   MenuComponent* current = menu->getTop();
+
+  //TODO: Clean me up
+  if(logic->getGameState() == PAUSED)
+    current->setText("Unpause game1");
+  else
+    current->setText("Start game");
+    
   do{
     textOffset = current->text.size()/2;
     if(current == menu->getSelected())
