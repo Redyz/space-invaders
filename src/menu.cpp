@@ -5,7 +5,6 @@
 Menu::Menu(Logic *logic) : visible(true){
   top = new MenuComponent(logic, "Start game", 
       [=]{
-        Logger::log("Activated!");
         setVisible(false);
         logic->setGameState(UNPAUSED);
       });

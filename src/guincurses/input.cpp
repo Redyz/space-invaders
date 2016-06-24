@@ -24,7 +24,8 @@ void Input::step(){
   int c = getch();
   if(c != ERR){
     switch(c){
-      case 27: // Escape key
+      case 'p':
+      case 27: // Escape key is slow, probably because of its usage within the terminal
         logic->setGameState(PAUSED);
         logic->window->menuVisible(true);
         Logger::log("Pressed pause");
