@@ -166,16 +166,22 @@ void Window::drawMenu(){
 
   //TODO: Clean me up
   if(logic->getGameState() == PAUSED)
-    current->setText("Unpause game1");
+    current->setText("Unpause game");
   else
     current->setText("Start game");
     
   do{
     textOffset = current->text.size()/2;
+    
+    //TODO Currently impossible to have something selected and not visible
     if(current == menu->getSelected())
       display(SSTR(">" << current->text << "<"), logic->getGameWidth()/2 + textOffset+1 - (current->text.length()+2) , logic->getGameHeight()/2 + currentInd, gameWindow);
-    else
-      display(current->text, logic->getGameWidth()/2 + textOffset - current->text.length(), logic->getGameHeight()/2 + currentInd, gameWindow);
+    else{
+      if(current->isVisible())
+	display(current->text, logic->getGameWidth()/2 + textOffset - current->text.length(), logic->getGameHeight()/2 + currentInd, gameWindow);
+      else
+	currentInd--; //Not very pretty
+    }
     current = current->down;
     currentInd++;
   }while(current != menu->getTop());

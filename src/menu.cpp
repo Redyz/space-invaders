@@ -11,7 +11,16 @@ Menu::Menu(Logic *logic) : visible(true){
   selected = top;
 
   addMenuComponent(top);
-  addMenuComponent(new MenuComponent(logic, "Quit", [=]{logic->setGameState(QUITTING);}));
+  
+  //TODO: Add a View class? Handle displaying different views (game/about/settings/etc.)
+  auto settings = addMenuComponent(new MenuComponent(logic, "Settings", nullptr));
+  auto about = addMenuComponent(new MenuComponent(logic, "About", [=]{logic->setGameState(QUITTING);}));
+  about->setVisible(false);
+  settings->setCallback([=]{
+    about->setVisible(!about->isVisible());
+    
+  });
+  addMenuComponent(new MenuComponent(logic, "Quit game", [=]{logic->setGameState(QUITTING);}));
 
   // Link top to bottom and vice versa
   selected->down = top;
@@ -33,23 +42,34 @@ Menu::~Menu(){
   }while(current != NULL);
 }
 
-void Menu::addMenuComponent(MenuComponent* component){
+MenuComponent* Menu::addMenuComponent(MenuComponent* component){
   selected->down = component;
   component->up = selected;
   selected = component;
+  
+  return component;
 }
 
 void Menu::goUp(){
-  if(selected->up != NULL)
+bool found = false;
+  while(selected->up != NULL && !found){
     selected = selected->up;
+    if(selected->isVisible())
+      found = true;
+  }
 }
 
+//TODO: Infinite loop warning
 void Menu::goDown(){
-  if(selected->down != NULL)
+  bool found = false;
+  while(selected->down != NULL && !found){
     selected = selected->down;
+    if(selected->isVisible())
+      found = true;
+  }
 }
 
-MenuComponent::MenuComponent(Logic *logic, std::string text, std::function<void()> callback) : left(NULL), right(NULL), up(NULL), down(NULL) {
+MenuComponent::MenuComponent(Logic *logic, std::string text, std::function<void()> callback) : left(NULL), right(NULL), up(NULL), down(NULL), visible(true) {
   this->logic = logic;
   this->text = text;
   this->originalText = text;
@@ -70,6 +90,10 @@ void MenuComponent::setText(std::string newText)
   text = newText;
 }
 
+void MenuComponent::setCallback(std::function<void()> callback)
+{
+  this->callback = callback;
+}
 
 bool MenuComponent::activate(){
   if(callback != NULL)
