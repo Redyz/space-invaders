@@ -23,7 +23,7 @@ Window::Window(){
   nodelay(stdscr, true); //make getch non-blocking
   keypad(stdscr, true); //enable f1-f12 + arrow keys
   getmaxyx(stdscr, height, width); //store the screen size
-	curs_set(0); //disable cursor
+  curs_set(0); //disable cursor
   scoreWindow = newwin(SCORE_HEIGHT, width, 0, 0); //create the score 
   gameWindow = newwin(height-SCORE_HEIGHT, width, SCORE_HEIGHT, 0); //height, width, sy, sx
   start_color();
@@ -36,8 +36,8 @@ Window::Window(){
 }
 
 Window::~Window(){
-	destroy();
-	delete input;
+  destroy();
+  delete input;
   delete menu;
 }
 
@@ -61,9 +61,9 @@ void Window::initColors(){
   init_pair(PAIR_BULLET, COLOR_YELLOW, COLOR_BLACK);
 }
 void Window::clearWindow(){
-	if(this->logic->getCurrentTick() % 10 == 0)
-		werase(scoreWindow);
-	werase(gameWindow);
+  if(this->logic->getCurrentTick() % 10 == 0)
+    werase(scoreWindow);
+  werase(gameWindow);
 };
 
 void Window::inputStep(){
@@ -72,7 +72,7 @@ void Window::inputStep(){
 void Window::draw(){
   drawScores();
   drawMenu();
-	drawGame();
+  drawGame();
   wnoutrefresh(gameWindow);
   wnoutrefresh(scoreWindow);
   doupdate();
@@ -97,7 +97,7 @@ void Window::debug(std::string text){
 }
 
 void Window::console(std::string text){
-	std::cout << text << std::endl;
+  std::cout << text << std::endl;
 }
 
 void Window::drawScores(){
@@ -105,7 +105,7 @@ void Window::drawScores(){
   std::string stringScore = "Score: " + SSTR(score);
   display(stringScore, 0, 0, scoreWindow);
 #if IS_DEBUG
-	display(SSTR(" Tick: " << logic->getCurrentTick()), 10, 0, scoreWindow);
+  display(SSTR(" Tick: " << logic->getCurrentTick()), 10, 0, scoreWindow);
 #endif
   unsigned int lives = logic->getPlayer()->getLife();
   display(SSTR("Lives: " << lives), width - 9, 0, scoreWindow);
@@ -122,29 +122,29 @@ void Window::drawGame(){
     for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
       Entity* currentEntity = *it;
       unsigned int colorPair = 0;
-			char displayCar = '!';
+      char displayCar = '!';
       switch(currentEntity->getType()){
         case ENTITY:
         case GHOST:
-					displayCar = '@';
+          displayCar = '@';
           colorPair = PAIR_GHOST;
           break;
         case BULLET:
-					displayCar = '|';
+          displayCar = '|';
           colorPair = PAIR_BULLET;
           break;
         case WALL:
-					displayCar = 'X';
+          displayCar = 'X';
           colorPair = PAIR_WALL;
           break;
         case UFOS:
           wattron(gameWindow, A_BOLD);
-					displayCar = '#';
+          displayCar = '#';
           colorPair = PAIR_UFO;
           break;
       }
       wattron(gameWindow, COLOR_PAIR(colorPair));
-			display(SSTR(displayCar), currentEntity->getX(), currentEntity->getY(), gameWindow);
+      display(SSTR(displayCar), currentEntity->getX(), currentEntity->getY(), gameWindow);
       wattroff(gameWindow, COLOR_PAIR(colorPair));
       wattroff(gameWindow, A_BOLD);
     }

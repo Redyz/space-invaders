@@ -8,10 +8,10 @@
 
 int main(int argc, char* argv[]) {
 #if defined(IS_UNIX) && defined(IS_DEBUG)
-	std::cout << "Sleeping to allow attach" << std::endl;
-	std::cout << getpid() << std::endl;
-	std::cout << (IS_SFML ? "Starting in graphical mode" : "Starting in curses mode") << std::endl;
-	sleep(1);
+  std::cout << "Sleeping to allow attach" << std::endl;
+  std::cout << getpid() << std::endl;
+  std::cout << (IS_SFML ? "Starting in graphical mode" : "Starting in curses mode") << std::endl;
+  sleep(1);
 #endif
   Window window;
   srand(time(NULL)); 
@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 
   //TODO: This should probably game.isRunning instead of logic
   //      considering the game can run without the logic
-  while(logic.getGameState() != QUITTING){	
+  while(logic.getGameState() != QUITTING){  
     window.clearWindow();
     if(logic.getGameState() == UNPAUSED)
       logic.step();
@@ -31,12 +31,12 @@ int main(int argc, char* argv[]) {
     window.draw();
     time.stop();
 #if !IS_SFML
-		napms(TICK_LENGTH);
+    napms(TICK_LENGTH);
 #endif
     logic.incrementTick();
   }
 
-	window.destroy();
-	logic.processMessages(); // Finish up messages
+  window.destroy();
+  logic.processMessages(); // Finish up messages
   std::cout << "Exiting game, thank you for playing!" << std::endl;
 }

@@ -33,13 +33,13 @@ class Window{
     ~Window();
     void draw();
     void debug(std::string text);
-		void console(std::string text);
+    void console(std::string text);
     void display(std::string text);
     void display(std::string text, int x, int y);
     void display(std::string text, int x, int y, WINDOW* window);
     void setup(Logic *logic);
     void clearWindow();
-		void destroy();
+    void destroy();
     int getWidth(){ return width; }
     int getHeight(){ return height; }
     void initColors();

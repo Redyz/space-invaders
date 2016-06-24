@@ -44,11 +44,11 @@ class Logic{
     void step();
     void init();
     void notify(Message *message);
-		void processMessages();
+    void processMessages();
     int getScore(){ return score; }
-		void modScore(int mod){ score += mod; }
+    void modScore(int mod){ score += mod; }
     int getCurrentTick(){ return currentTick; }
-		int getSecondsSinceStart();
+    int getSecondsSinceStart();
     Entity* getPlayer(){ return this->player; }
     EntV& getEntityVector(){ return entityVector; }
     int getGameHeight(){ return gameHeight;}
@@ -69,7 +69,7 @@ class Logic{
   private:
     unsigned int gameHeight;
     unsigned int gameWidth;
-		Menu *menu;
+    Menu *menu;
     EntV entityVector; //container for all entities
     EntV enemyVector;
     std::vector<EntV> gameZones; //container for the game matrix, indicating presence using coordinates
@@ -77,10 +77,10 @@ class Logic{
     gameState state;
     int score;
     int currentEntityIndex;
-		int currentMessageId;
+    int currentMessageId;
     int currentTick;
 
-		std::deque<Message*> messageDeque;
+    std::deque<Message*> messageDeque;
 };
 
 #endif

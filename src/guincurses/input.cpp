@@ -24,13 +24,13 @@ void Input::step(){
   int c = getch();
   if(c != ERR){
     switch(c){
-			case 27: // Escape key
+      case 27: // Escape key
         logic->setGameState(PAUSED);
         logic->window->menuVisible(true);
         Logger::log("Pressed pause");
         break;
       case 'q':
-				logic->notify(new GameOverMessage(QUIT_GAME));
+        logic->notify(new GameOverMessage(QUIT_GAME));
         //logic->setRunning(false);
         break;
       case KEY_UP:
@@ -42,16 +42,16 @@ void Input::step(){
       case '\n':
         logic->window->menuSelect();
         break;
-			case 'r':
-				logic->notify(new ArmageddonMessage());
-				Logger::log("ARMAGEDDON!");
-				break;
-			case 'a':
+      case 'r':
+        logic->notify(new ArmageddonMessage());
+        Logger::log("ARMAGEDDON!");
+        break;
+      case 'a':
       case KEY_LEFT:
         if(logic->getGameRunning())
           logic->getPlayer()->move(-1, 0);
         break;
-			case 'd':
+      case 'd':
       case KEY_RIGHT:
         if(logic->getGameRunning())
           logic->getPlayer()->move(1, 0);
@@ -60,11 +60,11 @@ void Input::step(){
         if(logic->getGameRunning())
           logic->getPlayer()->fire(UP);
         break;
-			default:
+      default:
 #ifdef IS_DEBUG
-				Logger::log("Unknown key pressed: " + SSTR(c));
+        Logger::log("Unknown key pressed: " + SSTR(c));
 #endif
-				break;
+        break;
     }
   }
 }

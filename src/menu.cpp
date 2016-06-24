@@ -41,13 +41,13 @@ void Menu::addMenuComponent(MenuComponent* component){
 }
 
 void Menu::goUp(){
-	if(selected->up != NULL)
-		selected = selected->up;
+  if(selected->up != NULL)
+    selected = selected->up;
 }
 
 void Menu::goDown(){
-	if(selected->down != NULL)
-		selected = selected->down;
+  if(selected->down != NULL)
+    selected = selected->down;
 }
 
 MenuComponent::MenuComponent(Logic *logic, std::string text, std::function<void()> callback) : left(NULL), right(NULL), up(NULL), down(NULL) {
@@ -63,5 +63,5 @@ MenuComponent::~MenuComponent(){
 bool MenuComponent::activate(){
   if(callback != NULL)
     callback();
-	return true;
+  return true;
 }

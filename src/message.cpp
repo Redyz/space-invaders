@@ -15,10 +15,10 @@ Message::~Message(){
 }
 
 void Message::setId(unsigned int id){
-	if(this->messageId == 0)
-		this->messageId = id;
-	else
-		Logger::log("Error: trying to change message id more than once (" + SSTR(this->messageId) + ")");
+  if(this->messageId == 0)
+    this->messageId = id;
+  else
+    Logger::log("Error: trying to change message id more than once (" + SSTR(this->messageId) + ")");
 }
 
 void Message::execute(Logic *logic){
@@ -26,11 +26,11 @@ void Message::execute(Logic *logic){
 };
 
 bool Message::canExecute(Logic *logic){
-	return true;
+  return true;
 }
 
 std::string Message::toString(){
-	return "Default message";
+  return "Default message";
 }
 /*
  * DeathMessage class
@@ -42,8 +42,8 @@ DeathMessage::DeathMessage(Entity* killed) : Message(){
 DeathMessage::DeathMessage(Entity* killed, Entity* killer){
   this->killed = killed;
   this->killer = killer;
-	if(killed->getType() == PLAYER)
-		Logger::log("Player has been hit");
+  if(killed->getType() == PLAYER)
+    Logger::log("Player has been hit");
   if(killed->getType() != BULLET)
     Logger::log("Deleting an entity (" + killed->toString() + "), killed by " + killer->toString());
 }
@@ -76,11 +76,11 @@ ArmageddonMessage::ArmageddonMessage(){
 }
 
 void ArmageddonMessage::execute(Logic* logic){
-	auto vect = logic->getEntityVector();
-	for(auto entity : vect){
-		if(entity->getType() == GHOST)	
-			logic->notify(new FireMessage(entity, entity->getX(), entity->getY(), DOWN));
-	}
+  auto vect = logic->getEntityVector();
+  for(auto entity : vect){
+    if(entity->getType() == GHOST)  
+      logic->notify(new FireMessage(entity, entity->getX(), entity->getY(), DOWN));
+  }
 }
 
 /*
@@ -93,12 +93,12 @@ HitMessage::HitMessage(Entity* firer, Entity* fired){
 
 void HitMessage::execute(Logic *logic){
 #if IS_DEBUG
-	if(firer == NULL)
-		Logger::log("Firer is null");
-	else if(fired == NULL)
-		Logger::log("Fired is null");
-	else
-		Logger::log(firer->getUniqueId() + " just hit " + fired->getUniqueId());
+  if(firer == NULL)
+    Logger::log("Firer is null");
+  else if(fired == NULL)
+    Logger::log("Fired is null");
+  else
+    Logger::log(firer->getUniqueId() + " just hit " + fired->getUniqueId());
 #endif
   fired->modLife(firer->getDamage(), firer);
 }
@@ -137,28 +137,28 @@ void GameOverMessage::execute(Logic* logic){
       case LOST_ALL_LIVES: gameOverString += "you lost all your lives!"; break;
       case REACHED_BOTTOM: gameOverString += "enemies touched the bottom!"; break;
       case NO_MORE_ENEMIES: gameOverString += "You won; You repelled the alien invasion!"; break;
-			case QUIT_GAME: gameOverString += "You quit the game!"; break;
+      case QUIT_GAME: gameOverString += "You quit the game!"; break;
     }
-		gameOverString += " - Final score: " + SSTR(logic->getScore());
+    gameOverString += " - Final score: " + SSTR(logic->getScore());
     Logger::log(gameOverString);
-		logic->notify(new ConsoleMessage(gameOverString));
+    logic->notify(new ConsoleMessage(gameOverString));
     logic->setGameState(QUITTING);
   }
 }
 
 ConsoleMessage::ConsoleMessage(std::string message){
-	this->message = message;
+  this->message = message;
 }
 
 std::string ConsoleMessage::toString(){
-	return message;
+  return message;
 }
 
 void ConsoleMessage::execute(Logic *logic){
-	Logger::log("Processed message " + SSTR(message));
-	logic->window->console(message);
+  Logger::log("Processed message " + SSTR(message));
+  logic->window->console(message);
 }
 
 bool ConsoleMessage::canExecute(Logic *logic){
-	return logic->getGameState() != QUITTING;
+  return logic->getGameState() != QUITTING;
 }

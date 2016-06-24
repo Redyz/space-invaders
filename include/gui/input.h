@@ -4,14 +4,14 @@
 class Logic;
 
 class Input{
-	public:
-		Input(Logic *logic);
-		~Input();
+  public:
+    Input(Logic *logic);
+    ~Input();
 
-		void step();
+    void step();
 
-	private:
-		Logic *logic;
+  private:
+    Logic *logic;
 };
 
 #endif
