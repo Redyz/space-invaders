@@ -30,3 +30,4 @@ include/config.h
 .kdev4/
 build/
 *.kdev4
+build-*
