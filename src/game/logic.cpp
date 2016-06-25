@@ -12,7 +12,7 @@
 #include <stdexcept>
 
 //TODO: unify gameState and running
-Logic::Logic(Window *window) : state(START), score(0), currentEntityIndex(0), currentMessageId(10), currentTick(0){
+Logic::Logic(Window *window) : state(START), score(0), currentEntityIndex(0), currentMessageId(10), currentTick(0), currentLevel(1){
   Logger::log("BEGAN NEW SESSION");
   this->window = window;
 }
@@ -30,9 +30,10 @@ Logic::~Logic(){
 
   Logger::log("Bye!");
 }
+
 void Logic::init(){
   currentTick = 0;
-  unsigned int numberOfGhosts = NUMBER_OF_GHOST;
+  unsigned int numberOfGhosts = currentLevel * NUMBER_OF_GHOST;
   unsigned int sideConstant = 5;
 
   // currently, for curses mode the game zone height is equivalent to the gameHeight
@@ -144,6 +145,13 @@ void Logic::processMessages(){
   }
 }
 
+void Logic::reset()
+{
+  for(auto entity : getEntityVector())
+    deleteEntity(entity);
+  enemyVector.clear();
+}
+
 static unsigned int lastSpawnedUfo = 0; 
 void Logic::step(){
   processMessages();
@@ -158,8 +166,14 @@ void Logic::step(){
     current->step(); //the entity may die after .step, don't do anything after it
   }
 
-  if(enemyVector.size() == 0)
-    notify(new GameOverMessage(NO_MORE_ENEMIES));
+  //TODO Game levels
+  if(enemyVector.size() == 0){
+    currentLevel++;
+    reset();
+    init();
+    //notify(new GameOverMessage(NO_MORE_ENEMIES));
+  }
+    
 }
 
 int Logic::getSecondsSinceStart(){

@@ -71,6 +71,12 @@ class GameOverMessage : public Message{
     int reason;
 };
 
+class KillAllEnemiesMessage : public Message{
+  public:
+    KillAllEnemiesMessage();
+    void execute(Logic* logic);
+};
+
 class ConsoleMessage : public Message{
   public:
     ConsoleMessage(std::string message);

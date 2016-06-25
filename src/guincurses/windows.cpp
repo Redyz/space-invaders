@@ -109,6 +109,7 @@ void Window::drawScores(){
 #endif
   unsigned int lives = logic->getPlayer()->getLife();
   display(SSTR("Lives: " << lives), width - 9, 0, scoreWindow);
+  display(SSTR("Level: " << logic->getCurrentLevel()), width - 20, 0, scoreWindow);
   std::string bottomBorder = "";
   for(int i = 0; i < width; i++){
     bottomBorder += "_";

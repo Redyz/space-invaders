@@ -146,6 +146,19 @@ void GameOverMessage::execute(Logic* logic){
   }
 }
 
+/*
+ * KillAllEnemiesMessage Class
+ */
+KillAllEnemiesMessage::KillAllEnemiesMessage() {
+  
+}
+
+void KillAllEnemiesMessage::execute(Logic* logic){
+  for(auto enemy : logic->getEnemyVector()){
+    logic->deleteEntity(enemy);
+  }
+}
+
 ConsoleMessage::ConsoleMessage(std::string message){
   this->message = message;
 }

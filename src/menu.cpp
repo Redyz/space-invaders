@@ -18,8 +18,8 @@ Menu::Menu(Logic *logic) : visible(true){
   about->setVisible(false);
   settings->setCallback([=]{
     about->setVisible(!about->isVisible());
-    
   });
+  settings->setVisible(false);
   addMenuComponent(new MenuComponent(logic, "Quit game", [=]{logic->setGameState(QUITTING);}));
 
   // Link top to bottom and vice versa

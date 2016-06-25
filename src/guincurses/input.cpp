@@ -32,8 +32,12 @@ void Input::step(){
         break;
       case 'q':
         logic->notify(new GameOverMessage(QUIT_GAME));
-        //logic->setRunning(false);
         break;
+#if IS_DEBUG
+      case 'k':
+        logic->notify(new KillAllEnemiesMessage());
+        break;
+#endif
       case KEY_UP:
         logic->window->menuUp();
         break;

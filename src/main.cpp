@@ -37,4 +37,8 @@ int main(int argc, char* argv[]) {
   window.destroy();
   logic.processMessages(); // Finish up messages
   std::cout << "Exiting game, thank you for playing!" << std::endl;
+  
+#if IS_DEBUG
+  sleep(100);
+#endif
 }
