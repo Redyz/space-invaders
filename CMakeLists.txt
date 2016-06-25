@@ -97,6 +97,14 @@ add_custom_command(
   POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets)
 
+#add_custom_command(
+  #TARGET ${PROJECT_NAME}
+  #POST_BUILD
+  #COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets)
+#file(MAKE_DIRECTORY $<TARGET_FILE_DIR:${PROJECT_NAME}>/logs)
+
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/logs)
+
 set(CPACK_ARCHIVE_COMPONENT_INSTALL "ON")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Redyz doodle Redyz@doodle.com")
 set(CPACK_DEBIAN_PACKAGE_NAME "bacon")
