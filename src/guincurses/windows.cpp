@@ -15,6 +15,26 @@
 #endif
 #include <vector>
 
+const std::string WALL_IMG[] = { 
+"  XX  ", 
+" XXXX ", 
+"XX  XX"  
+};
+
+#if IS_UTF8
+const std::string GHOST_CHAR = "⚫";
+const std::string BULLET_CHAR = "⚡";
+const std::string WALL_CHAR = "☰";
+const std::string UFO_CHAR = "☯";
+const std::string PLAYER_CHAR = "☗";
+#else
+const std::string GHOST_CHAR = "@";
+const std::string BULLET_CHAR = "|";
+const std::string WALL_CHAR = "X";
+const std::string UFO_CHAR = "#";
+const std::string PLAYER_CHAR = "U";
+#endif
+
 #define SCORE_HEIGHT 2
 Window::Window(){
   initscr();
@@ -112,7 +132,11 @@ void Window::drawScores(){
   display(SSTR("Level: " << logic->getCurrentLevel()), width - 20, 0, scoreWindow);
   std::string bottomBorder = "";
   for(int i = 0; i < width; i++){
+#if IS_UTF8
+    bottomBorder += "☷";
+#else
     bottomBorder += "_";
+#endif
   }
   display(bottomBorder, 0, 1, scoreWindow);
 }
@@ -123,24 +147,24 @@ void Window::drawGame(){
     for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
       Entity* currentEntity = *it;
       unsigned int colorPair = 0;
-      char displayCar = '!';
+      std::string displayCar = "!";
       switch(currentEntity->getType()){
         case ENTITY:
         case GHOST:
-          displayCar = '@';
+          displayCar = GHOST_CHAR;
           colorPair = PAIR_GHOST;
           break;
         case BULLET:
-          displayCar = '|';
+          displayCar = BULLET_CHAR;
           colorPair = PAIR_BULLET;
           break;
         case WALL:
-          displayCar = 'X';
+          displayCar = WALL_CHAR;
           colorPair = PAIR_WALL;
           break;
         case UFOS:
           wattron(gameWindow, A_BOLD);
-          displayCar = '#';
+          displayCar = UFO_CHAR;
           colorPair = PAIR_UFO;
           break;
       }
@@ -154,7 +178,7 @@ void Window::drawGame(){
     Logger::log("Exception caught");
   }
   wattron(gameWindow, COLOR_PAIR(PAIR_BULLET));
-  display("U", logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);
+  display(SSTR(PLAYER_CHAR), logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);
   wattroff(gameWindow, COLOR_PAIR(PAIR_BULLET));
 }
 

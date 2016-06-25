@@ -82,7 +82,7 @@ void Timer::stop(){
   auto diff = end_time - start_time;
   auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(diff);
   char buffer[200];
-  sprintf(buffer, "'%s' took %i ns to complete", message.c_str(), (int)nanoseconds.count());
-  Logger::log(buffer);
+  //sprintf(buffer, "'%s' took %i ns to complete", message.c_str(), (int)nanoseconds.count());
+  //Logger::log(buffer);
 
 }

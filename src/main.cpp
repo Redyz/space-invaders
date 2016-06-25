@@ -7,6 +7,9 @@
 #include "utility.h"
 
 int main(int argc, char* argv[]) {
+#if IS_UTF8
+  setlocale(LC_ALL, "");
+#endif
 #if defined(IS_UNIX) && defined(IS_DEBUG)
   std::cout << "Sleeping to allow attach" << std::endl;
   std::cout << getpid() << std::endl;

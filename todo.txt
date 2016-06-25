@@ -1,14 +1,8 @@
 -Add nice equal, multi-line splitting of ghosts + centered
 -The ::draw() methods in windows.cpp are not fully portable, would be better to have something like draw(entity) or something along those lines)
--Figure out how to do menus:
---What about menu::step()
---And view menuDisplay()? VisualMenu::display(); / VisualMenu::step();
---- get latest menu state & display it
---- get input
---- process input & send to logic::menu
 -Is it possible/logical to impose a max width even when using SFML?
 --Things such as wall need to be based on ncurses but shouldn't... hm
--Menus menus menus
 -Nultilevels? Powerups? New enemies?
 -Fix the ghost de-synching thing
 -What about screen resizes?
+-proper cmake-y CMakeList(s)

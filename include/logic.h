@@ -30,7 +30,7 @@ enum gameState{
   QUITTING
 };
 
-#define GHOST_FIRE_CHANCE 70
+#define GHOST_FIRE_CHANCE 20 // chance to fire, each frame
 #define UFO_SPAWN_TIMER  60 // in seconds
 #define SFML_FRAME_LIMIT 60 // in FPS
 #define TICK_LENGTH 40

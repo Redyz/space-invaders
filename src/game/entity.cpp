@@ -201,7 +201,8 @@ bool Ghost::step(){
   }
   
   if(canAct){
-    if(rand() % GHOST_FIRE_CHANCE < 1){
+    int randomInt = rand() % 100;
+    if(randomInt > (100-GHOST_FIRE_CHANCE)){
       fire(DOWN);
     }
     canAct = false;

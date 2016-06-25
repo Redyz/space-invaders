@@ -11,6 +11,7 @@ set(VERSION "v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 set(IS_SFML false CACHE BOOL "Set this to true to build using SFML, or false to use Ncurses")
 set(IS_DEBUG false CACHE BOOL "Whether or not to add debugging symbols to the build") # there is probably a more native way
+set(IS_UTF8 false CACHE BOOL "Use fancy UTF8 symbols for ncurses 'sprites'")
 
 # add header location
 include_directories(
@@ -77,9 +78,9 @@ set(PROJECT_SRC ${PROJECT_SRC} ${GUI_SRC})
 #
 # Valgrind recipe on Unix
 if(IS_UNIX)
-	add_custom_target(valgrind COMMAND "valgrind" "./${PROJECT_NAME}" "-v" "--leak-check=full")
-	add_custom_target(cgdb COMMAND "cgdb" "./${PROJECT_NAME}")
-	add_custom_target(cgdba COMMAND "../tools/debug.sh" )
+  add_custom_target(valgrind COMMAND "valgrind" "./${PROJECT_NAME}" "-v" "--leak-check=full")
+  add_custom_target(cgdb COMMAND "cgdb" "./${PROJECT_NAME}")
+  add_custom_target(cgdba COMMAND "../tools/debug.sh" )
 endif(IS_UNIX)
 
 set(FULL_PROJECT_NAME v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}) 
@@ -115,6 +116,9 @@ if(IS_SFML)
     find_package(SFML 2.1 REQUIRED system window graphics network audio)
     target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
   else()
+    if(IS_UTF8)
+      set(CURSES_NEED_WIDE TRUE)
+    endif(IS_UTF8)
     set(CURSES_NEED_NCURSES TRUE)
     find_package(Curses)
     target_link_libraries(${PROJECT_NAME} ${CURSES_LIBRARY})

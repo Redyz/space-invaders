@@ -149,6 +149,7 @@ void Logic::reset()
 {
   for(auto entity : getEntityVector())
     deleteEntity(entity);
+  getEntityVector().clear();
   enemyVector.clear();
 }
 
