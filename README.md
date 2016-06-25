@@ -26,6 +26,10 @@ IS_SFML | `0/1` | Will be compiled with a GUI or only with a curses interface
 
 Note: For IS_SFML to work you need SFML2.1 installed on your machine, see cmake_modules/Findsfml for more info
 
+#Notes:
+Runs best on xfce-terminal / terminator / xterm
+Runs worse on Konsole
+
 #TODO:
 build essentials
 
