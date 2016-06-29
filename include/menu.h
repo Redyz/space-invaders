@@ -6,37 +6,45 @@
 class Logic;
 
 class MenuComponent{
-	public:
+  public:
     MenuComponent(Logic *logic, std::string text, std::function<void()> callback); 
-		~MenuComponent();
-		bool activate();
-		MenuComponent *left, *right, *up, *down;
-		std::string text;
+    ~MenuComponent();
+    void setText(std::string newText);
+    void revertText();
+    void setCallback(std::function<void()> callback);
+    bool activate();
+    MenuComponent *left, *right, *up, *down;
+    std::string text;
+    std::string originalText;
     std::function<void()> callback;
+    
+    bool isVisible() { return visible; }
+    void setVisible(bool visible) { this->visible = visible; }
 
   private:
     Logic* logic;
+    bool visible;
 };
 
 class Menu{
 
-	public:
-		Menu(Logic *logic);
-		~Menu();
+  public:
+    Menu(Logic *logic);
+    ~Menu();
 
-		void goDown();
-		void goUp();
-    void addMenuComponent(MenuComponent* component);
+    void goDown();
+    void goUp();
+    MenuComponent* addMenuComponent(MenuComponent* component);
 
-		MenuComponent* getTop(){ return top; }
-		MenuComponent* getSelected(){ return selected; }
+    MenuComponent* getTop(){ return top; }
+    MenuComponent* getSelected(){ return selected; }
 
     bool isVisible() { return visible; }
     void setVisible(bool visible) { this->visible = visible; }
 
-	private:
-		MenuComponent *top;
-		MenuComponent *selected;
+  private:
+    MenuComponent *top;
+    MenuComponent *selected;
 
     bool visible;
 };

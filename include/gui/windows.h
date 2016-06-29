@@ -4,9 +4,9 @@
 #include "menu.h"
 
 namespace sf{
-	class RenderWindow;;
-	class Font;
-	class Text;
+  class RenderWindow;;
+  class Font;
+  class Text;
 };
 
 class Logic;
@@ -17,15 +17,15 @@ class Window{
     Window();
     ~Window();
     void draw();
-		void console(std::string text);
+    void console(std::string text);
     void debug(std::string text);
     void display(std::string text);
     void display(std::string text, int x, int y);
     void display(std::string text, int x, int y, WINDOW* window);
     void setup(Logic *logic);
-		void configText(sf::Text &text);
+    void configText(sf::Text &text);
     void clearWindow();
-		void destroy();
+    void destroy();
     int getWidth(){ return width; }
     int getHeight(){ return height; }
     void initColors();
@@ -42,9 +42,9 @@ class Window{
     void drawMenu();
 
     Menu* menu;
-		sf::RenderWindow *sfWindow;
-		sf::Font *font;
-		sf::Text *debugText;
+    sf::RenderWindow *sfWindow;
+    sf::Font *font;
+    sf::Text *debugText;
     int width;
     int height;
     Logic* logic;

@@ -26,3 +26,8 @@ include/config.h
 
 *.vim
 .ycm_extra_conf.py*
+
+.kdev4/
+build/
+*.kdev4
+build-*

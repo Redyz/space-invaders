@@ -16,7 +16,7 @@ Entity::Entity(Logic* logic){
   firingSpeed = 10;
   canMove = true;   
   canAct = true;
-	type = ENTITY;
+  type = ENTITY;
 }
 
 Entity::~Entity(){
@@ -155,7 +155,7 @@ bool Bullet::step(){
   // Unsuccessful move
   if(!testMove(modX, modY)){
     die();
-		return false;
+    return false;
   }else{
     Entity* collision = logic->testEntityCollision(this, x+modX, y+modY);
     if(collision){ //friendly fire is off!
@@ -167,7 +167,7 @@ bool Bullet::step(){
     }
   }
 
-	return true;
+  return true;
 }
 
 void Bullet::die(){
@@ -193,7 +193,7 @@ bool Ghost::step(){
     }
     if(!move(modX, 0)){
       logic->notify(new InvertDirectionMessage());
-			return false;
+      return false;
       /*}else{
         die(); //out of bounds..?
       }*/
@@ -201,14 +201,15 @@ bool Ghost::step(){
   }
   
   if(canAct){
-    if(rand() % GHOST_FIRE_CHANCE < 1){
+    int randomInt = rand() % 100;
+    if(randomInt > (100-GHOST_FIRE_CHANCE)){
       fire(DOWN);
     }
     canAct = false;
     lastAction = logic->getCurrentTick();
   }
   
-	return true;
+  return true;
 }
 
 bool Ghost::move(int modX, int modY){
@@ -223,7 +224,7 @@ bool Ghost::move(int modX, int modY){
 
 void Ghost::doHit(Entity* hitter){
   //logic->notify(new InverDirectionMessage());
-	logic->modScore(10);
+  logic->modScore(10);
 }
 
 void Ghost::setTravelDirection(int direction){
@@ -238,21 +239,21 @@ UFO::UFO(Logic *logic) : Ghost(logic){
   speed = 3;
   life = 1;
   type = UFOS;
-	setX(0);
-	setY(0);
-	setTravelDirection(RIGHT);
+  setX(0);
+  setY(0);
+  setTravelDirection(RIGHT);
 }
 
 void UFO::doHit(Entity *hitter){
-	Logger::log("Killed a UFO");
-	logic->modScore(500);
+  Logger::log("Killed a UFO");
+  logic->modScore(500);
 }
 
 bool UFO::step(){
-	bool moved = Ghost::step();
-	if(!moved)
-		logic->notify(new DeathMessage(this));
-	return moved;
+  bool moved = Ghost::step();
+  if(!moved)
+    logic->notify(new DeathMessage(this));
+  return moved;
 }
 
 Player::Player(Logic* logic) : Entity(logic){
@@ -264,13 +265,13 @@ Player::Player(Logic* logic) : Entity(logic){
 }
 
 bool Player::move(int modX, int modY){
-	modY = 0; // prevent all Y moves from player
-	return Entity::move(modX, modY);
+  modY = 0; // prevent all Y moves from player
+  return Entity::move(modX, modY);
 }
 
 void Player::doHit(Entity* hitter){
-	setX(logic->getGameWidth()/2);
-	logic->modScore(-500);
+  setX(logic->getGameWidth()/2);
+  logic->modScore(-500);
 }
 
 bool Player::step(){
@@ -289,11 +290,11 @@ Prop::Prop(Logic* logic) : Entity(logic){
 }
 
 bool Prop::step(){
-	return true;  
+  return true;  
 }
 
 bool Prop::move(int modX, int modY){
-	return true;
+  return true;
 }
 
 Wall::Wall(Logic* logic) : Prop(logic){

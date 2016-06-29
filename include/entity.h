@@ -42,7 +42,7 @@ class Entity{
     void setDamage(int damage){ this->damage = damage; }
     bool isOutsideMap();
     virtual bool step() = 0;
-		
+    
 
     /**
     * Action methods
@@ -81,7 +81,7 @@ class Bullet : public Entity{
     Bullet(Logic *logic, Entity *firer);
     virtual bool step();
     void setDirection(int direction){ this->direction = direction; }
-		void die();
+    void die();
   private:
     int direction;
     Entity *firer;
@@ -101,17 +101,17 @@ protected:
 
 class UFO : public Ghost{
 public:
-	UFO(Logic *logic);
-	bool step();
+  UFO(Logic *logic);
+  bool step();
 protected:
-	void doHit(Entity *hitter);
+  void doHit(Entity *hitter);
 };
 
 class Player : public Entity{
 public:
     Player(Logic *logic);
     virtual bool step();
-		bool move(int modX, int modY);
+    bool move(int modX, int modY);
 
 protected:
     void doHit(Entity* hitter);

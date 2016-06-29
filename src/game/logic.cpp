@@ -12,7 +12,7 @@
 #include <stdexcept>
 
 //TODO: unify gameState and running
-Logic::Logic(Window *window) : state(PAUSED), score(0), currentEntityIndex(0), currentMessageId(10), currentTick(0){
+Logic::Logic(Window *window) : state(START), score(0), currentEntityIndex(0), currentMessageId(10), currentTick(0), currentLevel(1){
   Logger::log("BEGAN NEW SESSION");
   this->window = window;
 }
@@ -20,19 +20,20 @@ Logic::Logic(Window *window) : state(PAUSED), score(0), currentEntityIndex(0), c
 
 Logic::~Logic(){
 
-	// Free all entities
-	for(auto current : entityVector)
-		delete current;
+  // Free all entities
+  for(auto current : entityVector)
+    delete current;
 
   entityVector.clear();
   enemyVector.clear();
   gameZones.clear();
 
-	Logger::log("Bye!");
+  Logger::log("Bye!");
 }
+
 void Logic::init(){
   currentTick = 0;
-  unsigned int numberOfGhosts = NUMBER_OF_GHOST;
+  unsigned int numberOfGhosts = currentLevel * NUMBER_OF_GHOST;
   unsigned int sideConstant = 5;
 
   // currently, for curses mode the game zone height is equivalent to the gameHeight
@@ -51,10 +52,10 @@ void Logic::init(){
     current = new Ghost(this);
     if(currentX >= getGameWidth()-sideConstant){
       currentX = sideConstant;
-			if(currentY+1 > gameHeight){
-				Logger::log("Too many ghosts for screen size; skipping some");
-				break;
-			}
+      if(currentY+1 > gameHeight){
+        Logger::log("Too many ghosts for screen size; skipping some");
+        break;
+      }
       currentY += 1;
     }
     current->setX(currentX);
@@ -65,10 +66,10 @@ void Logic::init(){
   }
   unsigned int totalSpread = getGameWidth() - 4;
   unsigned int spacing = 11;
-	unsigned int yPos = getGameHeight() - 5;
-	unsigned int numberOfWalls = (unsigned int)totalSpread/11;
-	for(unsigned int i = 0; i < numberOfWalls; i++)
-		createWall(5+(i*spacing), yPos);
+  unsigned int yPos = getGameHeight() - 5;
+  unsigned int numberOfWalls = (unsigned int)totalSpread/11;
+  for(unsigned int i = 0; i < numberOfWalls; i++)
+    createWall(5+(i*spacing), yPos);
 
   current = new Player(this);
   player = current; //arbitrary for now
@@ -83,7 +84,7 @@ int Logic::createEntity(Entity* newEntity){
   entityVector.push_back(newEntity);
   if(newEntity->getType() & ENEMY)
     enemyVector.push_back(newEntity);
-	return 0;
+  return 0;
 }
 
 bool Logic::createWall(int x, int y){
@@ -91,10 +92,10 @@ bool Logic::createWall(int x, int y){
   try{
     Entity *wall;
     int currentX = 0, currentY = 0;
-		for(unsigned int curY = 0; curY < 3; curY++){
-			for(unsigned int curX = 0; curX < WALL_IMG[curY].length(); curX++){
-				char current = WALL_IMG[curY][curX];
-				if(current == 'X'){
+    for(unsigned int curY = 0; curY < 3; curY++){
+      for(unsigned int curX = 0; curX < WALL_IMG[curY].length(); curX++){
+        char current = WALL_IMG[curY][curX];
+        if(current == 'X'){
           wall = new Wall(this);
           currentX = x + curX;
           currentY = y + curY;
@@ -102,10 +103,10 @@ bool Logic::createWall(int x, int y){
           wall->setY(currentY);
           gameZones[wall->getY()][wall->getX()] = wall;
           createEntity(wall);
-				}
-			}
-		}
-		return true;
+        }
+      }
+    }
+    return true;
   }catch(...){
     Logger::log("Failed to create a wall");
   }
@@ -131,69 +132,83 @@ Entity* Logic::testEntityCollision(Entity* tester, int x, int y){
 }
 
 void Logic::processMessages(){
-	std::deque<Message*>::iterator it = messageDeque.begin();
-	while(it != messageDeque.end()){
-		Message* current = *it;
-		Logger::log("Trying to process unprocessed message " + current->toString());
-		if(current->canExecute(this)){
-			current->execute(this);
-			it = messageDeque.erase(it);
-			delete current;
-		}else
-			++it;
-	}
+  std::deque<Message*>::iterator it = messageDeque.begin();
+  while(it != messageDeque.end()){
+    Message* current = *it;
+    Logger::log("Trying to process unprocessed message " + current->toString());
+    if(current->canExecute(this)){
+      current->execute(this);
+      it = messageDeque.erase(it);
+      delete current;
+    }else
+      ++it;
+  }
+}
+
+void Logic::reset()
+{
+  for(auto entity : getEntityVector())
+    deleteEntity(entity);
+  getEntityVector().clear();
+  enemyVector.clear();
 }
 
 static unsigned int lastSpawnedUfo = 0; 
 void Logic::step(){
-	processMessages();
+  processMessages();
   Entity* current;
-	if(currentTick - lastSpawnedUfo > 100 && getSecondsSinceStart() % UFO_SPAWN_TIMER == 0){
-		createEntity(new UFO(this));
-		Logger::log(SSTR(getSecondsSinceStart()) + " seconds elapsed");
-		lastSpawnedUfo = currentTick;
-	}
+  if(currentTick - lastSpawnedUfo > 100 && getSecondsSinceStart() % UFO_SPAWN_TIMER == 0){
+    createEntity(new UFO(this));
+    Logger::log(SSTR(getSecondsSinceStart()) + " seconds elapsed");
+    lastSpawnedUfo = currentTick;
+  }
   for(unsigned int i = 0; i < entityVector.size(); i++){
     current = entityVector[i];
     current->step(); //the entity may die after .step, don't do anything after it
   }
 
-	if(enemyVector.size() == 0)
-		notify(new GameOverMessage(NO_MORE_ENEMIES));
+  //TODO Game levels
+  if(enemyVector.size() == 0){
+    currentLevel++;
+    reset();
+    init();
+    //notify(new GameOverMessage(NO_MORE_ENEMIES));
+  }
+    
 }
 
 int Logic::getSecondsSinceStart(){
-	int seconds;
+  int seconds;
 #if IS_SFML
-	seconds = getCurrentTick()*(1000/SFML_FRAME_LIMIT)/1000;
+  seconds = getCurrentTick()*(1000/SFML_FRAME_LIMIT)/1000;
 #else
-	seconds = getCurrentTick()*TICK_LENGTH/1000;
+  seconds = getCurrentTick()*TICK_LENGTH/1000;
 #endif
-	return seconds;
+  return seconds;
 }
 
 void Logic::notify(Message *message){
-	message->setId(currentMessageId++);
-	if(message->canExecute(this)){
-		message->execute(this);
-		delete message;
-	}else
-		messageDeque.push_back(message);
+  message->setId(currentMessageId++);
+  if(message->canExecute(this)){
+    message->execute(this);
+    delete message;
+  }else
+    messageDeque.push_back(message);
 }
 
 int Logic::deleteEntity(Entity *entity){
-	auto positionEntity = std::find(entityVector.begin(), entityVector.end(), entity);
-	auto positionEnemy = std::find(enemyVector.begin(), enemyVector.end(), entity);
-	if(positionEntity != entityVector.end()){
-	
-		// Remove entity from enemy vector
-		if(positionEnemy != enemyVector.end())
-			positionEnemy = enemyVector.erase(positionEnemy);	
-			
-		gameZones[(*positionEntity)->getY()][(*positionEntity)->getX()] = NULL; //set the pointer to null
-		delete *positionEntity;
-		positionEntity = entityVector.erase(positionEntity);
-		return 0;
-	}
+  auto positionEntity = std::find(entityVector.begin(), entityVector.end(), entity);
+  auto positionEnemy = std::find(enemyVector.begin(), enemyVector.end(), entity);
+  if(positionEntity != entityVector.end()){
+  
+    // Remove entity from enemy vector
+    if(positionEnemy != enemyVector.end())
+      positionEnemy = enemyVector.erase(positionEnemy);  
+      
+    gameZones[(*positionEntity)->getY()][(*positionEntity)->getX()] = NULL; //set the pointer to null
+    delete *positionEntity;
+    positionEntity = entityVector.erase(positionEntity);
+    return 0;
+  }
 return 1;
 }

@@ -24,16 +24,17 @@ enum directions{
 };
 
 enum gameState{
+  START,
   PAUSED,
   UNPAUSED,
   QUITTING
 };
 
-#define GHOST_FIRE_CHANCE 70
+#define GHOST_FIRE_CHANCE 20 // chance to fire, each frame
 #define UFO_SPAWN_TIMER  60 // in seconds
 #define SFML_FRAME_LIMIT 60 // in FPS
 #define TICK_LENGTH 40
-#define NUMBER_OF_GHOST 100
+#define NUMBER_OF_GHOST 4
 
 #define GHOST_SPEED 10
 
@@ -46,13 +47,14 @@ class Logic{
     void step();
     void init();
     void notify(Message *message);
-		void processMessages();
+    void processMessages();
     int getScore(){ return score; }
-		void modScore(int mod){ score += mod; }
+    void modScore(int mod){ score += mod; }
     int getCurrentTick(){ return currentTick; }
-		int getSecondsSinceStart();
+    int getSecondsSinceStart();
     Entity* getPlayer(){ return this->player; }
     EntV& getEntityVector(){ return entityVector; }
+    EntV& getEnemyVector(){ return enemyVector; }
     int getGameHeight(){ return gameHeight;}
     int getGameWidth(){ return gameWidth;}
     void setGameHeight(int height){ gameHeight = height; }
@@ -62,6 +64,7 @@ class Logic{
     gameState getGameState(){ return state; }
     bool getGameRunning() { return (state == UNPAUSED); }
     void setGameState(gameState state){ this->state = state; }
+    unsigned int getCurrentLevel() { return currentLevel; }
     bool createWall(int x, int y);
     int createEntity(Entity* newEntity);
     int deleteEntity(Entity* entity);
@@ -69,9 +72,11 @@ class Logic{
   public:
     Window *window;
   private:
+    void reset();
+    
     unsigned int gameHeight;
     unsigned int gameWidth;
-		Menu *menu;
+    Menu *menu;
     EntV entityVector; //container for all entities
     EntV enemyVector;
     std::vector<EntV> gameZones; //container for the game matrix, indicating presence using coordinates
@@ -79,10 +84,11 @@ class Logic{
     gameState state;
     int score;
     int currentEntityIndex;
-		int currentMessageId;
+    int currentMessageId;
     int currentTick;
+    unsigned int currentLevel;
 
-		std::deque<Message*> messageDeque;
+    std::deque<Message*> messageDeque;
 };
 
 #endif

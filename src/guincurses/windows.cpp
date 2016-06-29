@@ -15,6 +15,26 @@
 #endif
 #include <vector>
 
+const std::string WALL_IMG[] = { 
+"  XX  ", 
+" XXXX ", 
+"XX  XX"  
+};
+
+#if IS_UTF8
+const std::string GHOST_CHAR = "⚫";
+const std::string BULLET_CHAR = "⚡";
+const std::string WALL_CHAR = "☰";
+const std::string UFO_CHAR = "☯";
+const std::string PLAYER_CHAR = "☗";
+#else
+const std::string GHOST_CHAR = "@";
+const std::string BULLET_CHAR = "|";
+const std::string WALL_CHAR = "X";
+const std::string UFO_CHAR = "#";
+const std::string PLAYER_CHAR = "U";
+#endif
+
 #define SCORE_HEIGHT 2
 Window::Window(){
   initscr();
@@ -23,7 +43,7 @@ Window::Window(){
   nodelay(stdscr, true); //make getch non-blocking
   keypad(stdscr, true); //enable f1-f12 + arrow keys
   getmaxyx(stdscr, height, width); //store the screen size
-	curs_set(0); //disable cursor
+  curs_set(0); //disable cursor
   scoreWindow = newwin(SCORE_HEIGHT, width, 0, 0); //create the score 
   gameWindow = newwin(height-SCORE_HEIGHT, width, SCORE_HEIGHT, 0); //height, width, sy, sx
   start_color();
@@ -36,8 +56,8 @@ Window::Window(){
 }
 
 Window::~Window(){
-	destroy();
-	delete input;
+  destroy();
+  delete input;
   delete menu;
 }
 
@@ -61,9 +81,9 @@ void Window::initColors(){
   init_pair(PAIR_BULLET, COLOR_YELLOW, COLOR_BLACK);
 }
 void Window::clearWindow(){
-	if(this->logic->getCurrentTick() % 10 == 0)
-		werase(scoreWindow);
-	werase(gameWindow);
+  if(this->logic->getCurrentTick() % 10 == 0)
+    werase(scoreWindow);
+  werase(gameWindow);
 };
 
 void Window::inputStep(){
@@ -72,7 +92,7 @@ void Window::inputStep(){
 void Window::draw(){
   drawScores();
   drawMenu();
-	drawGame();
+  drawGame();
   wnoutrefresh(gameWindow);
   wnoutrefresh(scoreWindow);
   doupdate();
@@ -97,7 +117,7 @@ void Window::debug(std::string text){
 }
 
 void Window::console(std::string text){
-	std::cout << text << std::endl;
+  std::cout << text << std::endl;
 }
 
 void Window::drawScores(){
@@ -105,13 +125,18 @@ void Window::drawScores(){
   std::string stringScore = "Score: " + SSTR(score);
   display(stringScore, 0, 0, scoreWindow);
 #if IS_DEBUG
-	display(SSTR(" Tick: " << logic->getCurrentTick()), 10, 0, scoreWindow);
+  display(SSTR(" Tick: " << logic->getCurrentTick()), 10, 0, scoreWindow);
 #endif
   unsigned int lives = logic->getPlayer()->getLife();
   display(SSTR("Lives: " << lives), width - 9, 0, scoreWindow);
+  display(SSTR("Level: " << logic->getCurrentLevel()), width - 20, 0, scoreWindow);
   std::string bottomBorder = "";
   for(int i = 0; i < width; i++){
+#if IS_UTF8
+    bottomBorder += "☷";
+#else
     bottomBorder += "_";
+#endif
   }
   display(bottomBorder, 0, 1, scoreWindow);
 }
@@ -122,29 +147,29 @@ void Window::drawGame(){
     for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
       Entity* currentEntity = *it;
       unsigned int colorPair = 0;
-			char displayCar = '!';
+      std::string displayCar = "!";
       switch(currentEntity->getType()){
         case ENTITY:
         case GHOST:
-					displayCar = '@';
+          displayCar = GHOST_CHAR;
           colorPair = PAIR_GHOST;
           break;
         case BULLET:
-					displayCar = '|';
+          displayCar = BULLET_CHAR;
           colorPair = PAIR_BULLET;
           break;
         case WALL:
-					displayCar = 'X';
+          displayCar = WALL_CHAR;
           colorPair = PAIR_WALL;
           break;
         case UFOS:
           wattron(gameWindow, A_BOLD);
-					displayCar = '#';
+          displayCar = UFO_CHAR;
           colorPair = PAIR_UFO;
           break;
       }
       wattron(gameWindow, COLOR_PAIR(colorPair));
-			display(SSTR(displayCar), currentEntity->getX(), currentEntity->getY(), gameWindow);
+      display(SSTR(displayCar), currentEntity->getX(), currentEntity->getY(), gameWindow);
       wattroff(gameWindow, COLOR_PAIR(colorPair));
       wattroff(gameWindow, A_BOLD);
     }
@@ -153,7 +178,7 @@ void Window::drawGame(){
     Logger::log("Exception caught");
   }
   wattron(gameWindow, COLOR_PAIR(PAIR_BULLET));
-  display("U", logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);
+  display(SSTR(PLAYER_CHAR), logic->getPlayer()->getX(), logic->getPlayer()->getY(), gameWindow);
   wattroff(gameWindow, COLOR_PAIR(PAIR_BULLET));
 }
 
@@ -163,12 +188,25 @@ void Window::drawMenu(){
   int currentInd = 0;
   int textOffset = 0;
   MenuComponent* current = menu->getTop();
+
+  //TODO: Clean me up
+  if(logic->getGameState() == PAUSED)
+    current->setText("Unpause game");
+  else
+    current->setText("Start game");
+    
   do{
     textOffset = current->text.size()/2;
+    
+    //TODO Currently impossible to have something selected and not visible
     if(current == menu->getSelected())
       display(SSTR(">" << current->text << "<"), logic->getGameWidth()/2 + textOffset+1 - (current->text.length()+2) , logic->getGameHeight()/2 + currentInd, gameWindow);
-    else
-      display(current->text, logic->getGameWidth()/2 + textOffset - current->text.length(), logic->getGameHeight()/2 + currentInd, gameWindow);
+    else{
+      if(current->isVisible())
+	display(current->text, logic->getGameWidth()/2 + textOffset - current->text.length(), logic->getGameHeight()/2 + currentInd, gameWindow);
+      else
+	currentInd--; //Not very pretty
+    }
     current = current->down;
     currentInd++;
   }while(current != menu->getTop());
