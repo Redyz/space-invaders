@@ -77,6 +77,11 @@ set(PROJECT_SRC ${PROJECT_SRC} ${GUI_SRC})
 #
 # Valgrind recipe on Unix
 if(IS_UNIX)
+
+  add_custom_target(
+    callgrind COMMAND "valgrind" "--tool=callgrind" "--callgrind-out-file=file.out" "./${PROJECT_NAME}" 
+    "&&" "callgrind_annotate" "file.out" "|" "less")
+
 	add_custom_target(valgrind COMMAND "valgrind" "./${PROJECT_NAME}" "-v" "--leak-check=full")
 	add_custom_target(cgdb COMMAND "cgdb" "./${PROJECT_NAME}")
 	add_custom_target(cgdba COMMAND "../tools/debug.sh" )
