@@ -1,0 +1,7 @@
+echo_dir()
+
+file(GLOB TEMP
+  "*.h"
+)
+
+set(PROJECT_INCLUDES ${PROJECT_INCLUDES} ${TEMP} PARENT_SCOPE)

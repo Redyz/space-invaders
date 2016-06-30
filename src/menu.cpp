@@ -1,6 +1,6 @@
 #include "utility.h"
-#include "include/logic.h"
-#include "include/menu.h"
+#include "logic.h"
+#include "menu.h"
 
 Menu::Menu(Logic *logic) : visible(true){
   top = new MenuComponent(logic, "Start game", 

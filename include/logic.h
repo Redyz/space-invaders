@@ -36,6 +36,8 @@ enum gameState{
 #define TICK_LENGTH 40
 #define NUMBER_OF_GHOST 4
 
+#define GHOST_SPEED 10
+
 class Logic{
   public:
     Logic(Window *window);

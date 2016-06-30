@@ -86,4 +86,13 @@ class ConsoleMessage : public Message{
   protected:
     std::string message;
 };
+
+class DisplayCenterMessage : public Message{
+  public:
+    DisplayCenterMessage(std::string message, unsigned int duration);
+    virtual void execute(Logic *logic);
+  private:
+    std::string message;
+    unsigned int duration;
+};
 #endif

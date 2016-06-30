@@ -6,6 +6,10 @@
 #include "logic.h"
 #include "utility.h"
 
+#if !IS_SFML
+#include <ncurses.h>
+#endif
+
 int main(int argc, char* argv[]) {
 #if IS_UTF8
   setlocale(LC_ALL, "");

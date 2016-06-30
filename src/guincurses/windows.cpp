@@ -110,6 +110,13 @@ void Window::display(std::string text, int x, int y, WINDOW* window){
   mvwprintw(window, y, x, text.c_str());
 }
 
+void Window::display_center(std::string text){
+  logic->setGameState(PAUSED);
+  unsigned int startingX, startingY, width, height;
+  mvwprintw(gameWindow, height/2, width/2, text.c_str());
+
+}
+
 void Window::debug(std::string text){
 #if IS_DEBUG
   display(text, 25, 0, scoreWindow);

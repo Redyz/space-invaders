@@ -150,10 +150,12 @@ void GameOverMessage::execute(Logic* logic){
  * KillAllEnemiesMessage Class
  */
 KillAllEnemiesMessage::KillAllEnemiesMessage() {
+
   
 }
 
 void KillAllEnemiesMessage::execute(Logic* logic){
+  logic->notify(new DisplayCenterMessage("GOWD", 3));
   for(auto enemy : logic->getEnemyVector()){
     logic->deleteEntity(enemy);
   }
@@ -174,4 +176,15 @@ void ConsoleMessage::execute(Logic *logic){
 
 bool ConsoleMessage::canExecute(Logic *logic){
   return logic->getGameState() != QUITTING;
+}
+
+DisplayCenterMessage::DisplayCenterMessage(std::string message, unsigned int duration){
+  this->message = message;
+  this->duration = duration;
+}
+
+void DisplayCenterMessage::execute(Logic *logic){
+  Logger::log("Processed center message " + SSTR(message));
+  logic->window->display_center(message);
+  //logic->notify(new DisplayCenterMessage(message, duration));
 }

@@ -77,6 +77,9 @@ void Logic::init(){
   player->setX((int)getGameWidth()/2);
   gameZones[current->getY()][current->getX()] = current;
   createEntity(player);
+
+  notify(new DisplayCenterMessage("GOWD", 3));
+  
 }
 
 int Logic::createEntity(Entity* newEntity){
