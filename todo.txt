@@ -2,7 +2,7 @@
 -Is it possible/logical to impose a max width even when using SFML?
 --We can have an imposed gamewidth and gameheight
 --Things such as wall need to be based on ncurses but shouldn't... hm
--Nultilevels? Powerups? New enemies?
+-Multilevels? Powerups? New enemies?
 -Fix the ghost de-synching thing
 -What about screen resizes?
--proper cmake-y CMakeList(s)
+-CenterPrintMessage method
