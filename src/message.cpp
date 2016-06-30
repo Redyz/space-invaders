@@ -155,7 +155,6 @@ KillAllEnemiesMessage::KillAllEnemiesMessage() {
 }
 
 void KillAllEnemiesMessage::execute(Logic* logic){
-  logic->notify(new DisplayCenterMessage("GOWD", 3));
   for(auto enemy : logic->getEnemyVector()){
     logic->deleteEntity(enemy);
   }

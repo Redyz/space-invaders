@@ -38,7 +38,8 @@ int main(int argc, char* argv[]) {
 #if !IS_SFML
     napms(TICK_LENGTH);
 #endif
-    logic.incrementTick();
+    if(logic.getGameRunning())
+      logic.incrementTick();
   }
 
   window.destroy();
