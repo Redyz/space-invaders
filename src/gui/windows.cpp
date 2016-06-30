@@ -142,6 +142,10 @@ void Window::drawMenu(){
   }while(current != menu->getTop());
 }
 
+void Window::changeMenu(Menu *newMenu){
+  this->menu = newMenu;
+}
+
 void Window::debug(std::string text){
   debugText->setString(text);
 }
