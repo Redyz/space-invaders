@@ -92,8 +92,8 @@ void Window::inputStep(){
 }
 void Window::draw(){
   drawScores();
-  drawMenu();
   drawGame();
+  drawMenu();
   wnoutrefresh(gameWindow);
   wnoutrefresh(scoreWindow);
   doupdate();
