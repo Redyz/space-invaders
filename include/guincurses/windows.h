@@ -56,6 +56,8 @@ class Window{
     void menuDown();
     void menuSelect();
     void menuVisible(bool visible);
+    
+    MenuManager* menuManager;
   private:
     void drawScores();
     void drawGame();
@@ -68,7 +70,6 @@ class Window{
     Logic* logic;
     Input* input;
 
-    MenuManager* menuManager;
     Menu* menu;
 };
 

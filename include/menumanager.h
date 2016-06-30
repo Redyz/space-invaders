@@ -13,10 +13,12 @@ public:
   
   Menu *MAINMENU;
   Menu *ABOUTMENU;
+  Menu *LOSTLIFE;
   
 private:
   void setupMainMenu();
   void setupAbout();
+  void setupLostLife();
   
   Logic *logic;
 };

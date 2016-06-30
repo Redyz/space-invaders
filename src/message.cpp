@@ -3,6 +3,7 @@
 #include "config.h"
 #include "entity.h"
 #include "message.h"
+#include "menumanager.h"
 #include <vector>
 #include <algorithm>
 
@@ -48,8 +49,9 @@ DeathMessage::DeathMessage(Entity* killed, Entity* killer){
     Logger::log("Deleting an entity (" + killed->toString() + "), killed by " + killer->toString());
 }
 
-void DeathMessage::execute(Logic *logic){
-  logic->deleteEntity(killed);
+void DeathMessage::execute(Logic *logic){  
+ 
+    logic->deleteEntity(killed);
 }
 
 /*
@@ -100,6 +102,11 @@ void HitMessage::execute(Logic *logic){
   else
     Logger::log(firer->getUniqueId() + " just hit " + fired->getUniqueId());
 #endif
+  if(fired->getType() == PLAYER){
+    Logger::log("Player has been hit");
+    logic->window->changeMenu(logic->window->menuManager->LOSTLIFE);
+    logic->setGameState(PAUSED);
+  }
   fired->modLife(firer->getDamage(), firer);
 }
 

@@ -39,12 +39,14 @@ class Window{
     void menuDown() { menu->goDown(); }
     void menuSelect() { menu->getSelected()->do_call(); }
     void menuVisible(bool visible){ this->menu->setVisible(visible); }
+    
+    
+    MenuManager* menuManager;
   private:
     void drawScores();
     void drawGame();
     void drawMenu();
 
-    MenuManager* menuManager;
     Menu* menu;
     sf::RenderWindow *sfWindow;
     sf::Font *font;

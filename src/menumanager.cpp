@@ -8,6 +8,7 @@ MenuManager::MenuManager(Logic* logic)
   
   setupMainMenu();
   setupAbout();
+  setupLostLife();
 }
 
 void MenuManager::setupMainMenu()
@@ -51,9 +52,23 @@ void MenuManager::setupAbout()
   last->setSelectable(false);
 }
 
+void MenuManager::setupLostLife(){
+  LOSTLIFE = new Menu(logic);
+  LOSTLIFE->addTopMenuComponent(new MenuComponent(logic, "Go", 
+    [=]{
+      
+      logic->window->changeMenu(MAINMENU);
+      logic->setGameState(UNPAUSED);
+    }
+  ));
+  
+  auto last = LOSTLIFE->addBottomMenuComponent(new MenuComponent(logic, "You lost a life!", nullptr)); last->setSelectable(false);
+}
+
 
 MenuManager::~MenuManager()
 {
   delete MAINMENU;
   delete ABOUTMENU;
+  delete LOSTLIFE;
 }
