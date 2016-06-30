@@ -60,6 +60,7 @@ if(IS_UNIX)
   add_custom_target(
     callgrind COMMAND "valgrind" "--tool=callgrind" "--callgrind-out-file=file.out" "./${PROJECT_NAME}" 
     "&&" "callgrind_annotate" "file.out" "|" "less")
+  add_custom_target(cppcheck COMMAND "cppcheck" "--enable=all" "--inconclusive" "--xml" "--xml-version=2" "../src/" "../include/" "2>" "cppcheck.xml" "|" "cppcheck-gui" "cppcheck.xml")
 
 	add_custom_target(valgrind COMMAND "valgrind" "./${PROJECT_NAME}" "-v" "--leak-check=full")
 	add_custom_target(cgdb COMMAND "cgdb" "./${PROJECT_NAME}")
