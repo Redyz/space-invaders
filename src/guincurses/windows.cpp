@@ -117,7 +117,7 @@ void Window::display(std::string text, int x, int y, WINDOW* window){
 
 void Window::display_center(std::string text){
   logic->setGameState(PAUSED);
-  unsigned int startingX, startingY, width, height;
+  //unsigned int startingX, startingY, width, height;
   mvwprintw(gameWindow, height/2, width/2, text.c_str());
 
 }

@@ -45,7 +45,7 @@ bool Utility::directory_exists(std::string path){
 int Utility::create_directory(std::string path){
 #ifdef IS_NT
   return mkdir(path.c_str()) == 0 ? 0 : 1;
-#elif IS_UNIX
+#else
   return mkdir(path.c_str(), 0755) == 0 ? 0 : 1;
 #endif
 }
@@ -81,7 +81,7 @@ void Timer::stop(){
   auto end_time = precise_clock::now();
   auto diff = end_time - start_time;
   auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(diff);
-  char buffer[200];
+  //char buffer[200];
   //sprintf(buffer, "'%s' took %i ns to complete", message.c_str(), (int)nanoseconds.count());
   //Logger::log(buffer);
 

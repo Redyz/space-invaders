@@ -129,7 +129,7 @@ bool Entity::isOutsideMap(){
 /**
  * Bullet entity class
  */
-Bullet::Bullet(Logic *logic, Entity *firer) : Entity(logic){
+Bullet::Bullet(Logic *logic, Entity *firer) : Entity(logic), direction(LEFT){
   type = BULLET;
   this->firer = firer;
   damage = -1; //means you lose 1hp
@@ -216,9 +216,9 @@ bool Ghost::move(int modX, int modY){
   bool result = Entity::move(modX, modY);
   if(y == logic->getGameHeight())
     logic->notify(new GameOverMessage(REACHED_BOTTOM));
-  if(modY > 0){
+  /*if(modY > 0){
     unsigned int screenDelta = logic->getGameHeight() - y; 
-  }
+  }*/
   return result;
 }
 

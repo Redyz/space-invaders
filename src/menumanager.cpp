@@ -26,7 +26,7 @@ void MenuManager::setupMainMenu()
   ));
   
   auto settings = MAINMENU->addMenuComponent(new MenuComponent(logic, "Settings", nullptr));
-  auto about = MAINMENU->addMenuComponent(new MenuComponent(logic, "About", 
+  MAINMENU->addMenuComponent(new MenuComponent(logic, "About", 
     [=]{
       logic->window->changeMenu(ABOUTMENU);
     }
