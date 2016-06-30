@@ -99,6 +99,10 @@ void Window::draw(){
   doupdate();
 }
 
+void Window::changeMenu(Menu *newMenu){
+    this->menu = newMenu;
+}
+
 void Window::display(std::string text){
   wprintw(gameWindow, text.c_str());
 }

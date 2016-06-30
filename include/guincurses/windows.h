@@ -49,6 +49,7 @@ class Window{
     int getHeight(){ return height; }
     void initColors();
     void inputStep();
+    void changeMenu(Menu *newMenu);
     
     //TODO Think this through
     void menuUp();

@@ -1,5 +1,5 @@
 #include "menumanager.h"
-
+#include "config.h"
 
 MenuManager::MenuManager(Logic* logic)
 {
@@ -22,8 +22,11 @@ void MenuManager::setupMainMenu()
   );
   
   auto settings = MAINMENU->addMenuComponent(new MenuComponent(logic, "Settings", nullptr));
-  auto about = MAINMENU->addMenuComponent(new MenuComponent(logic, "About", [=]{logic->setGameState(QUITTING);}));
-  about->setVisible(false);
+  auto about = MAINMENU->addMenuComponent(new MenuComponent(logic, "About", 
+    [=]{
+      logic->window->changeMenu(ABOUTMENU);
+    }));
+  //about->setVisible(false);
   settings->setCallback([=]{
     about->setVisible(!about->isVisible());
   });
@@ -33,12 +36,19 @@ void MenuManager::setupMainMenu()
 
 void MenuManager::setupAbout()
 {
-
+  ABOUTMENU = new Menu(logic);
+  ABOUTMENU->addTopMenuComponent(new MenuComponent(logic, "Back", 
+    [=]{
+      logic->window->changeMenu(MAINMENU);
+    }
+  ));
+  ABOUTMENU->addMenuComponent(new MenuComponent(logic, "Exit", nullptr));
+  ABOUTMENU->addBottomMenuComponent(new MenuComponent(logic, "Exit", nullptr));
 }
 
 
 MenuManager::~MenuManager()
 {
   delete MAINMENU;
-  //delete ABOUTMENU;
+  delete ABOUTMENU;
 }
