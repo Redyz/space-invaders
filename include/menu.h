@@ -4,6 +4,7 @@
 #include <functional>
 
 class Logic;
+class MenuManager;
 
 class MenuComponent{
   public:
@@ -35,7 +36,9 @@ class Menu{
     void goDown();
     void goUp();
     MenuComponent* addMenuComponent(MenuComponent* component);
-
+    MenuComponent* addTopMenuComponent(MenuComponent* component);
+    MenuComponent* addBottomMenuComponent(MenuComponent* component);
+    
     MenuComponent* getTop(){ return top; }
     MenuComponent* getSelected(){ return selected; }
 
@@ -50,5 +53,6 @@ class Menu{
     
     
     friend class Window;
+    friend class MenuManager;
 };
 #endif

@@ -11,6 +11,7 @@ namespace sf{
 
 class Logic;
 class Input;
+class MenuManager;
 class WINDOW;
 class Window{
   public:
@@ -42,6 +43,7 @@ class Window{
     void drawGame();
     void drawMenu();
 
+    MenuManager* menuManager;
     Menu* menu;
     sf::RenderWindow *sfWindow;
     sf::Font *font;

@@ -2,6 +2,7 @@
 #include "logic.h"
 #include "entity.h"
 #include "utility.h"
+#include "menumanager.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -130,14 +131,9 @@ void Window::drawMenu(){
   if(!menu->isVisible())
     return;
   int currentInd = 0;
-  int textOffset = 0;
   MenuComponent* current = menu->getTop();
   do{
-    textOffset = current->text.size()/2;
-    //if(current == menu->getSelected())
-      //display(SSTR(">" << current->text << "<"), logic->getGameWidth()/2 + textOffset+1 - (current->text.length()+2) , logic->getGameHeight()/2 + currentInd, gameWindow);
-    //else
-      //display(current->text, logic->getGameWidth()/2 + textOffset - current->text.length(), logic->getGameHeight()/2 + currentInd, gameWindow);
+    //textOffset = current->text.size()/2;
     debugText->setPosition(10, 10);
     Logger::log("Drawing another");
     sfWindow->draw(*debugText);

@@ -30,6 +30,7 @@ extern const std::string PLAYER_CHAR;
 
 class Logic;
 class Input;
+class MenuManager;
 class Window{
   public:
     Window();
@@ -66,6 +67,7 @@ class Window{
     Logic* logic;
     Input* input;
 
+    MenuManager* menuManager;
     Menu* menu;
 };
 

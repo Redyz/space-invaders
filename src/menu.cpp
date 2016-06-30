@@ -26,6 +26,23 @@ MenuComponent* Menu::addMenuComponent(MenuComponent* component){
   return component;
 }
 
+MenuComponent* Menu::addBottomMenuComponent(MenuComponent* component)
+{
+  addMenuComponent(component);
+  this->selected->down = this->top;
+  this->top->up = this->selected;
+  this->selected = this->top;
+  return component;
+}
+
+MenuComponent* Menu::addTopMenuComponent(MenuComponent* component)
+{
+  this->top = component;
+  this->selected = this->top;
+  return component;
+}
+
+
 void Menu::goUp(){
 bool found = false;
   while(selected->up != NULL && !found){
