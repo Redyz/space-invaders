@@ -159,12 +159,13 @@ void Logic::reset()
 static unsigned int lastSpawnedUfo = 0; 
 void Logic::step(){
   processMessages();
-  Entity* current;
   if(currentTick - lastSpawnedUfo > 100 && getSecondsSinceStart() % UFO_SPAWN_TIMER == 0){
     createEntity(new UFO(this));
     Logger::log(SSTR(getSecondsSinceStart()) + " seconds elapsed");
     lastSpawnedUfo = currentTick;
   }
+  
+  Entity* current;
   for(unsigned int i = 0; i < entityVector.size(); i++){
     current = entityVector[i];
     current->step(); //the entity may die after .step, don't do anything after it

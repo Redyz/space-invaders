@@ -105,7 +105,7 @@ void Window::draw(){
   scale = size.x / 512;
   sfWindow->clear(sf::Color::Black);
   std::vector<Entity*> entityVector = logic->getEntityVector();
-  for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
+  for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); ++it){
     Entity* entity = *it;
     switch(entity->getType()){
       case GHOST:

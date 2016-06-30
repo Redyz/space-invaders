@@ -156,7 +156,7 @@ void Window::drawScores(){
 void Window::drawGame(){
   std::vector<Entity*> entityVector = logic->getEntityVector();
   try{
-    for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
+    for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); ++it){
       Entity* currentEntity = *it;
       unsigned int colorPair = 0;
       std::string displayCar = "!";
@@ -198,7 +198,6 @@ void Window::drawMenu(){
   if(!menu->isVisible())
     return;
   int currentInd = 0;
-  int textOffset = 0;
   MenuComponent* current = menu->getTop();
 
   //TODO: Clean me up
@@ -209,7 +208,7 @@ void Window::drawMenu(){
     */
   
   do{
-    textOffset = current->text.size()/2;
+    int textOffset = current->text.size()/2;
     
     //TODO: This may need to be rethunk, might be lengthy
     current->do_draw();
