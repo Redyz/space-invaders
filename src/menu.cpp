@@ -3,31 +3,7 @@
 #include "menu.h"
 
 Menu::Menu(Logic *logic) : visible(true){
-  top = new MenuComponent(logic, "Start game", 
-      [=]{
-        setVisible(false);
-        logic->setGameState(UNPAUSED);
-      });
-  selected = top;
-
-  addMenuComponent(top);
   
-  //TODO: Add a View class? Handle displaying different views (game/about/settings/etc.)
-  auto settings = addMenuComponent(new MenuComponent(logic, "Settings", nullptr));
-  auto about = addMenuComponent(new MenuComponent(logic, "About", [=]{logic->setGameState(QUITTING);}));
-  about->setVisible(false);
-  settings->setCallback([=]{
-    about->setVisible(!about->isVisible());
-  });
-  settings->setVisible(false);
-  addMenuComponent(new MenuComponent(logic, "Quit game", [=]{logic->setGameState(QUITTING);}));
-
-  // Link top to bottom and vice versa
-  selected->down = top;
-  top->up = selected;
-
-  // Put back selection on top
-  selected = top;
 }
 
 Menu::~Menu(){

@@ -40,8 +40,8 @@ Window::~Window(){
   delete debugText;
 }
 
-#define GAME_WIDTH 800
-#define GAME_HEIGHT 600
+#define GAME_WIDTH 1280
+#define GAME_HEIGHT 720
 
 static unsigned int scale;
 void Window::setup(Logic *logic){
@@ -52,8 +52,32 @@ void Window::setup(Logic *logic){
   logic->setGameWidth(GAME_WIDTH);
   logic->setGameHeight(GAME_HEIGHT);
 
+  //TODO: Cleanup
   menu = new Menu(logic);
-  menu->addMenuComponent(new MenuComponent(logic, "Start", [=]{ Logger::log("actiavted"); }));
+  this->menu->top = new MenuComponent(logic, "Start game", 
+      [=]{
+        this->menu->setVisible(false);
+        logic->setGameState(UNPAUSED);
+      });
+  this->menu->selected = this->menu->top;
+
+  this->menu->addMenuComponent(this->menu->top);
+  
+  auto settings = this->menu->addMenuComponent(new MenuComponent(logic, "Settings", nullptr));
+  auto about = this->menu->addMenuComponent(new MenuComponent(logic, "About", [=]{logic->setGameState(QUITTING);}));
+  about->setVisible(false);
+  settings->setCallback([=]{
+    about->setVisible(!about->isVisible());
+  });
+  settings->setVisible(false);
+  this->menu->addMenuComponent(new MenuComponent(logic, "Quit game", [=]{logic->setGameState(QUITTING);}));
+
+  // Link top to bottom and vice versa
+  this->menu->selected->down = this->menu->top;
+  this->menu->top->up = this->menu->selected;
+
+  // Put back selection on top
+  this->menu->selected = this->menu->top;
 }
 
 void Window::configText(sf::Text &text){
@@ -128,6 +152,10 @@ void Window::debug(std::string text){
 
 void Window::display(std::string text){
   debug(text);
+}
+
+void Window::display_center(std::string text){
+  
 }
 
 void Window::console(std::string text){

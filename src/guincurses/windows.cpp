@@ -72,6 +72,32 @@ void Window::setup(Logic* logic){
   this->input = new Input(logic);
 
   this->menu = new Menu(logic);
+  
+  this->menu->top = new MenuComponent(logic, "Start game", 
+      [=]{
+        this->menu->setVisible(false);
+        logic->setGameState(UNPAUSED);
+      });
+  this->menu->selected = this->menu->top;
+
+  this->menu->addMenuComponent(this->menu->top);
+  
+  //TODO: Add a View class? Handle displaying different views (game/about/settings/etc.)
+  auto settings = this->menu->addMenuComponent(new MenuComponent(logic, "Settings", nullptr));
+  auto about = this->menu->addMenuComponent(new MenuComponent(logic, "About", [=]{logic->setGameState(QUITTING);}));
+  about->setVisible(false);
+  settings->setCallback([=]{
+    about->setVisible(!about->isVisible());
+  });
+  settings->setVisible(false);
+  this->menu->addMenuComponent(new MenuComponent(logic, "Quit game", [=]{logic->setGameState(QUITTING);}));
+
+  // Link top to bottom and vice versa
+  this->menu->selected->down = this->menu->top;
+  this->menu->top->up = this->menu->selected;
+
+  // Put back selection on top
+  this->menu->selected = this->menu->top;
 }
 void Window::initColors(){
   init_pair(PAIR_ENTITY, COLOR_GREEN, COLOR_BLACK);

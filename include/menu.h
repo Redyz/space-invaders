@@ -47,5 +47,8 @@ class Menu{
     MenuComponent *selected;
 
     bool visible;
+    
+    
+    friend class Window;
 };
 #endif
