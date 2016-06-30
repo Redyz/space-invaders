@@ -78,7 +78,7 @@ void Logic::init(){
   gameZones[current->getY()][current->getX()] = current;
   createEntity(player);
 
-  notify(new DisplayCenterMessage("GOWD", 3));
+  //notify(new DisplayCenterMessage("GOWD", 3));
   
 }
 

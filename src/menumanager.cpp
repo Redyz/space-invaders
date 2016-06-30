@@ -1,5 +1,6 @@
 #include "menumanager.h"
 #include "config.h"
+#include "utility.h"
 
 MenuManager::MenuManager(Logic* logic)
 {
@@ -17,20 +18,21 @@ void MenuManager::setupMainMenu()
       [=]{
         MAINMENU->setVisible(false);
         logic->setGameState(UNPAUSED);
-      })
-  
-  );
+      },
+      [=]{
+	MAINMENU->top->setText(logic->getGameState() == START ? "Start game" : "Unpause game");
+      }  
+  ));
   
   auto settings = MAINMENU->addMenuComponent(new MenuComponent(logic, "Settings", nullptr));
   auto about = MAINMENU->addMenuComponent(new MenuComponent(logic, "About", 
     [=]{
       logic->window->changeMenu(ABOUTMENU);
-    }));
-  //about->setVisible(false);
+    }
+  ));
   settings->setCallback([=]{
-    about->setVisible(!about->isVisible());
+    
   });
-  settings->setVisible(false);
   MAINMENU->addBottomMenuComponent(new MenuComponent(logic, "Quit game", [=]{logic->setGameState(QUITTING);}));
 }
 
@@ -42,8 +44,11 @@ void MenuManager::setupAbout()
       logic->window->changeMenu(MAINMENU);
     }
   ));
-  ABOUTMENU->addMenuComponent(new MenuComponent(logic, "Exit", nullptr));
-  ABOUTMENU->addBottomMenuComponent(new MenuComponent(logic, "Exit", nullptr));
+  auto line = ABOUTMENU->addMenuComponent(new MenuComponent(logic, "MIT License", nullptr));  line->setSelectable(false);
+  line = ABOUTMENU->addMenuComponent(new MenuComponent(logic, std::string("Space-Invaders ") + std::string(VERSION), nullptr));  line->setSelectable(false);
+  line = ABOUTMENU->addMenuComponent(new MenuComponent(logic, "Programmed with love and anger by Redyz", nullptr));  line->setSelectable(false);
+  auto last = ABOUTMENU->addBottomMenuComponent(new MenuComponent(logic, " ", nullptr));
+  last->setSelectable(false);
 }
 
 

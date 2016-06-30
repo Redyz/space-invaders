@@ -9,22 +9,31 @@ class MenuManager;
 class MenuComponent{
   public:
     MenuComponent(Logic *logic, std::string text, std::function<void()> callback); 
+    MenuComponent(Logic *logic, std::string text, std::function<void()> callback, std::function<void()> drawCallback); 
     ~MenuComponent();
     void setText(std::string newText);
     void revertText();
     void setCallback(std::function<void()> callback);
-    bool activate();
+    void setDrawCallback(std::function<void()> callback);
     MenuComponent *left, *right, *up, *down;
     std::string text;
     std::string originalText;
-    std::function<void()> callback;
     
     bool isVisible() { return visible; }
     void setVisible(bool visible) { this->visible = visible; }
 
+    bool isSelectable() { return selectable; }
+    void setSelectable(bool selectable) { this->selectable = selectable; }
+    
+    bool do_call();
+    bool do_draw();
   private:
     Logic* logic;
     bool visible;
+    bool selectable;
+    std::function<void()> callback;
+    std::function<void()> drawCallback;
+
 };
 
 class Menu{
@@ -50,7 +59,6 @@ class Menu{
     MenuComponent *selected;
 
     bool visible;
-    
     
     friend class Window;
     friend class MenuManager;

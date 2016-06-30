@@ -202,13 +202,17 @@ void Window::drawMenu(){
   MenuComponent* current = menu->getTop();
 
   //TODO: Clean me up
-  if(logic->getGameState() == PAUSED)
+  /*if(logic->getGameState() == PAUSED)
     current->setText("Unpause game");
   else
     current->setText("Start game");
-    
+    */
+  
   do{
     textOffset = current->text.size()/2;
+    
+    //TODO: This may need to be rethunk, might be lengthy
+    current->do_draw();
     
     //TODO Currently impossible to have something selected and not visible
     if(current == menu->getSelected())
@@ -233,7 +237,7 @@ void Window::menuDown(){
 }
 
 void Window::menuSelect(){
-  menu->getSelected()->activate();
+  menu->getSelected()->do_call();
 }
 
 void Window::menuVisible(bool visible){

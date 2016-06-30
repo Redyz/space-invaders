@@ -47,7 +47,7 @@ void Menu::goUp(){
 bool found = false;
   while(selected->up != NULL && !found){
     selected = selected->up;
-    if(selected->isVisible())
+    if(selected->isVisible() && selected->isSelectable())
       found = true;
   }
 }
@@ -57,16 +57,21 @@ void Menu::goDown(){
   bool found = false;
   while(selected->down != NULL && !found){
     selected = selected->down;
-    if(selected->isVisible())
+    if(selected->isVisible() && selected->isSelectable())
       found = true;
   }
 }
 
-MenuComponent::MenuComponent(Logic *logic, std::string text, std::function<void()> callback) : left(NULL), right(NULL), up(NULL), down(NULL), visible(true) {
+MenuComponent::MenuComponent(Logic *logic, std::string text, std::function<void()> callback) : left(NULL), right(NULL), up(NULL), down(NULL), visible(true), selectable(true) {
   this->logic = logic;
   this->text = text;
   this->originalText = text;
   this->callback = callback;
+  this->drawCallback = nullptr;
+}
+
+MenuComponent::MenuComponent(Logic *logic, std::string text, std::function<void()> callback, std::function<void()> drawCallback) : MenuComponent(logic, text, callback) {
+  this->drawCallback = drawCallback;
 }
 
 MenuComponent::~MenuComponent(){
@@ -88,8 +93,20 @@ void MenuComponent::setCallback(std::function<void()> callback)
   this->callback = callback;
 }
 
-bool MenuComponent::activate(){
+void MenuComponent::setDrawCallback(std::function<void()> callback)
+{
+  this->drawCallback = callback;
+}
+
+bool MenuComponent::do_call(){
   if(callback != NULL)
     callback();
   return true;
 }
+
+bool MenuComponent::do_draw(){
+  if(drawCallback!= NULL)
+    drawCallback();
+  return true;
+}
+

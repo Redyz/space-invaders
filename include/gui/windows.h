@@ -37,7 +37,7 @@ class Window{
     //TODO Think this through
     void menuUp() { menu->goUp(); }
     void menuDown() { menu->goDown(); }
-    void menuSelect() { menu->getSelected()->activate(); }
+    void menuSelect() { menu->getSelected()->do_call(); }
     void menuVisible(bool visible){ this->menu->setVisible(visible); }
   private:
     void drawScores();
