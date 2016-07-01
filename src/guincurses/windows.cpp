@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "utility.h"
 #include "menu.h"
+#include "menumanager.h"
 
 #include <stdlib.h>
 
@@ -58,7 +59,7 @@ Window::Window(){
 Window::~Window(){
   destroy();
   delete input;
-  delete menu;
+  delete menuManager;
 }
 
 void Window::destroy(){
@@ -69,9 +70,9 @@ void Window::setup(Logic* logic){
   logic->setGameWidth(width-1);
   logic->setGameHeight(height - SCORE_HEIGHT-1);
   this->logic = logic;
+  this->menuManager = new MenuManager(logic);
   this->input = new Input(logic);
-
-  this->menu = new Menu(logic);
+  this->menu = this->menuManager->MAINMENU;
 }
 void Window::initColors(){
   init_pair(PAIR_ENTITY, COLOR_GREEN, COLOR_BLACK);
@@ -91,11 +92,15 @@ void Window::inputStep(){
 }
 void Window::draw(){
   drawScores();
-  drawMenu();
   drawGame();
+  drawMenu();
   wnoutrefresh(gameWindow);
   wnoutrefresh(scoreWindow);
   doupdate();
+}
+
+void Window::changeMenu(Menu *newMenu){
+    this->menu = newMenu;
 }
 
 void Window::display(std::string text){
@@ -112,7 +117,7 @@ void Window::display(std::string text, int x, int y, WINDOW* window){
 
 void Window::display_center(std::string text){
   logic->setGameState(PAUSED);
-  unsigned int startingX, startingY, width, height;
+  //unsigned int startingX, startingY, width, height;
   mvwprintw(gameWindow, height/2, width/2, text.c_str());
 
 }
@@ -151,7 +156,7 @@ void Window::drawScores(){
 void Window::drawGame(){
   std::vector<Entity*> entityVector = logic->getEntityVector();
   try{
-    for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
+    for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); ++it){
       Entity* currentEntity = *it;
       unsigned int colorPair = 0;
       std::string displayCar = "!";
@@ -193,17 +198,20 @@ void Window::drawMenu(){
   if(!menu->isVisible())
     return;
   int currentInd = 0;
-  int textOffset = 0;
   MenuComponent* current = menu->getTop();
 
   //TODO: Clean me up
-  if(logic->getGameState() == PAUSED)
+  /*if(logic->getGameState() == PAUSED)
     current->setText("Unpause game");
   else
     current->setText("Start game");
-    
+    */
+  
   do{
-    textOffset = current->text.size()/2;
+    int textOffset = current->text.size()/2;
+    
+    //TODO: This may need to be rethunk, might be lengthy
+    current->do_draw();
     
     //TODO Currently impossible to have something selected and not visible
     if(current == menu->getSelected())
@@ -228,7 +236,7 @@ void Window::menuDown(){
 }
 
 void Window::menuSelect(){
-  menu->getSelected()->activate();
+  menu->getSelected()->do_call();
 }
 
 void Window::menuVisible(bool visible){

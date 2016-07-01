@@ -30,6 +30,7 @@ extern const std::string PLAYER_CHAR;
 
 class Logic;
 class Input;
+class MenuManager;
 class Window{
   public:
     Window();
@@ -48,12 +49,15 @@ class Window{
     int getHeight(){ return height; }
     void initColors();
     void inputStep();
+    void changeMenu(Menu *newMenu);
     
     //TODO Think this through
     void menuUp();
     void menuDown();
     void menuSelect();
     void menuVisible(bool visible);
+    
+    MenuManager* menuManager;
   private:
     void drawScores();
     void drawGame();

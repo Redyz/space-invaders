@@ -2,6 +2,7 @@
 #include "logic.h"
 #include "entity.h"
 #include "utility.h"
+#include "menumanager.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -40,8 +41,8 @@ Window::~Window(){
   delete debugText;
 }
 
-#define GAME_WIDTH 800
-#define GAME_HEIGHT 600
+#define GAME_WIDTH 1280
+#define GAME_HEIGHT 720
 
 static unsigned int scale;
 void Window::setup(Logic *logic){
@@ -52,8 +53,32 @@ void Window::setup(Logic *logic){
   logic->setGameWidth(GAME_WIDTH);
   logic->setGameHeight(GAME_HEIGHT);
 
+  //TODO: Cleanup
   menu = new Menu(logic);
-  menu->addMenuComponent(new MenuComponent(logic, "Start", [=]{ Logger::log("actiavted"); }));
+  this->menu->top = new MenuComponent(logic, "Start game", 
+      [=]{
+        this->menu->setVisible(false);
+        logic->setGameState(UNPAUSED);
+      });
+  this->menu->selected = this->menu->top;
+
+  this->menu->addMenuComponent(this->menu->top);
+  
+  auto settings = this->menu->addMenuComponent(new MenuComponent(logic, "Settings", nullptr));
+  auto about = this->menu->addMenuComponent(new MenuComponent(logic, "About", [=]{logic->setGameState(QUITTING);}));
+  about->setVisible(false);
+  settings->setCallback([=]{
+    about->setVisible(!about->isVisible());
+  });
+  settings->setVisible(false);
+  this->menu->addMenuComponent(new MenuComponent(logic, "Quit game", [=]{logic->setGameState(QUITTING);}));
+
+  // Link top to bottom and vice versa
+  this->menu->selected->down = this->menu->top;
+  this->menu->top->up = this->menu->selected;
+
+  // Put back selection on top
+  this->menu->selected = this->menu->top;
 }
 
 void Window::configText(sf::Text &text){
@@ -80,7 +105,7 @@ void Window::draw(){
   scale = size.x / 512;
   sfWindow->clear(sf::Color::Black);
   std::vector<Entity*> entityVector = logic->getEntityVector();
-  for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); it++){
+  for(std::vector<Entity*>::iterator it = entityVector.begin(); it != entityVector.end(); ++it){
     Entity* entity = *it;
     switch(entity->getType()){
       case GHOST:
@@ -106,14 +131,9 @@ void Window::drawMenu(){
   if(!menu->isVisible())
     return;
   int currentInd = 0;
-  int textOffset = 0;
   MenuComponent* current = menu->getTop();
   do{
-    textOffset = current->text.size()/2;
-    //if(current == menu->getSelected())
-      //display(SSTR(">" << current->text << "<"), logic->getGameWidth()/2 + textOffset+1 - (current->text.length()+2) , logic->getGameHeight()/2 + currentInd, gameWindow);
-    //else
-      //display(current->text, logic->getGameWidth()/2 + textOffset - current->text.length(), logic->getGameHeight()/2 + currentInd, gameWindow);
+    //textOffset = current->text.size()/2;
     debugText->setPosition(10, 10);
     Logger::log("Drawing another");
     sfWindow->draw(*debugText);
@@ -122,12 +142,20 @@ void Window::drawMenu(){
   }while(current != menu->getTop());
 }
 
+void Window::changeMenu(Menu *newMenu){
+  this->menu = newMenu;
+}
+
 void Window::debug(std::string text){
   debugText->setString(text);
 }
 
 void Window::display(std::string text){
   debug(text);
+}
+
+void Window::display_center(std::string text){
+  
 }
 
 void Window::console(std::string text){

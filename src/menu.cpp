@@ -3,31 +3,7 @@
 #include "menu.h"
 
 Menu::Menu(Logic *logic) : visible(true){
-  top = new MenuComponent(logic, "Start game", 
-      [=]{
-        setVisible(false);
-        logic->setGameState(UNPAUSED);
-      });
-  selected = top;
-
-  addMenuComponent(top);
   
-  //TODO: Add a View class? Handle displaying different views (game/about/settings/etc.)
-  auto settings = addMenuComponent(new MenuComponent(logic, "Settings", nullptr));
-  auto about = addMenuComponent(new MenuComponent(logic, "About", [=]{logic->setGameState(QUITTING);}));
-  about->setVisible(false);
-  settings->setCallback([=]{
-    about->setVisible(!about->isVisible());
-  });
-  settings->setVisible(false);
-  addMenuComponent(new MenuComponent(logic, "Quit game", [=]{logic->setGameState(QUITTING);}));
-
-  // Link top to bottom and vice versa
-  selected->down = top;
-  top->up = selected;
-
-  // Put back selection on top
-  selected = top;
 }
 
 Menu::~Menu(){
@@ -50,11 +26,28 @@ MenuComponent* Menu::addMenuComponent(MenuComponent* component){
   return component;
 }
 
+MenuComponent* Menu::addBottomMenuComponent(MenuComponent* component)
+{
+  addMenuComponent(component);
+  this->selected->down = this->top;
+  this->top->up = this->selected;
+  this->selected = this->top;
+  return component;
+}
+
+MenuComponent* Menu::addTopMenuComponent(MenuComponent* component)
+{
+  this->top = component;
+  this->selected = this->top;
+  return component;
+}
+
+
 void Menu::goUp(){
 bool found = false;
   while(selected->up != NULL && !found){
     selected = selected->up;
-    if(selected->isVisible())
+    if(selected->isVisible() && selected->isSelectable())
       found = true;
   }
 }
@@ -64,16 +57,21 @@ void Menu::goDown(){
   bool found = false;
   while(selected->down != NULL && !found){
     selected = selected->down;
-    if(selected->isVisible())
+    if(selected->isVisible() && selected->isSelectable())
       found = true;
   }
 }
 
-MenuComponent::MenuComponent(Logic *logic, std::string text, std::function<void()> callback) : left(NULL), right(NULL), up(NULL), down(NULL), visible(true) {
+MenuComponent::MenuComponent(Logic *logic, std::string text, std::function<void()> callback) : left(NULL), right(NULL), up(NULL), down(NULL), visible(true), selectable(true) {
   this->logic = logic;
   this->text = text;
   this->originalText = text;
   this->callback = callback;
+  this->drawCallback = nullptr;
+}
+
+MenuComponent::MenuComponent(Logic *logic, std::string text, std::function<void()> callback, std::function<void()> drawCallback) : MenuComponent(logic, text, callback) {
+  this->drawCallback = drawCallback;
 }
 
 MenuComponent::~MenuComponent(){
@@ -95,8 +93,20 @@ void MenuComponent::setCallback(std::function<void()> callback)
   this->callback = callback;
 }
 
-bool MenuComponent::activate(){
+void MenuComponent::setDrawCallback(std::function<void()> callback)
+{
+  this->drawCallback = callback;
+}
+
+bool MenuComponent::do_call(){
   if(callback != NULL)
     callback();
   return true;
 }
+
+bool MenuComponent::do_draw(){
+  if(drawCallback!= NULL)
+    drawCallback();
+  return true;
+}
+

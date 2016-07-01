@@ -11,6 +11,7 @@ namespace sf{
 
 class Logic;
 class Input;
+class MenuManager;
 class WINDOW;
 class Window{
   public:
@@ -22,6 +23,7 @@ class Window{
     void display(std::string text);
     void display(std::string text, int x, int y);
     void display(std::string text, int x, int y, WINDOW* window);
+    void display_center(std::string text);
     void setup(Logic *logic);
     void configText(sf::Text &text);
     void clearWindow();
@@ -30,12 +32,16 @@ class Window{
     int getHeight(){ return height; }
     void initColors();
     void inputStep();
+    void changeMenu(Menu *newMenu);
 
     //TODO Think this through
     void menuUp() { menu->goUp(); }
     void menuDown() { menu->goDown(); }
-    void menuSelect() { menu->getSelected()->activate(); }
+    void menuSelect() { menu->getSelected()->do_call(); }
     void menuVisible(bool visible){ this->menu->setVisible(visible); }
+    
+    
+    MenuManager* menuManager;
   private:
     void drawScores();
     void drawGame();
