@@ -35,10 +35,11 @@ Window::Window(){
 
 Window::~Window(){
   delete input;
-  delete menu;
   delete sfWindow;
   delete font;
   delete debugText;
+  delete visualMenu;
+  delete menuManager;
 }
 
 #define GAME_WIDTH 1280
@@ -53,32 +54,10 @@ void Window::setup(Logic *logic){
   logic->setGameWidth(GAME_WIDTH);
   logic->setGameHeight(GAME_HEIGHT);
 
-  //TODO: Cleanup
-  menu = new Menu(logic);
-  this->menu->top = new MenuComponent(logic, "Start game", 
-      [=]{
-        this->menu->setVisible(false);
-        logic->setGameState(UNPAUSED);
-      });
-  this->menu->selected = this->menu->top;
-
-  this->menu->addMenuComponent(this->menu->top);
+  this->menuManager = new MenuManager(logic);
+  this->menu = this->menuManager->MAINMENU;
   
-  auto settings = this->menu->addMenuComponent(new MenuComponent(logic, "Settings", nullptr));
-  auto about = this->menu->addMenuComponent(new MenuComponent(logic, "About", [=]{logic->setGameState(QUITTING);}));
-  about->setVisible(false);
-  settings->setCallback([=]{
-    about->setVisible(!about->isVisible());
-  });
-  settings->setVisible(false);
-  this->menu->addMenuComponent(new MenuComponent(logic, "Quit game", [=]{logic->setGameState(QUITTING);}));
-
-  // Link top to bottom and vice versa
-  this->menu->selected->down = this->menu->top;
-  this->menu->top->up = this->menu->selected;
-
-  // Put back selection on top
-  this->menu->selected = this->menu->top;
+  visualMenu = new VisualMenu(logic, this->menu);
 }
 
 void Window::configText(sf::Text &text){
@@ -130,7 +109,8 @@ void Window::draw(){
 void Window::drawMenu(){
   if(!menu->isVisible())
     return;
-  int currentInd = 0;
+  visualMenu->draw();
+  /* currentInd = 0;
   MenuComponent* current = menu->getTop();
   do{
     //textOffset = current->text.size()/2;
@@ -139,7 +119,9 @@ void Window::drawMenu(){
     sfWindow->draw(*debugText);
     current = current->down;
     currentInd++;
-  }while(current != menu->getTop());
+  }while(current != menu->getTop());*/
+  
+  
 }
 
 void Window::changeMenu(Menu *newMenu){

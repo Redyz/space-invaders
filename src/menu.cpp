@@ -32,6 +32,7 @@ MenuComponent* Menu::addBottomMenuComponent(MenuComponent* component)
   this->selected->down = this->top;
   this->top->up = this->selected;
   this->selected = this->top;
+  this->bottom = component;
   return component;
 }
 

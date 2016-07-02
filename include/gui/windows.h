@@ -12,6 +12,7 @@ namespace sf{
 class Logic;
 class Input;
 class MenuManager;
+class VisualMenu;
 class WINDOW;
 class Window{
   public:
@@ -30,6 +31,7 @@ class Window{
     void destroy();
     int getWidth(){ return width; }
     int getHeight(){ return height; }
+    sf::Font* getFont() { return font; }
     void initColors();
     void inputStep();
     void changeMenu(Menu *newMenu);
@@ -48,6 +50,7 @@ class Window{
     void drawMenu();
 
     Menu* menu;
+    VisualMenu *visualMenu;
     sf::RenderWindow *sfWindow;
     sf::Font *font;
     sf::Text *debugText;
@@ -55,6 +58,8 @@ class Window{
     int height;
     Logic* logic;
     Input* input;
+    
+    friend class VisualMenu;
 };
 
 #endif

@@ -49,6 +49,7 @@ class Menu{
     MenuComponent* addBottomMenuComponent(MenuComponent* component);
     
     MenuComponent* getTop(){ return top; }
+    MenuComponent* getBottom(){ return bottom; }
     MenuComponent* getSelected(){ return selected; }
 
     bool isVisible() { return visible; }
@@ -56,6 +57,7 @@ class Menu{
 
   private:
     MenuComponent *top;
+    MenuComponent *bottom;
     MenuComponent *selected;
 
     bool visible;
