@@ -2,7 +2,7 @@
 #include "logic.h"
 #include "menu.h"
 
-Menu::Menu(Logic *logic) : visible(true){
+Menu::Menu() : visible(true){
 
 }
 

@@ -79,7 +79,7 @@ void Logic::init(){
   createEntity(player);
 
   //notify(new DisplayCenterMessage("GOWD", 3));
-  
+
 }
 
 int Logic::createEntity(Entity* newEntity){
@@ -139,12 +139,9 @@ void Logic::processMessages(){
   while(it != messageDeque.end()){
     Message* current = *it;
     Logger::log("Trying to process unprocessed message " + current->toString());
-    if(current->canExecute(this)){
-      current->execute(this);
+      current->execute();
       it = messageDeque.erase(it);
       delete current;
-    }else
-      ++it;
   }
 }
 
@@ -156,7 +153,7 @@ void Logic::reset()
   enemyVector.clear();
 }
 
-static unsigned int lastSpawnedUfo = 0; 
+static unsigned int lastSpawnedUfo = 0;
 void Logic::step(){
   processMessages();
   if(currentTick - lastSpawnedUfo > 100 && getSecondsSinceStart() % UFO_SPAWN_TIMER == 0){
@@ -164,7 +161,7 @@ void Logic::step(){
     Logger::log(SSTR(getSecondsSinceStart()) + " seconds elapsed");
     lastSpawnedUfo = currentTick;
   }
-  
+
   Entity* current;
   for(unsigned int i = 0; i < entityVector.size(); i++){
     current = entityVector[i];
@@ -178,7 +175,7 @@ void Logic::step(){
     init();
     //notify(new GameOverMessage(NO_MORE_ENEMIES));
   }
-    
+
 }
 
 int Logic::getSecondsSinceStart(){
@@ -193,22 +190,19 @@ int Logic::getSecondsSinceStart(){
 
 void Logic::notify(Message *message){
   message->setId(currentMessageId++);
-  if(message->canExecute(this)){
-    message->execute(this);
+    message->execute();
     delete message;
-  }else
-    messageDeque.push_back(message);
 }
 
 int Logic::deleteEntity(Entity *entity){
   auto positionEntity = std::find(entityVector.begin(), entityVector.end(), entity);
   auto positionEnemy = std::find(enemyVector.begin(), enemyVector.end(), entity);
   if(positionEntity != entityVector.end()){
-  
+
     // Remove entity from enemy vector
     if(positionEnemy != enemyVector.end())
-      positionEnemy = enemyVector.erase(positionEnemy);  
-      
+      positionEnemy = enemyVector.erase(positionEnemy);
+
     gameZones[(*positionEntity)->getY()][(*positionEntity)->getX()] = NULL; //set the pointer to null
     delete *positionEntity;
     positionEntity = entityVector.erase(positionEntity);

@@ -11,7 +11,7 @@
 #include <ncurses.h>
 #endif
 
-int main(int argc, char* argv[]) {
+int main(void) {
 #if IS_UTF8
   setlocale(LC_ALL, "");
 #endif
@@ -33,7 +33,6 @@ int main(int argc, char* argv[]) {
       logic.step();
     auto time = Timer("Window");
     window.inputStep();
-    window.debug("Time: " + SSTR(logic.getSecondsSinceStart()));
     window.draw();
     time.stop();
 #if !IS_SFML

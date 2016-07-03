@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef ENTITY_H
+#define ENTITY_H
 #include <string>
 #include <cstdlib>
 
@@ -49,10 +49,10 @@ class Entity{
     * TODO: Implement those instead
     */
 protected:
-    virtual void doHit(Entity *hitter){}
+    virtual void doHit(Entity *hitter){ hitter->getLife(); /**Trying to conform to strict compiler*/}
     virtual void doMove(){}
-    virtual void doIncreaseLife(int lifeAmount){}
-    virtual void doDecreaseLife(int lifeAmount){}
+    virtual void doIncreaseLife(int lifeAmount){life += lifeAmount;}
+    virtual void doDecreaseLife(int lifeAmount){life -= lifeAmount;}
     virtual void doDie(){}
     virtual void doTickUpdate(){}
     virtual void doFire(){}
@@ -122,7 +122,7 @@ class Prop : public Entity{
 public:
     Prop(Logic *logic);
     virtual bool step();
-    bool move(int modX, int modY);
+    bool move();
 
 protected:
     int facingDirection;
@@ -133,3 +133,4 @@ public:
     Wall(Logic *logic);
     virtual bool step();
 };
+#endif

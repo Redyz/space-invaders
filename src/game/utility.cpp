@@ -22,11 +22,11 @@ Utility::~Utility(){
 }
 
 void Utility::print(std::string text){
-  //window->display(text);
+  window->display(text);
 }
 
 void Utility::print(std::string text, int x, int y){
-  //window->display(text, x, y);
+  window->display(text, x, y);
 }
 
 int Utility::log(std::string){
@@ -56,7 +56,7 @@ void Logger::log(std::string message){
 
   //TODO: constant
   if(!Utility::directory_exists("logs"))
-    Utility::create_directory("logs");  
+    Utility::create_directory("logs");
 
   char buffer[100];
   std::fstream logFile;
@@ -66,7 +66,7 @@ void Logger::log(std::string message){
     std::exit(0);
   }
   strftime(buffer, sizeof(buffer), "[%Y-%m-%d][%X] ", currentTimeStruct);
-  logFile << buffer << message << std::endl; 
+  logFile << buffer << message << std::endl;
   logFile.close();
 }
 

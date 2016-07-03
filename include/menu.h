@@ -39,7 +39,7 @@ class MenuComponent final {
 class Menu final {
 
   public:
-    Menu(Logic *logic);
+    Menu();
     ~Menu();
 
     void goDown();

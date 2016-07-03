@@ -23,11 +23,11 @@ void Message::setId(unsigned int id){
     Logger::log("Error: trying to change message id more than once (" + SSTR(this->messageId) + ")");
 }
 
-void Message::execute(Logic *logic){
+void Message::execute(){
 
-};
+}
 
-bool Message::canExecute(Logic *logic){
+bool Message::canExecute(){
   return true;
 }
 

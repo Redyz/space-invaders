@@ -8,8 +8,8 @@ class Message {
   public:
     Message();
     virtual ~Message();
-    virtual void execute(Logic *logic);
-    virtual bool canExecute(Logic *logic);
+    virtual void execute();
+    virtual bool canExecute();
     virtual std::string toString();
   private:
     friend class Logic;

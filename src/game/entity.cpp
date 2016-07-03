@@ -14,7 +14,7 @@ Entity::Entity(Logic* logic){
   damage = -1;
   speed = 2;
   firingSpeed = 10;
-  canMove = true;   
+  canMove = true;
   canAct = true;
   type = ENTITY;
 }
@@ -129,7 +129,7 @@ bool Entity::isOutsideMap(){
 /**
  * Bullet entity class
  */
-Bullet::Bullet(Logic *logic, Entity *firer) : Entity(logic), direction(LEFT){
+Bullet::Bullet(Logic *logic, Entity *firer) : Entity(logic){
   type = BULLET;
   this->firer = firer;
   damage = -1; //means you lose 1hp
@@ -199,7 +199,7 @@ bool Ghost::step(){
       }*/
     }
   }
-  
+
   if(canAct){
     int randomInt = rand() % 100;
     if(randomInt > (100-GHOST_FIRE_CHANCE)){
@@ -208,7 +208,7 @@ bool Ghost::step(){
     canAct = false;
     lastAction = logic->getCurrentTick();
   }
-  
+
   return true;
 }
 
@@ -216,13 +216,14 @@ bool Ghost::move(int modX, int modY){
   bool result = Entity::move(modX, modY);
   if(y == logic->getGameHeight())
     logic->notify(new GameOverMessage(REACHED_BOTTOM));
-  /*if(modY > 0){
-    unsigned int screenDelta = logic->getGameHeight() - y; 
-  }*/
+  if(modY > 0){
+//    unsigned int screenDelta = logic->getGameHeight() - y;
+  }
   return result;
 }
 
 void Ghost::doHit(Entity* hitter){
+    hitter->getLife();
   //logic->notify(new InverDirectionMessage());
   logic->modScore(10);
 }
@@ -245,6 +246,7 @@ UFO::UFO(Logic *logic) : Ghost(logic){
 }
 
 void UFO::doHit(Entity *hitter){
+    hitter->getLife();
   Logger::log("Killed a UFO");
   logic->modScore(500);
 }
@@ -270,6 +272,7 @@ bool Player::move(int modX, int modY){
 }
 
 void Player::doHit(Entity* hitter){
+    hitter->getLife();
   setX(logic->getGameWidth()/2);
   logic->modScore(-500);
 }
@@ -290,10 +293,10 @@ Prop::Prop(Logic* logic) : Entity(logic){
 }
 
 bool Prop::step(){
-  return true;  
+  return true;
 }
 
-bool Prop::move(int modX, int modY){
+bool Prop::move(){
   return true;
 }
 
@@ -304,5 +307,5 @@ Wall::Wall(Logic* logic) : Prop(logic){
 }
 
 bool Wall::step(){
- return true; 
+ return true;
 }

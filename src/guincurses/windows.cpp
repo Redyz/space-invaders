@@ -16,10 +16,10 @@
 #endif
 #include <vector>
 
-const std::string WALL_IMG[] = { 
-"  XX  ", 
-" XXXX ", 
-"XX  XX"  
+const std::string WALL_IMG[] = {
+"  XX  ",
+" XXXX ",
+"XX  XX"
 };
 
 #if IS_UTF8
@@ -45,7 +45,7 @@ Window::Window(){
   keypad(stdscr, true); //enable f1-f12 + arrow keys
   getmaxyx(stdscr, height, width); //store the screen size
   curs_set(0); //disable cursor
-  scoreWindow = newwin(SCORE_HEIGHT, width, 0, 0); //create the score 
+  scoreWindow = newwin(SCORE_HEIGHT, width, 0, 0); //create the score
   gameWindow = newwin(height-SCORE_HEIGHT, width, SCORE_HEIGHT, 0); //height, width, sy, sx
   start_color();
   initColors();
@@ -85,7 +85,7 @@ void Window::clearWindow(){
   if(this->logic->getCurrentTick() % 10 == 0)
     werase(scoreWindow);
   werase(gameWindow);
-};
+}
 
 void Window::inputStep(){
   input->step();
@@ -122,7 +122,7 @@ void Window::display_center(std::string text){
 
 }
 
-void Window::debug(std::string text){
+void Window::debug(){
 #if IS_DEBUG
   display(text, 25, 0, scoreWindow);
 #endif
@@ -133,7 +133,7 @@ void Window::console(std::string text){
 }
 
 void Window::drawScores(){
-  int score = logic->getScore(); 
+  int score = logic->getScore();
   std::string stringScore = "Score: " + SSTR(score);
   display(stringScore, 0, 0, scoreWindow);
 #if IS_DEBUG
@@ -206,13 +206,13 @@ void Window::drawMenu(){
   else
     current->setText("Start game");
     */
-  
+
   do{
     int textOffset = current->text.size()/2;
-    
+
     //TODO: This may need to be rethunk, might be lengthy
     current->do_draw();
-    
+
     //TODO Currently impossible to have something selected and not visible
     if(current == menu->getSelected())
       display(SSTR(">" << current->text << "<"), logic->getGameWidth()/2 + textOffset+1 - (current->text.length()+2) , logic->getGameHeight()/2 + currentInd, gameWindow);
