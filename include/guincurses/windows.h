@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
+
 #include "config.h"
 #include <string>
 #ifdef IS_NT
@@ -31,7 +31,7 @@ extern const std::string PLAYER_CHAR;
 class Logic;
 class Input;
 class MenuManager;
-class Window{
+class Window final {
   public:
     Window();
     ~Window();
@@ -50,13 +50,13 @@ class Window{
     void initColors();
     void inputStep();
     void changeMenu(Menu *newMenu);
-    
+
     //TODO Think this through
     void menuUp();
     void menuDown();
     void menuSelect();
     void menuVisible(bool visible);
-    
+
     MenuManager* menuManager;
   private:
     void drawScores();
@@ -72,5 +72,3 @@ class Window{
 
     Menu* menu;
 };
-
-#endif

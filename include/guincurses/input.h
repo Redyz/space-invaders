@@ -1,7 +1,7 @@
-#ifndef INPUT_H
-#define INPUT_H
+#pragma once
+
 class Logic;
-class Input{
+class Input final {
   public:
     Input(Logic* logic);
     ~Input();
@@ -9,4 +9,3 @@ class Input{
   private:
     Logic* logic;
 };
-#endif
