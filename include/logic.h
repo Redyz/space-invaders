@@ -71,12 +71,12 @@ class Logic{
     Entity* testEntityCollision(Entity* tester, int x, int y);
   public:
     Window *window;
+    Menu *menu;
   private:
     void reset();
     
     unsigned int gameHeight;
     unsigned int gameWidth;
-    Menu *menu;
     EntV entityVector; //container for all entities
     EntV enemyVector;
     std::vector<EntV> gameZones; //container for the game matrix, indicating presence using coordinates

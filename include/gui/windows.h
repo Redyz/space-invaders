@@ -2,6 +2,7 @@
 #define WINDOW_H
 #include <string>
 #include "menu.h"
+#include "logic.h"
 
 namespace sf{
   class RenderWindow;;
@@ -9,7 +10,6 @@ namespace sf{
   class Text;
 };
 
-class Logic;
 class Input;
 class MenuManager;
 class VisualMenu;
@@ -37,10 +37,10 @@ class Window{
     void changeMenu(Menu *newMenu);
 
     //TODO Think this through
-    void menuUp() { menu->goUp(); }
-    void menuDown() { menu->goDown(); }
-    void menuSelect() { menu->getSelected()->do_call(); }
-    void menuVisible(bool visible){ this->menu->setVisible(visible); }
+    void menuUp() { logic->menu->goUp(); }
+    void menuDown() { logic->menu->goDown(); }
+    void menuSelect() { logic->menu->getSelected()->do_call(); }
+    void menuVisible(bool visible){ logic->menu->setVisible(visible); }
     
     
     MenuManager* menuManager;
@@ -49,7 +49,6 @@ class Window{
     void drawGame();
     void drawMenu();
 
-    Menu* menu;
     VisualMenu *visualMenu;
     sf::RenderWindow *sfWindow;
     sf::Font *font;

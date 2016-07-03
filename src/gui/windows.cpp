@@ -48,16 +48,18 @@ Window::~Window(){
 static unsigned int scale;
 void Window::setup(Logic *logic){
   this->logic = logic;
-  input = new Input(logic);
   sfWindow->create(sf::VideoMode(GAME_WIDTH, GAME_HEIGHT), "Window");
   sfWindow->setFramerateLimit(SFML_FRAME_LIMIT);
+  width = GAME_WIDTH;
+  height = GAME_HEIGHT;
   logic->setGameWidth(GAME_WIDTH);
   logic->setGameHeight(GAME_HEIGHT);
 
   this->menuManager = new MenuManager(logic);
-  this->menu = this->menuManager->MAINMENU;
-  
-  visualMenu = new VisualMenu(logic, this->menu);
+  logic->menu = this->menuManager->MAINMENU;
+  this->input = new Input(logic);
+  visualMenu = new VisualMenu(logic, logic->menu);
+
 }
 
 void Window::configText(sf::Text &text){
@@ -107,25 +109,14 @@ void Window::draw(){
 }
 
 void Window::drawMenu(){
-  if(!menu->isVisible())
+  if(!logic->menu->isVisible())
     return;
   visualMenu->draw();
-  /* currentInd = 0;
-  MenuComponent* current = menu->getTop();
-  do{
-    //textOffset = current->text.size()/2;
-    debugText->setPosition(10, 10);
-    Logger::log("Drawing another");
-    sfWindow->draw(*debugText);
-    current = current->down;
-    currentInd++;
-  }while(current != menu->getTop());*/
-  
-  
 }
 
 void Window::changeMenu(Menu *newMenu){
-  this->menu = newMenu;
+  logic->menu = newMenu;
+  this->visualMenu->changeMenu(logic->menu);
 }
 
 void Window::debug(std::string text){

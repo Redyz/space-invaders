@@ -72,7 +72,7 @@ void Window::setup(Logic* logic){
   this->logic = logic;
   this->menuManager = new MenuManager(logic);
   this->input = new Input(logic);
-  this->menu = this->menuManager->MAINMENU;
+  this->logic->menu = this->menuManager->MAINMENU;
 }
 void Window::initColors(){
   init_pair(PAIR_ENTITY, COLOR_GREEN, COLOR_BLACK);
@@ -100,7 +100,7 @@ void Window::draw(){
 }
 
 void Window::changeMenu(Menu *newMenu){
-    this->menu = newMenu;
+    this->logic->menu = newMenu;
 }
 
 void Window::display(std::string text){
@@ -117,9 +117,7 @@ void Window::display(std::string text, int x, int y, WINDOW* window){
 
 void Window::display_center(std::string text){
   logic->setGameState(PAUSED);
-  //unsigned int startingX, startingY, width, height;
   mvwprintw(gameWindow, height/2, width/2, text.c_str());
-
 }
 
 void Window::debug(std::string text){
@@ -195,17 +193,10 @@ void Window::drawGame(){
 }
 
 void Window::drawMenu(){
-  if(!menu->isVisible())
+  if(!logic->menu->isVisible())
     return;
   int currentInd = 0;
-  MenuComponent* current = menu->getTop();
-
-  //TODO: Clean me up
-  /*if(logic->getGameState() == PAUSED)
-    current->setText("Unpause game");
-  else
-    current->setText("Start game");
-    */
+  MenuComponent* current = logic->menu->getTop();
   
   do{
     int textOffset = current->text.size()/2;
@@ -214,7 +205,7 @@ void Window::drawMenu(){
     current->do_draw();
     
     //TODO Currently impossible to have something selected and not visible
-    if(current == menu->getSelected())
+    if(current == logic->menu->getSelected())
       display(SSTR(">" << current->text << "<"), logic->getGameWidth()/2 + textOffset+1 - (current->text.length()+2) , logic->getGameHeight()/2 + currentInd, gameWindow);
     else{
       if(current->isVisible())
@@ -224,21 +215,21 @@ void Window::drawMenu(){
     }
     current = current->down;
     currentInd++;
-  }while(current != menu->getTop());
+  }while(current != logic->menu->getTop());
 }
 
 void Window::menuUp(){
-  menu->goUp();
+  logic->menu->goUp();
 }
 
 void Window::menuDown(){
-  menu->goDown();
+  logic->menu->goDown();
 }
 
 void Window::menuSelect(){
-  menu->getSelected()->do_call();
+  logic->menu->getSelected()->do_call();
 }
 
 void Window::menuVisible(bool visible){
-  menu->setVisible(visible);
+  logic->menu->setVisible(visible);
 }

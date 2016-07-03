@@ -69,8 +69,6 @@ class Window{
     int height;
     Logic* logic;
     Input* input;
-
-    Menu* menu;
 };
 
 #endif

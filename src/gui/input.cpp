@@ -28,11 +28,14 @@ void Input::step(){
       if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
         logic->setGameState(QUITTING);
       break;
+    case START:
     case PAUSED:
       if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         logic->window->menuUp();
       if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         logic->window->menuDown();
+      if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+	logic->window->menuSelect();
       break;
     default:
       break;
