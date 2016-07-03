@@ -1,5 +1,5 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#pragma once
+
 #include <string>
 #include <cstdlib>
 
@@ -24,7 +24,7 @@ class Entity{
 
     int getX(){ return x; }
     int getY(){ return y; }
-    void setX(int x) { this->x = x; } 
+    void setX(int x) { this->x = x; }
     void setY(int y) { this->y = y; }
     bool testMove(int modX, int modY);
     bool move(int modX, int modY);
@@ -42,7 +42,7 @@ class Entity{
     void setDamage(int damage){ this->damage = damage; }
     bool isOutsideMap();
     virtual bool step() = 0;
-    
+
 
     /**
     * Action methods
@@ -123,7 +123,7 @@ public:
     Prop(Logic *logic);
     virtual bool step();
     bool move(int modX, int modY);
-    
+
 protected:
     int facingDirection;
 };
@@ -133,4 +133,3 @@ public:
     Wall(Logic *logic);
     virtual bool step();
 };
-#endif

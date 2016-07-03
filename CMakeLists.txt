@@ -101,6 +101,7 @@ set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
 
 # detect and add SFML + ncurses
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+find_package(Jsoncpp REQUIRED)
 if(IS_SFML)
     find_package(SFML 2.1 REQUIRED system window graphics network audio)
     target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})

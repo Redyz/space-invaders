@@ -1,5 +1,5 @@
-#ifndef LOGIC_H
-#define LOGIC_H
+#pragma once
+
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
@@ -38,7 +38,7 @@ enum gameState{
 
 #define GHOST_SPEED 10
 
-class Logic{
+class Logic final {
   public:
     Logic(Window *window);
     ~Logic();
@@ -73,7 +73,7 @@ class Logic{
     Window *window;
   private:
     void reset();
-    
+
     unsigned int gameHeight;
     unsigned int gameWidth;
     Menu *menu;
@@ -90,5 +90,3 @@ class Logic{
 
     std::deque<Message*> messageDeque;
 };
-
-#endif

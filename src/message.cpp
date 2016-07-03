@@ -1,11 +1,12 @@
+#include <vector>
+#include <algorithm>
+
 #include "logic.h"
 #include "utility.h"
 #include "config.h"
 #include "entity.h"
 #include "message.h"
 #include "menumanager.h"
-#include <vector>
-#include <algorithm>
 
 Message::Message(){
 
@@ -49,8 +50,8 @@ DeathMessage::DeathMessage(Entity* killed, Entity* killer){
     Logger::log("Deleting an entity (" + killed->toString() + "), killed by " + killer->toString());
 }
 
-void DeathMessage::execute(Logic *logic){  
- 
+void DeathMessage::execute(Logic *logic){
+
     logic->deleteEntity(killed);
 }
 
@@ -80,7 +81,7 @@ ArmageddonMessage::ArmageddonMessage(){
 void ArmageddonMessage::execute(Logic* logic){
   auto vect = logic->getEntityVector();
   for(auto entity : vect){
-    if(entity->getType() == GHOST)  
+    if(entity->getType() == GHOST)
       logic->notify(new FireMessage(entity, entity->getX(), entity->getY(), DOWN));
   }
 }
@@ -141,7 +142,10 @@ void GameOverMessage::execute(Logic* logic){
   if(logic->getGameState() != QUITTING){
     std::string gameOverString = "Game is over - ";
     switch(reason){
-      case LOST_ALL_LIVES: gameOverString += "you lost all your lives!"; break;
+      case LOST_ALL_LIVES:
+	gameOverString += "you lost all your lives!";
+	Logger::log("Holy fuck");
+	break;
       case REACHED_BOTTOM: gameOverString += "enemies touched the bottom!"; break;
       case NO_MORE_ENEMIES: gameOverString += "You won; You repelled the alien invasion!"; break;
       case QUIT_GAME: gameOverString += "You quit the game!"; break;
@@ -158,7 +162,7 @@ void GameOverMessage::execute(Logic* logic){
  */
 KillAllEnemiesMessage::KillAllEnemiesMessage() {
 
-  
+
 }
 
 void KillAllEnemiesMessage::execute(Logic* logic){
