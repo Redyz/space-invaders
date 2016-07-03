@@ -1,5 +1,5 @@
-#ifndef LOGIC_H
-#define LOGIC_H
+#pragma once
+
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
@@ -74,7 +74,7 @@ class Logic final{
     Menu *menu;
   private:
     void reset();
-    
+
     unsigned int gameHeight;
     unsigned int gameWidth;
     EntV entityVector; //container for all entities
@@ -90,5 +90,3 @@ class Logic final{
 
     std::deque<Message*> messageDeque;
 };
-
-#endif

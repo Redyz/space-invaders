@@ -1,14 +1,15 @@
 #ifndef WINDOW_H
 #define WINDOW_H
-#include <string>
+#include "config.h"
 #include "menu.h"
 #include "logic.h"
+#include <string>
 
 namespace sf{
-  class RenderWindow;;
+  class RenderWindow;
   class Font;
   class Text;
-};
+}
 
 class Input;
 class MenuManager;

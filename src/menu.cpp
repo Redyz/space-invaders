@@ -2,11 +2,11 @@
 #include "logic.h"
 #include "menu.h"
 
-Menu::Menu(Logic *logic) : visible(true){
-  
+Menu::Menu() : visible(true){
+
 }
 
-Menu::~Menu(){
+Menu::~Menu() {
   MenuComponent *current, *old;
   current = top;
   current->up->down = NULL; // destroy link between last and first
@@ -22,7 +22,7 @@ MenuComponent* Menu::addMenuComponent(MenuComponent* component){
   selected->down = component;
   component->up = selected;
   selected = component;
-  
+
   return component;
 }
 

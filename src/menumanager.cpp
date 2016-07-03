@@ -1,11 +1,12 @@
 #include "menumanager.h"
 #include "config.h"
 #include "utility.h"
+#include "menu.h"
 
 MenuManager::MenuManager(Logic* logic)
 {
   this->logic = logic;
-  
+
   setupMainMenu();
   setupAbout();
   setupLostLife();
@@ -13,34 +14,34 @@ MenuManager::MenuManager(Logic* logic)
 
 void MenuManager::setupMainMenu()
 {
-  MAINMENU = new Menu(logic);
-  
-  MAINMENU->addTopMenuComponent(new MenuComponent(logic, "Start game", 
+  MAINMENU = new Menu();
+
+  MAINMENU->addTopMenuComponent(new MenuComponent(logic, "Start game",
       [=]{
         MAINMENU->setVisible(false);
         logic->setGameState(UNPAUSED);
       },
       [=]{
 	MAINMENU->top->setText(logic->getGameState() == START ? "Start game" : "Unpause game");
-      }  
+      }
   ));
-  
+
   auto settings = MAINMENU->addMenuComponent(new MenuComponent(logic, "Settings", nullptr));
-  MAINMENU->addMenuComponent(new MenuComponent(logic, "About", 
+  MAINMENU->addMenuComponent(new MenuComponent(logic, "About",
     [=]{
       logic->window->changeMenu(ABOUTMENU);
     }
   ));
   settings->setCallback([=]{
-    
+
   });
   MAINMENU->addBottomMenuComponent(new MenuComponent(logic, "Quit game", [=]{logic->setGameState(QUITTING);}));
 }
 
 void MenuManager::setupAbout()
 {
-  ABOUTMENU = new Menu(logic);
-  ABOUTMENU->addTopMenuComponent(new MenuComponent(logic, "Back", 
+  ABOUTMENU = new Menu();
+  ABOUTMENU->addTopMenuComponent(new MenuComponent(logic, "Back",
     [=]{
       logic->window->changeMenu(MAINMENU);
     }
@@ -53,15 +54,15 @@ void MenuManager::setupAbout()
 }
 
 void MenuManager::setupLostLife(){
-  LOSTLIFE = new Menu(logic);
-  LOSTLIFE->addTopMenuComponent(new MenuComponent(logic, "Go", 
+  LOSTLIFE = new Menu();
+  LOSTLIFE->addTopMenuComponent(new MenuComponent(logic, "Go",
     [=]{
-      
+
       logic->window->changeMenu(MAINMENU);
       logic->setGameState(UNPAUSED);
     }
   ));
-  
+
   auto last = LOSTLIFE->addBottomMenuComponent(new MenuComponent(logic, "You lost a life!", nullptr)); last->setSelectable(false);
 }
 

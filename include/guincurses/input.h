@@ -1,5 +1,5 @@
-#ifndef INPUT_H
-#define INPUT_H
+#pragma once
+
 class Logic;
 class Input final{
   public:
@@ -9,4 +9,3 @@ class Input final{
   private:
     Logic* logic;
 };
-#endif

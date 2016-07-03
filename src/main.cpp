@@ -1,8 +1,9 @@
-#include "config.h"
-#include "message.h"
 #include <iostream>
 #include <unistd.h>
 #include <time.h>
+
+#include "config.h"
+#include "message.h"
 #include "logic.h"
 #include "utility.h"
 
@@ -10,7 +11,7 @@
 #include <ncurses.h>
 #endif
 
-int main(int argc, char* argv[]) {
+int main(void) {
 #if IS_UTF8
   setlocale(LC_ALL, "");
 #endif
@@ -21,18 +22,17 @@ int main(int argc, char* argv[]) {
   sleep(1);
 #endif
   Window window;
-  srand(time(NULL)); 
+  srand(time(NULL));
   Logic logic(&window);
   window.setup(&logic);
   logic.init();
 
-  while(logic.getGameState() != QUITTING){  
+  while(logic.getGameState() != QUITTING){
     window.clearWindow();
     if(logic.getGameState() == UNPAUSED)
       logic.step();
     auto time = Timer("Window");
     window.inputStep();
-    window.debug("Time: " + SSTR(logic.getSecondsSinceStart()));
     window.draw();
     time.stop();
 #if !IS_SFML
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
   window.destroy();
   logic.processMessages(); // Finish up messages
   std::cout << "Exiting game, thank you for playing!" << std::endl;
-  
+
 #if IS_DEBUG
   sleep(100);
 #endif

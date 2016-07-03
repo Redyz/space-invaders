@@ -4,6 +4,8 @@
 #include "utility.h"
 #include "menumanager.h"
 
+#include <string>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Text.hpp>
 
@@ -127,8 +129,13 @@ void Window::display(std::string text){
   debug(text);
 }
 
+void Window::display(std::string text, int x, int y){
+  Logger::log(SSTR("Fixme: " << x << " : " << y));
+  debug(text);
+}
+
 void Window::display_center(std::string text){
-  
+  debug(text);
 }
 
 void Window::console(std::string text){

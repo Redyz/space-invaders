@@ -1,5 +1,5 @@
-#ifndef UTILITY_H
-#define UTILITY_H
+#pragma once
+
 #include <string>
 //Macro from http://stackoverflow.com/questions/5590381/easiest-way-to-convert-int-to-string-in-c
 #include <sstream>
@@ -29,7 +29,7 @@ class Utility final{
     Window *window;
 };
 
-class Timer{
+class Timer final{
   public:
     Timer(std::string message);
     void stop();
@@ -43,6 +43,3 @@ class Logger final{
   public:
     static void log(std::string message);
 };
-
-
-#endif

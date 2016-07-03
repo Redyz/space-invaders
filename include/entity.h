@@ -25,7 +25,7 @@ class Entity{
 
     int getX(){ return x; }
     int getY(){ return y; }
-    void setX(int x) { this->x = x; } 
+    void setX(int x) { this->x = x; }
     void setY(int y) { this->y = y; }
     bool testMove(int modX, int modY);
     bool move(int modX, int modY);
@@ -43,17 +43,17 @@ class Entity{
     void setDamage(int damage){ this->damage = damage; }
     bool isOutsideMap();
     virtual bool step() = 0;
-    
+
 
     /**
     * Action methods
     * TODO: Implement those instead
     */
 protected:
-    virtual void doHit(Entity *hitter){}
+    virtual void doHit(Entity *hitter){ hitter->getLife(); /**Trying to conform to strict compiler*/}
     virtual void doMove(){}
-    virtual void doIncreaseLife(int lifeAmount){}
-    virtual void doDecreaseLife(int lifeAmount){}
+    virtual void doIncreaseLife(int lifeAmount){life += lifeAmount;}
+    virtual void doDecreaseLife(int lifeAmount){life -= lifeAmount;}
     virtual void doDie(){}
     virtual void doTickUpdate(){}
     virtual void doFire(){}
@@ -123,8 +123,8 @@ class Prop : public Entity{
 public:
     Prop(Logic *logic);
     virtual bool step();
-    bool move(int modX, int modY);
-    
+    bool move();
+
 protected:
     int facingDirection;
 };

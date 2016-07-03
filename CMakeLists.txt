@@ -13,7 +13,7 @@ set(IS_SFML false CACHE BOOL "Set this to true to build using SFML, or false to 
 set(IS_DEBUG false CACHE BOOL "Whether or not to add debugging symbols to the build") # there is probably a more native way
 set(IS_UTF8 false CACHE BOOL "Use fancy UTF8 symbols for ncurses 'sprites'")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread -fno-elide-constructors -pedantic-errors -Werror -Wextra -Wall -Wpedantic -Winit-self -Wmissing-declarations -Wuninitialized -Wfatal-errors")
 
 function(echo_dir)
   message("In ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -100,6 +100,7 @@ set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE)
 
 # detect and add SFML + ncurses
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+find_package(Jsoncpp REQUIRED)
 if(IS_SFML)
     find_package(SFML 2.1 REQUIRED system window graphics network audio)
     target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})

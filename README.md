@@ -8,6 +8,9 @@ Debian:
 sudo apt-get update
 sudo apt-get install cmake libncurses-dev 
 
+Fedora:
+sudo dnf install jsoncpp-devel ncurses-devel cmake
+
 #Install instructions
 Project must be built using CMake
 ```bash

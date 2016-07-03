@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
+
 #include "config.h"
 #include <string>
 #ifdef IS_NT
@@ -36,7 +36,7 @@ class Window final{
     Window();
     ~Window();
     void draw();
-    void debug(std::string text);
+    void debug();
     void console(std::string text);
     void display(std::string text);
     void display(std::string text, int x, int y);
@@ -50,13 +50,13 @@ class Window final{
     void initColors();
     void inputStep();
     void changeMenu(Menu *newMenu);
-    
+
     //TODO Think this through
     void menuUp();
     void menuDown();
     void menuSelect();
     void menuVisible(bool visible);
-    
+
     MenuManager* menuManager;
   private:
     void drawScores();
@@ -70,5 +70,3 @@ class Window final{
     Logic* logic;
     Input* input;
 };
-
-#endif
