@@ -55,16 +55,13 @@ else()
   endif(IS_UTF8)
 endif(IS_SFML)
 
-# Valgrind recipe on Unix
+# Recipes on Unix
 if(IS_UNIX)
-  add_custom_target(
-    callgrind COMMAND "valgrind" "--tool=callgrind" "--callgrind-out-file=file.out" "./${PROJECT_NAME}" 
-    "&&" "callgrind_annotate" "file.out" "|" "less")
+  add_custom_target(callgrind COMMAND "valgrind" "--tool=callgrind" "--callgrind-out-file=file.out" "./${PROJECT_NAME}" "&&" "callgrind_annotate" "file.out" "|" "less")
   add_custom_target(cppcheck COMMAND "cppcheck" "--enable=all" "--inconclusive" "--xml" "--xml-version=2" "../src/" "../include/" "2>" "cppcheck.xml" "|" "cppcheck-gui" "cppcheck.xml")
-
-	add_custom_target(valgrind COMMAND "valgrind" "./${PROJECT_NAME}" "-v" "--leak-check=full")
-	add_custom_target(cgdb COMMAND "cgdb" "./${PROJECT_NAME}")
-	add_custom_target(cgdba COMMAND "../tools/debug.sh" )
+  add_custom_target(valgrind COMMAND "valgrind" "./${PROJECT_NAME}" "-v" "--leak-check=full")
+  add_custom_target(cgdb COMMAND "cgdb" "./${PROJECT_NAME}")
+  add_custom_target(cgdba COMMAND "../tools/debug.sh" )
 endif(IS_UNIX)
 
 set(FULL_PROJECT_NAME v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}) 
@@ -77,7 +74,9 @@ endforeach()
 set(PROJECT_FILES  ${PROJECT_INCLUDES} ${PROJECT_SOURCE} )
 
 add_executable(${PROJECT_NAME} ${PROJECT_FILES})
-install(TARGETS ${PROJECT_NAME} DESTINATION bin) 
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+
+# Copy fonts and assets
 if(IS_SFML)
   add_custom_command(
     TARGET ${PROJECT_NAME}
