@@ -16,6 +16,7 @@ typedef enum entityGroup{
     ENEMY = GHOST | BULLET | UFOS,
     FRIENDLY = PLAYER | WALL
 }entityGroups;
+
 class Logic;
 class Entity{
   public:

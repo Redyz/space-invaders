@@ -38,7 +38,7 @@ enum gameState{
 
 #define GHOST_SPEED 10
 
-class Logic{
+class Logic final{
   public:
     Logic(Window *window);
     ~Logic();

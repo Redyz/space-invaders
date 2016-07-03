@@ -3,7 +3,7 @@
 
 class Logic;
 
-class Input{
+class Input final{
   public:
     Input(Logic *logic);
     ~Input();

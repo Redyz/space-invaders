@@ -1,7 +1,7 @@
 #ifndef INPUT_H
 #define INPUT_H
 class Logic;
-class Input{
+class Input final{
   public:
     Input(Logic* logic);
     ~Input();

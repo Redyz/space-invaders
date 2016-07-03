@@ -31,7 +31,7 @@ extern const std::string PLAYER_CHAR;
 class Logic;
 class Input;
 class MenuManager;
-class Window{
+class Window final{
   public:
     Window();
     ~Window();

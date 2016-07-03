@@ -14,7 +14,7 @@ class Input;
 class MenuManager;
 class VisualMenu;
 class WINDOW;
-class Window{
+class Window final{
   public:
     Window();
     ~Window();

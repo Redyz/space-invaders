@@ -6,7 +6,7 @@
 
 class Logic;
 
-class MenuManager{
+class MenuManager final{
 public:
   MenuManager(Logic *logic);
   ~MenuManager();

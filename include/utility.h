@@ -12,7 +12,7 @@
 #define PPRINT( x, y ) printf("Adress of %s, 0%p\n", y, (void*)x);
 
 class Window;
-class Utility{
+class Utility final{
   public:
     Utility(Window *window);
     ~Utility();
@@ -39,7 +39,7 @@ class Timer{
     std::chrono::high_resolution_clock::time_point start_time;
 };
 
-class Logger{
+class Logger final{
   public:
     static void log(std::string message);
 };
